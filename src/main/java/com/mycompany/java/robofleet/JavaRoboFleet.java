@@ -18,11 +18,11 @@ public class JavaRoboFleet {
 
     public static void main(String[] args) {
 
-		int cagalhao = 4;
+		int ade = 4;
         
 		CentroDeComando centro = new CentroDeComando();
 		Robot robot = new Robot();
-		Menu menu = new Menu(cagalhao);
+		Menu menu = new Menu(ade);
 
 
 
