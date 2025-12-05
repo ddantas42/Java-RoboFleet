@@ -2,30 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package com.mycompany.java.robofleet.Gestao;
+import java.util.Scanner;
 
 /**
  *
  * @author migue
  */
 public class Menu {
-    private int opc;
+    private Scanner opcao;
 
     // construtor
-    public Menu(int opc){
-        this.opc = opc;
+    public Menu(Scanner opcao){
+        this.opcao = opcao;
     }
 
-    public int getOpc(){
-        return opc;
-    }
+    public void menuInicialString(){
+        int opcao;
 
-    public void setOpc(int opc){
-        this.opc = opc;
-    }
-
-    public String menuInicialString(){
-        return "\nMenu de gestao\n(1) Gerir tecnicos\n(2) Gerir robots\n(3) Gerir zonas\n(4) Gerir complexo\n(5) Exportar dados\nOpcao: ";
+        do {
+            System.out.println("Menu Gestao\n");
+            System.out.println("(1) Gerir tecnicos"); // criar, editar, remover, listar, associar/desassociar
+            System.out.println("(2) Gerir Robots"); // criar, editar, remover, listar
+            System.out.println("(3) Gerir zonas");
+            System.out.println("(4) ");
+        }
     }
 
 }
