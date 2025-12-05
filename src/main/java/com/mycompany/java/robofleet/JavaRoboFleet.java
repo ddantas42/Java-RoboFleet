@@ -17,13 +17,15 @@ import com.mycompany.java.robofleet.Gestao.*;
 public class JavaRoboFleet {
 
     public static void main(String[] args) {
+
+		int cagalhao = 4;
         
 		CentroDeComando centro = new CentroDeComando();
 		Robot robot = new Robot();
-		Menu menu = new Menu();
+		Menu menu = new Menu(cagalhao);
 
 
-		
+
 		System.out.println("Bem-vindo ao RoboFleet!");
 
     }
