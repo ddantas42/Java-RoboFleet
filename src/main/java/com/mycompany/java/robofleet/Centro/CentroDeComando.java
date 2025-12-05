@@ -9,5 +9,5 @@ package com.mycompany.java.robofleet.Centro;
  * @author migue
  */
 public class CentroDeComando {
-    
+     
 }
