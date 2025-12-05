@@ -22,6 +22,8 @@ public class JavaRoboFleet {
 		Robot robot = new Robot();
 		Menu menu = new Menu();
 
+
+		
 		System.out.println("Bem-vindo ao RoboFleet!");
 
     }
