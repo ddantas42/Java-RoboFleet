@@ -26,7 +26,7 @@ public class Menu {
             System.out.println("(1) Gerir tecnicos"); // criar, editar, remover, listar, associar/desassociar
             System.out.println("(2) Gerir Robots"); // criar, editar, remover, listar
             System.out.println("(3) Gerir zonas");
-            System.out.println("(4) ");
+            System.out.println("(4)  ");
         }
     }
 
