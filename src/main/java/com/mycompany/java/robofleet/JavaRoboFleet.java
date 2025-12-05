@@ -4,9 +4,9 @@
 
 package com.mycompany.java.robofleet;
 
-import Centro;
-import Robot;
-import Gestao;
+import com.mycompany.java.robofleet.Centro.*;
+import com.mycompany.java.robofleet.Robot.*;
+import com.mycompany.java.robofleet.Gestao.*;
 
 
 
@@ -17,6 +17,12 @@ import Gestao;
 public class JavaRoboFleet {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
+		CentroDeComando centro = new CentroDeComando();
+		Robot robot = new Robot();
+		Menu menu = new Menu();
+
+		System.out.println("Bem-vindo ao RoboFleet!");
+
     }
 }
