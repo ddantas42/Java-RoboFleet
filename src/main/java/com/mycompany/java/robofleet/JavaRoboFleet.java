@@ -21,15 +21,16 @@ public class JavaRoboFleet {
 
     public static void main(String[] args) {
         
-		CentroDeComando centro = new CentroDeComando();
-		Robot robot = new Robot();
+		//CentroDeComando centro = new CentroDeComando();
+		//Robot robot = new Robot();
 
 		// testes menu
-		Scanner opcao = new Scanner(System.in);
-		Menu menu = new Menu(opcao);
+		Scanner sc = new Scanner(System.in);
+		
+		Menu menu = new Menu(sc);
 		menu.menuInicialString();
 
-		opcao.close();
+		sc.close();
 
 
 		System.out.println("Bem-vindo ao RoboFleet!");
