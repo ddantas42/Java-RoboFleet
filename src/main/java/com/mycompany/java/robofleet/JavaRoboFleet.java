@@ -11,8 +11,6 @@ import com.mycompany.java.robofleet.Gestao.*;
 // bibliotecas
 import java.util.Scanner;
 
-
-
 /**
  *
  * @author hiper
@@ -20,20 +18,19 @@ import java.util.Scanner;
 public class JavaRoboFleet {
 
     public static void main(String[] args) {
+		System.out.println("Bem-vindo ao RoboFleet!");
         
 		//CentroDeComando centro = new CentroDeComando();
 		//Robot robot = new Robot();
 
-		// testes menu
+		//testes menu
 		Scanner sc = new Scanner(System.in);
-		
+
 		Menu menu = new Menu(sc);
 		menu.menuInicialString();
 
 		sc.close();
 
-
-		System.out.println("Bem-vindo ao RoboFleet!");
 
     }
 }
