@@ -7,7 +7,7 @@ package com.mycompany.java.robofleet.Gestao;
 import java.util.Scanner;
 import java.util.ArrayList;
 // importo so a classe robot
-import com.mycompany.java.robofleet.Robot.Robot;
+import com.mycompany.java.robofleet.Robot.*;
 
 /**
  *
@@ -15,10 +15,12 @@ import com.mycompany.java.robofleet.Robot.Robot;
  */
 public class Menu {
     private Scanner sc;
+    private ArrayList<Robot> frota;
 
     // construtor
     public Menu(Scanner sc){
         this.sc = sc;
+        this.frota = new ArrayList<>();
     }
 
     public void menuInicialString(){
@@ -41,10 +43,9 @@ public class Menu {
             switch(opcao) {
                 case 1: menuTecnicos(); break;
                 case 2: menuRobots(); break;
-                case 3: menuZonas(); break;
-                case 4: menuComplexo(); break;
-                case 5: menuRadar(); break;
-                case 6: exportarDados(); break;
+                case 3: menuComplexo(); break;
+                case 4: menuRadar(); break;
+                case 5: exportarDados(); break;
                 case 0: System.out.println("A sair..."); break;
                 default: System.out.println("Opcao invalida!");
             }
@@ -105,31 +106,6 @@ public class Menu {
         } while(opcao != 0);
     }
 
-    private void menuZonas(){
-        int opcao;
-        do {
-            System.out.println("\nGestao de Zonas\n");
-            System.out.println("(1) Criar zona");
-            System.out.println("(2) Editar zona");
-            System.out.println("(3) Remover zona");
-            System.out.println("(4) Listar zonas");
-            System.out.println("(0) Voltar ao menu principal");
-            System.out.print("Opcao: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine();
-
-            switch(opcao){
-                case 1: criarZona(); break;
-                case 2: editarZona(); break;
-                case 3: removerZona(); break;
-                case 4: listarZonas(); break;
-                case 0: System.out.println("A regressar ao menu principal"); break;
-                default: System.out.println("Opcao invalida!");
-            }
-
-        } while(opcao != 0);
-    }
 
     // Submenu Complexo
     private void menuComplexo() {
@@ -165,9 +141,68 @@ public class Menu {
 
     // Métodos de ações - Robots
     private void criarRobot() { 
-        System.out.println("\nA criar novo robot.");
-        
+        System.out.println("Indique o nome do Robot: ");
+        String nome = sc.nextLine();
+
+        System.out.println("Indique a marca: ");
+        String marca = sc.nextLine();
+
+        System.out.println("Indique o modelo: ");
+        String modelo = sc.nextLine();
+
+        System.out.println("Indique o ano de fabrico: ");
+        int ano;
+        try {
+            ano = sc.nextInt();
+        } catch (java.util.InputMismatchException e){
+            System.out.println("Ano de fabrico invalido. Acao cancelada");
+            sc.nextLine();
+            return;
+        }
+        sc.nextLine();
+
+        // dados rcarry
+        System.out.println("Capacidade de carga (em kg): ");
+        double capacidadeCarga = sc.nextDouble();
+        sc.nextLine();
+
+        System.out.println("Inclui holofote? (s/n): ");
+        boolean temHolofote = sc.nextLine().equalsIgnoreCase("s");
+
+        // criar bateria
+        Bateria bateria = new Bateria(200, 12);
+        System.out.println("Bateria padrao (200Ah, 12h) criada.");
+
+        // selcionar zona
+        System.out.println("\nSelecionar zona de operacao:");
+        Zona[] zonasDisponiveis = Zona.values();
+        for(int i = 0; i < zonasDisponiveis.length; i++){
+            System.out.println("(" + (i + 1) + ")" + zonasDisponiveis[i]);
+        }
+
+        System.out.println("Opcao de zona (numero):");
+        int indiceZona = sc.nextInt() - 1;
+        sc.nextLine();
+
+        Zona zonaSelecionada;
+        if(indiceZona >= 0 && indiceZona < zonasDisponiveis.length){
+            zonaSelecionada = zonasDisponiveis[indiceZona];
+        } else {
+            System.out.println("Selecao de zona invalida. A atribuir armazem por defeito.");
+            zonaSelecionada = Zona.ARMAZEM;
+        }
+
+        // criar e adicionar rcarry 
+        try {
+            RCarry novoRobot = new RCarry(nome, marca, modelo, ano, zonaSelecionada, bateria, capacidadeCarga, temHolofote);
+            this.frota.add(novoRobot);
+            
+            System.out.println("\nRCarry " + nome + " (ID: " + novoRobot.getId() + ") criado e adicionado à frota!");
+        } catch (Exception e) {
+            System.out.println("Erro fatal ao criar RCarry: " + e.getMessage());
+        }
     }
+        
     private void editarRobot() { 
         System.out.println("Editar robot..."); 
     }
@@ -178,18 +213,5 @@ public class Menu {
         System.out.println("Listar robots..."); 
     }
 
-    // Métodos de ações - Zonas
-    private void criarZona() { 
-        System.out.println("Criar zona..."); 
-    }
-    private void editarZona() { 
-        System.out.println("Editar zona..."); 
-    }
-    private void removerZona() { 
-        System.out.println("Remover zona..."); 
-    }
-    private void listarZonas() { 
-        System.out.println("Listar zonas..."); 
-    }
 }
 
