@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.java.robofleet.Robot;
 
 public class RFactory extends Robot
 {
-
     private int numBracosRoboticos;
     private boolean temOrientacaoLaser;
 

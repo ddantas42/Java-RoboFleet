@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.mycompany.java.robofleet.Gestao;
 import java.util.Scanner;
 import java.util.ArrayList;
 // importo so a classe robot
 import com.mycompany.java.robofleet.Robot.Robot;
 
-/**
- *
- * @author migue
- */
 public class Menu {
     private Scanner sc;
 
@@ -192,4 +183,3 @@ public class Menu {
         System.out.println("Listar zonas..."); 
     }
 }
-

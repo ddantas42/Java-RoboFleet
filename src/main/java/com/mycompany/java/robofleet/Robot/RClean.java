@@ -1,13 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.java.robofleet.Robot;
 
-/**
- *
- * @author migue
- */
-public class RClean {
-    
+public class RClean extends Robot
+{
+    private String modoDeLimpeza;
+    private boolean temLuzAuxiliar;
+
+public void adicionarMotor(Motor m)
+    {
+        if (motores.size() < 2)
+        {
+            motores.add(m);
+        } else
+        {
+            System.out.println("Erro: RClean só pode ter até 2 motores.");
+        }
+    }
+
+    @Override
+    public boolean validarEquipa()
+    {
+        return true; 
+    }
+
+        @Override
+    public String toString()
+    {
+        return super.toString() + " [Tipo: R-Clean] Modo de Limpeza: " + modoDeLimpeza;
+    }
 }
