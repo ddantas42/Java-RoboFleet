@@ -5,6 +5,9 @@
 
 package com.mycompany.java.robofleet.Gestao;
 import java.util.Scanner;
+import java.util.ArrayList;
+// importo so a classe robot
+import com.mycompany.java.robofleet.Robot.Robot;
 
 /**
  *
@@ -95,7 +98,7 @@ public class Menu {
                 case 2: editarRobot(); break;
                 case 3: removerRobot(); break;
                 case 4: listarRobots(); break;
-                case 0: System.out.println("A regressar ao menu principal..."); break;
+                case 0: System.out.println("A regressar ao menu principal."); break;
                 default: System.out.println("Opcao invalida!");
             }
 
@@ -121,7 +124,7 @@ public class Menu {
                 case 2: editarZona(); break;
                 case 3: removerZona(); break;
                 case 4: listarZonas(); break;
-                case 0: System.out.println("A regressar ao menu principal..."); break;
+                case 0: System.out.println("A regressar ao menu principal"); break;
                 default: System.out.println("Opcao invalida!");
             }
 
@@ -162,7 +165,8 @@ public class Menu {
 
     // Métodos de ações - Robots
     private void criarRobot() { 
-        System.out.println("Criar robot..."); 
+        System.out.println("\nA criar novo robot.");
+        
     }
     private void editarRobot() { 
         System.out.println("Editar robot..."); 
