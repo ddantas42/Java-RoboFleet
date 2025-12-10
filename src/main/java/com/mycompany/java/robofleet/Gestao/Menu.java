@@ -13,6 +13,33 @@ public class Menu {
         this.sc = sc;
         this.frota = new ArrayList<>();
     }
+    
+    private void menuRobots() {
+        int opcao;
+        do {
+            System.out.println("\nGestao de Robots\n");
+            System.out.println("(1) Criar robot");
+            System.out.println("(2) Editar robot");
+            System.out.println("(3) Remover robot");
+            System.out.println("(4) Listar robots");
+            System.out.println("(0) Voltar ao menu principal");
+            System.out.print("Opcao: ");
+
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch(opcao){
+                case 1: criarRobot(); break;
+                case 2: editarRobot(); break;
+                case 3: removerRobot(); break;
+                case 4: listarRobots(); break;
+                case 0: System.out.println("A regressar ao menu principal."); break;
+                default: System.out.println("Opcao invalida!");
+            }
+
+        } while(opcao != 0);
+    }
+
 
     public void menuInicialString(){
         int opcao;
@@ -21,10 +48,9 @@ public class Menu {
             System.out.println("\nMenu Gestao\n");
             System.out.println("(1) Gerir tecnicos"); // criar, editar, remover, listar, associar/desassociar
             System.out.println("(2) Gerir Robots"); // criar, editar, remover, listar
-            System.out.println("(3) Gerir zonas");
-            System.out.println("(4) Gerir complexo");
-            System.out.println("(5) Utilizar radar");
-            System.out.println("(6) Exportar dados");
+            System.out.println("(3) Gerir complexo");
+            System.out.println("(4) Utilizar radar");
+            System.out.println("(5) Exportar dados");
             System.out.println("(0) Sair");
             System.out.println("Opcao: ");
             
@@ -71,31 +97,6 @@ public class Menu {
         }while(opcao != 0);
     }
 
-    private void menuRobots() {
-        int opcao;
-        do {
-            System.out.println("\nGestao de Robots\n");
-            System.out.println("(1) Criar robot");
-            System.out.println("(2) Editar robot");
-            System.out.println("(3) Remover robot");
-            System.out.println("(4) Listar robots");
-            System.out.println("(0) Voltar ao menu principal");
-            System.out.print("Opcao: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine();
-
-            switch(opcao){
-                case 1: criarRobot(); break;
-                case 2: editarRobot(); break;
-                case 3: removerRobot(); break;
-                case 4: listarRobots(); break;
-                case 0: System.out.println("A regressar ao menu principal."); break;
-                default: System.out.println("Opcao invalida!");
-            }
-
-        } while(opcao != 0);
-    }
 
 
     // Submenu Complexo
@@ -152,45 +153,81 @@ public class Menu {
         }
         sc.nextLine();
 
-        // dados rcarry
-        System.out.println("Capacidade de carga (em kg): ");
-        double capacidadeCarga = sc.nextDouble();
-        sc.nextLine();
-
-        System.out.println("Inclui holofote? (s/n): ");
-        boolean temHolofote = sc.nextLine().equalsIgnoreCase("s");
-
-        // criar bateria
         Bateria bateria = new Bateria(200, 12);
-        System.out.println("Bateria padrao (200Ah, 12h) criada.");
 
-        // selcionar zona
-        System.out.println("\nSelecionar zona de operacao:");
+        System.out.println("Indique a zona de operacao:");
         Zona[] zonasDisponiveis = Zona.values();
         for(int i = 0; i < zonasDisponiveis.length; i++){
-            System.out.println("(" + (i + 1) + ")" + zonasDisponiveis[i]);
+            System.out.println("(" + (i + 1) + ") " + zonasDisponiveis[i]);
         }
-
-        System.out.println("Opcao de zona (numero):");
+        System.out.println("Opcao de zona: ");
         int indiceZona = sc.nextInt() - 1;
         sc.nextLine();
 
-        Zona zonaSelecionada;
+        Zona zonaSelecionada = Zona.ARMAZEM;
         if(indiceZona >= 0 && indiceZona < zonasDisponiveis.length){
             zonaSelecionada = zonasDisponiveis[indiceZona];
         } else {
-            System.out.println("Selecao de zona invalida. A atribuir armazem por defeito.");
-            zonaSelecionada = Zona.ARMAZEM;
+            System.out.println("Zona invalida. A usar ARMAZEM por defeito.");
         }
 
-        // criar e adicionar rcarry 
+        System.out.println("\nQual o tipo de Robot?");
+        System.out.println("(1) R-Carry (Transporte)");
+        System.out.println("(2) R-Clean (Limpeza)");
+        System.out.println("(3) R-Factory (Producao)");
+        System.out.println("(4) R-Inspect (Inspecao)");
+        System.out.print("Opcao: ");
+        
+        int tipoRobot = sc.nextInt();
+        sc.nextLine(); 
+
+        Robot novoRobot = null;
+
         try {
-            RCarry novoRobot = new RCarry(nome, marca, modelo, ano, zonaSelecionada, bateria, capacidadeCarga, temHolofote);
-            this.frota.add(novoRobot);
-            
-            System.out.println("\nRCarry " + nome + " (ID: " + novoRobot.getId() + ") criado e adicionado à frota!");
-        } catch (Exception e) {
-            System.out.println("Erro fatal ao criar RCarry: " + e.getMessage());
+            switch(tipoRobot){
+                case 1:
+                    System.out.println("Capacidade carga (kg): ");
+                    double carga = sc.nextDouble();
+                    sc.nextLine();
+                    System.out.println("Tem holofote (s/n): ");
+                    boolean holofote = sc.nextLine().equalsIgnoreCase("s");
+
+                    novoRobot = new RCarry(nome, marca, modelo, ano, zonaSelecionada, bateria, carga, holofote);
+                    break;
+                case 2:
+                    System.out.println("Modo de limpeza (ex: aspirar, secar): ");
+                    String modo = sc.nextLine();
+                    System.out.println("Tem luz auxiliar? (s/n): ");
+                    boolean luz = sc.nextLine().equalsIgnoreCase("s");
+
+                    novoRobot = new RClean(nome, marca, modelo, ano, zonaSelecionada, bateria, modo, luz);
+                    break;
+                case 3:
+                    System.out.println("Numero de bracos roboticos: ");
+                    int bracos = sc.nextInt();
+                    sc.nextLine();
+
+                    novoRobot = new RFactory(nome, marca, modelo, ano, zonaSelecionada, bateria, bracos);
+                    break;
+
+                case 4:
+                    novoRobot = new RInspect(nome, marca, modelo, ano, zonaSelecionada, bateria);
+                    break;
+                default:
+                    System.out.println("Tipo de robot  inválido.");
+                    return;
+            }
+
+            if (novoRobot != null){
+                this.frota.add(novoRobot);
+                System.out.println("\nSucesso! Robot " + novoRobot.getClass().getSimpleName() + " criado.");
+
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nErro ao criar robot" + e.getMessage());
+
+        } catch(Exception e){
+            System.out.println("\nErro inesperado: " + e.getMessage());
         }
     }
         

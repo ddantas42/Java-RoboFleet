@@ -5,6 +5,13 @@ public class RClean extends Robot
     private String modoDeLimpeza;
     private boolean temLuzAuxiliar;
 
+    public RClean(String nome, String marca, String modelo, int ano, Zona zona, Bateria bateria, String modoDeLimpeza, boolean temLuzAuxiliar){
+        super(nome, marca, modelo, ano, zona, bateria);
+        this.modoDeLimpeza = modoDeLimpeza;
+        this.temLuzAuxiliar = temLuzAuxiliar;
+    }
+    
+
 public void adicionarMotor(Motor m)
     {
         if (motores.size() < 2)

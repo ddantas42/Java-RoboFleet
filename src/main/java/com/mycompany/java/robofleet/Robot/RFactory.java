@@ -5,6 +5,7 @@ public class RFactory extends Robot
     private int numBracosRoboticos;
     private boolean temOrientacaoLaser;
 
+
     public RFactory(String nome, String marca, String modelo, int ano, Zona zona, Bateria bateria, int numBracos)
     {
         super(nome, marca, modelo, ano, zona, bateria);
