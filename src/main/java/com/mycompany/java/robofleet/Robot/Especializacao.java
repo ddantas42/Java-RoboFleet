@@ -8,6 +8,10 @@ package com.mycompany.java.robofleet.Robot;
  *
  * @author migue
  */
-public enum Especializacao {
-    
+
+public enum Especializacao 
+{
+    ROBOTICA,
+    MANUTENCAO,
+    SISTEMAS
 }
