@@ -238,7 +238,10 @@ public class Menu {
         System.out.println("Remover robot..."); 
     }
     private void listarRobots() { 
-        System.out.println("Listar robots..."); 
+        System.out.println("\nFrota de robots: ");
+        for(int i = 0; i < frota.size(); i++){
+
+        } 
     }
 
 }
