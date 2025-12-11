@@ -101,6 +101,10 @@ public abstract class Robot
         return nome;
     }
 
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
     public Zona getZona()
     {
         return zona;
