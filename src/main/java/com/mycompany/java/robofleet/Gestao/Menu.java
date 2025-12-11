@@ -276,7 +276,7 @@ public class Menu {
             sc.nextLine();
 
             try {
-                switch (op):
+                switch (op) {
                     case 1: 
                         System.out.println("Novo nome (Atual: " + r.getNome() + "): ");
                         String novoNome = sc.nextLine();
@@ -305,6 +305,7 @@ public class Menu {
                     default:
                         System.out.println("Opcao invalida.");
 
+                }
             }catch (IllegalArgumentException e){
                 System.out.println("Erro de edicao: " + e.getMessage());
             } catch (java.util.InputMismatchException e){
