@@ -238,8 +238,16 @@ public class Menu {
         System.out.println("Remover robot..."); 
     }
     private void listarRobots() { 
+        if(frota.isEmpty()){
+            System.out.println("Nenhum robot registado.");
+            return;
+        }
+
         System.out.println("\nFrota de robots: ");
         for(int i = 0; i < frota.size(); i++){
+            Robot r = frota.get(i);
+
+            System.out.println("(" + (i + 1) + ") " + r.toString());
 
         } 
     }
