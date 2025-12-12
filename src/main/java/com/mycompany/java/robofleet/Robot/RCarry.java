@@ -34,4 +34,10 @@ public class RCarry extends Robot
         return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
     }
         */
+
+    @Override
+    public String toString() {
+        return super.toString() + 
+            " [Tipo: R-Carry | Carga: " + capacidadeCarga + "kg | Holofote: " + temHolofote + "]";
+    }
 }
