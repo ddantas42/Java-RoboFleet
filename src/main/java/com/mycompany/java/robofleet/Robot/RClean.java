@@ -2,36 +2,24 @@ package com.mycompany.java.robofleet.Robot;
 
 public class RClean extends Robot
 {
-    private String modoDeLimpeza;
-    private boolean temLuzAuxiliar;
 
-    public RClean(String nome, String marca, String modelo, int ano, Zona zona, Bateria bateria, String modoDeLimpeza, boolean temLuzAuxiliar){
-        super(nome, marca, modelo, ano, zona, bateria);
-        this.modoDeLimpeza = modoDeLimpeza;
-        this.temLuzAuxiliar = temLuzAuxiliar;
-    }
-    
+    private boolean sistemaSuccao;
+    private boolean luzInspecao;
 
-public void adicionarMotor(Motor m)
+    public RClean(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat, boolean succao, boolean luz)
     {
-        if (motores.size() < 2)
-        {
-            motores.add(m);
-        } else
-        {
-            System.out.println("Erro: RClean só pode ter até 2 motores.");
-        }
+        super(nome, marca, modelo, ano, zona, bat);
+        this.sistemaSuccao = succao;
+        this.luzInspecao = luz;
     }
 
     @Override
     public boolean validarEquipa()
     {
-        return true; 
-    }
-
-        @Override
-    public String toString()
-    {
-        return super.toString() + " [Tipo: R-Clean] Modo de Limpeza: " + modoDeLimpeza;
+        if (equipa.size() < 1 || equipa.size() > 2)
+        {
+            return false;
+        }
+        return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
     }
 }
