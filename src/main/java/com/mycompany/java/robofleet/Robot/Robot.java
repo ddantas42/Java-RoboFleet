@@ -110,9 +110,33 @@ public abstract class Robot
         return zona;
     }
 
+    public void setZona(Zona zona){
+        this.zona = zona;
+    }
+
+    public double getConsumoTotal(){
+        double consumoTotal = 0;
+        for(Motor m : motores){
+            consumoTotal += m.getPotencia();
+        }
+        return consumoTotal;
+    }
+
+    public String calcularAutonomia(){
+        double consumo = getConsumoTotal();
+
+        if(consumo == 0){
+            return "Infinito (sem consumo)";
+        }
+
+        double autonomia = bateria.getCapacidade() / consumo;
+
+        return String.format("%.2f horas", autonomia);
+    }
+
     @Override
     public String toString()
     {
-        return "ID: " + id + " | " + nome + " | " + zona;
+        return "ID: " + id + " | " + nome + " | " + zona + " | Autonomia: " + calcularAutonomia();
     }
 }

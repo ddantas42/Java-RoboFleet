@@ -2,7 +2,7 @@ package com.mycompany.java.robofleet.Gestao;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-// importo so a classe robot
+
 import com.mycompany.java.robofleet.Centro.*;
 import com.mycompany.java.robofleet.Robot.*;
 
@@ -155,7 +155,19 @@ public class Menu {
         }
         sc.nextLine();
 
-        Bateria bateria = new Bateria(200, 12);
+        System.out.println("Indique a capacidade da bateria: ");
+        int cap;
+        try{
+            cap = sc.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Capacidade para a bateria invalido. Acao cancelada");
+            sc.nextLine();
+            return;
+        }
+        sc.nextLine();
+
+        // criamos a bateria com a capacidade definida pelo utilizador e a autonomia é depois calculada
+        Bateria bateria = new Bateria(cap, 100);
 
         System.out.println("Indique a zona de operacao:");
         Zona[] zonasDisponiveis = Zona.values();
@@ -276,7 +288,9 @@ public class Menu {
             sc.nextLine();
 
             try {
-                switch (op):
+
+                switch (op){
+
                     case 1: 
                         System.out.println("Novo nome (Atual: " + r.getNome() + "): ");
                         String novoNome = sc.nextLine();
@@ -289,6 +303,7 @@ public class Menu {
                         r.setNome(novoNome);
                         System.out.println("Nome alterado com sucesso.");
                         break;
+
                     case 2:
                         System.out.println("Editar marca (Atual: " + r.getMarca() + "): ");
                         String novaMarca = sc.nextLine();
@@ -296,17 +311,46 @@ public class Menu {
                         r.setMarca(novaMarca);
                         System.out.println("Marca alterada!");
                         break;
+
                     case 3:
-                        // por acabar
+                        System.out.println("Editar modelo (Atual: " + r.getModelo() + "): ");
+                        String novoModelo = sc.nextLine();
+
+                        r.setModelo(novoModelo);
+                        System.out.println("Modelo alterado!");
                         break;
+
+                    case 4:
+                        System.out.println("Editar zona (Atual: " + r.getZona() + "): ");
+                        Zona[] zonasDisponiveis = Zona.values();
+                        for(int i = 0; i < zonasDisponiveis.length; i++){
+                            System.out.println("(" + (i + 1) + ") " + zonasDisponiveis[i]);
+                        }
+                        System.out.println("Opcao de zona: ");
+                        int indiceZona = sc.nextInt() - 1;
+                        sc.nextLine();
+
+                        Zona zonaSelecionada = Zona.ARMAZEM;
+                        if(indiceZona >= 0 && indiceZona < zonasDisponiveis.length){
+                            zonaSelecionada = zonasDisponiveis[indiceZona];
+                        } else {
+                            System.out.println("Zona invalida. A usar ARMAZEM por defeito.");
+                        }
+                        r.setZona(zonaSelecionada);
+                        System.out.println("Zona alterada com sucesso.");
+                        break;
+
                     case 0:
                         System.out.println();
                         break;
+
                     default:
                         System.out.println("Opcao invalida.");
+                }
 
             }catch (IllegalArgumentException e){
                 System.out.println("Erro de edicao: " + e.getMessage());
+
             } catch (java.util.InputMismatchException e){
                 System.out.println("Erro: entrada numerica invalida. Tente novamente");
                 sc.nextLine();

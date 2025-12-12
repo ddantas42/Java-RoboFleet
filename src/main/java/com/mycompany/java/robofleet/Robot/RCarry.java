@@ -11,6 +11,8 @@ public class RCarry extends Robot
         super(nome, marca, modelo, ano, zona, bateria);
         this.capacidadeCarga = capacidadeCarga;
         this.temHolofote = temHolofote;
+
+        this.adicionarMotor(new Motor(50));
     }
 
     public void adicionarMotor(Motor m)
@@ -33,6 +35,6 @@ public class RCarry extends Robot
     @Override
     public String toString()
     {
-        return super.toString() + " [Tipo: R-Carry] Carga: " + capacidadeCarga;
+        return super.toString() + " [Tipo: R-Carry] Carga: " + capacidadeCarga + "kg";
     }
 }
