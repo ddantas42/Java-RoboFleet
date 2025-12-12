@@ -245,17 +245,40 @@ public class Menu {
             }
 
             if (novoRobot != null){
-                Motor motorInicial = new Motor(potenciaMotor);
-
-                if (novoRobot instanceof RCarry){
-                    ((RCarry) novoRobot).adicionarMotor(motorInicial);
+                int maxMotores = 1;
+                if(novoRobot instanceof RCarry){
+                    maxMotores = 4;
                 }
-                } else if (novoRobot instanceof RClean) {
-                    ((RClean) novoRobot).adicionarMotor(motorInicial);
-                } else if (novoRobot instanceof RFactory) {
-                    ((RFactory) novoRobot).adicionarMotor(motorInicial);
-                } else if (novoRobot instanceof RInspect) {
-                    ((RInspect) novoRobot).adicionarMotor(motorInicial);
+                else if (novoRobot instanceof RClean || novoRobot instanceof RFactory) {
+                    maxMotores = 2;
+                }
+
+                int numMotores = 0;
+                do {
+                    System.out.println("Indique o numero de motores: ");
+                    try {
+                        numMotores = sc.nextInt();
+                        sc.nextLine();
+
+                    } catch (java.util.InputMismatchException e){
+                        System.out.println("Numero invalido. Tente novamente.");
+                        sc.nextLine();
+                        numMotores = 0;
+                    }
+
+                } while(numMotores < 1 || numMotores > maxMotores);
+
+                Motor motorModelo= new Motor(potenciaMotor);
+                for(int i = 0; i < numMotores; i++){
+                    if (novoRobot instanceof RCarry){
+                            ((RCarry) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                        } else if (novoRobot instanceof RClean) {
+                            ((RClean) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                        } else if (novoRobot instanceof RFactory) {
+                            ((RFactory) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                        } else if (novoRobot instanceof RInspect) {
+                            ((RInspect) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                        }
                 }
 
                 try {

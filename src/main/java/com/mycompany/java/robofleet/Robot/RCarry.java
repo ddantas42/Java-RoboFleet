@@ -12,7 +12,7 @@ public class RCarry extends Robot
         this.capacidadeCarga = capacidadeCarga;
         this.temHolofote = temHolofote;
 
-        this.adicionarMotor(new Motor(50));
+
     }
 
     public void adicionarMotor(Motor m)
