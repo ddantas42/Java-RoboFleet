@@ -15,7 +15,7 @@ public abstract class Robot
     protected Zona zona;
     protected Bateria bateria;
     protected List<Motor> motores;
-    protected List<Tecnico> equipa;
+    //protected List<Tecnico> equipa;
 
     public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria)
     {
@@ -32,7 +32,7 @@ public abstract class Robot
         this.zona = zona;
         this.bateria = bateria;
         this.motores = new ArrayList<>();
-        this.equipa = new ArrayList<>();
+        //this.equipa = new ArrayList<>();
     }
 
     public void adicionarMotor(Motor m)
@@ -40,6 +40,7 @@ public abstract class Robot
         this.motores.add(m);
     }
 
+    /*
     public void associarTecnico(Tecnico t)
     {
         if (!equipa.contains(t))
@@ -54,11 +55,11 @@ public abstract class Robot
     }
 
     public abstract boolean validarEquipa();
-
+*/
     public int getId()
     {
         return id;
-    }
+    } 
 
     public String getNome()
     {
@@ -69,6 +70,31 @@ public abstract class Robot
     {
         return zona;
     }
+
+    public void setZona(Zona zona){
+        this.zona = zona;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
+    public void setMarca(String marca){
+        this.marca = marca;
+    }
+
+    public void setModelo(String modelo){
+        this.modelo = modelo;
+    }
+
+    public String getMarca(){
+        return marca;
+    }
+
+    public String getModelo(){
+        return modelo;
+    }
+
 
     @Override
     public String toString()

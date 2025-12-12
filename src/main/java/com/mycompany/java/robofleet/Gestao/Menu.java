@@ -226,7 +226,10 @@ public class Menu {
                     System.out.println("Tem luz auxiliar? (s/n): ");
                     boolean luz = sc.nextLine().equalsIgnoreCase("s");
 
-                    novoRobot = new RClean(nome, marca, modelo, ano, zonaSelecionada, bateria, modo, luz);
+                    System.out.println("Tem succao (s/n): ");
+                    boolean succao = sc.nextLine().equalsIgnoreCase("s");
+
+                    novoRobot = new RClean(nome, marca, modelo, ano, zonaSelecionada, bateria, succao, luz);
                     break;
                 case 3:
                     System.out.println("Numero de bracos roboticos: ");
@@ -268,7 +271,7 @@ public class Menu {
 
                 } while(numMotores < 1 || numMotores > maxMotores);
 
-                Motor motorModelo= new Motor(potenciaMotor);
+                Motor motorModelo = new Motor(potenciaMotor);
                 for(int i = 0; i < numMotores; i++){
                     if (novoRobot instanceof RCarry){
                             ((RCarry) novoRobot).adicionarMotor(new Motor(potenciaMotor));
