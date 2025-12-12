@@ -103,7 +103,32 @@ public class Menu {
 
     // Submenu Complexo
     private void menuComplexo() {
-        System.out.println("\nPor implementar\n");
+
+        int opcao;
+        do{
+            System.out.println("\nGestao do Complexo");
+            System.out.println("(1) Consultar estado do complexo");
+            System.out.println("(2) Localizacao robots");
+            System.out.println("(3) Estado robots");
+            System.out.println("(4) Ativar robot");
+            System.out.println("(5) Definicao de zonas");
+            System.out.println("(0) Voltar ao menu principal");
+            System.out.println("Opcao: ");
+
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch(opcao){
+                case 1: ; break;
+                case 2: ; break;
+                case 3: ; break;
+                case 4: ; break;
+                case 5: ; break;
+                case 0: System.out.println("A regressar ao menu principal"); break;
+                default: System.out.println("Opcao invalida!");
+            }
+        }while(opcao != 0);
+
     }
 
     // Submenu Radar
