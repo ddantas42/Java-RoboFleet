@@ -166,6 +166,17 @@ public class Menu {
         }
         sc.nextLine();
 
+        System.out.println("Indique a potência do motor (W): "); // Pedir 1 motor inicial
+        int potenciaMotor;
+        try{
+            potenciaMotor = sc.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Potência do motor invalida. Acao cancelada");
+            sc.nextLine();
+            return;
+        }
+        sc.nextLine();
+
         // criamos a bateria com a capacidade definida pelo utilizador e a autonomia é depois calculada
         Bateria bateria = new Bateria(cap, 100);
 
@@ -234,6 +245,19 @@ public class Menu {
             }
 
             if (novoRobot != null){
+                Motor motorInicial = new Motor(potenciaMotor);
+
+                if (novoRobot instanceof RCarry){
+                    ((RCarry) novoRobot).adicionarMotor(motorInicial);
+                }
+                } else if (novoRobot instanceof RClean) {
+                    ((RClean) novoRobot).adicionarMotor(motorInicial);
+                } else if (novoRobot instanceof RFactory) {
+                    ((RFactory) novoRobot).adicionarMotor(motorInicial);
+                } else if (novoRobot instanceof RInspect) {
+                    ((RInspect) novoRobot).adicionarMotor(motorInicial);
+                }
+
                 try {
                     centro.adicionarRobot(novoRobot);
                     System.out.println("Robot criado.");
