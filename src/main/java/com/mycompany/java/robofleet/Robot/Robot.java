@@ -15,13 +15,13 @@ public abstract class Robot
     protected Zona zona;
     protected Bateria bateria;
     protected List<Motor> motores;
+    protected List<Tecnico> equipa;
 
     public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria)
     {
-
-        if (nome == null)
+        if (nome == null || nome.isEmpty())
         {
-            throw new IllegalArgumentException("Nome nao pode ser nulo");
+            throw new IllegalArgumentException("Nome inválido");
         }
 
         this.id = contadorIds++;
@@ -32,61 +32,25 @@ public abstract class Robot
         this.zona = zona;
         this.bateria = bateria;
         this.motores = new ArrayList<>();
+        this.equipa = new ArrayList<>();
     }
 
-    public static int getContadorIds()
+    public void adicionarMotor(Motor m)
     {
-        return contadorIds;
+        this.motores.add(m);
     }
 
-    public String getMarca()
+    public void associarTecnico(Tecnico t)
     {
-        return marca;
+        if (!equipa.contains(t))
+        {
+            equipa.add(t);
+        }
     }
 
-    public void setMarca(String marca)
+    public void desassociarTecnico(Tecnico t)
     {
-        this.marca = marca;
-    }
-
-    public String getModelo()
-    {
-        return modelo;
-    }
-
-    public void setModelo(String modelo)
-    {
-        this.modelo = modelo;
-    }
-
-    public int getAnoFabrico()
-    {
-        return anoFabrico;
-    }
-
-    public void setAnoFabrico(int anoFabrico)
-    {
-        this.anoFabrico = anoFabrico;
-    }
-
-    public Bateria getBateria()
-    {
-        return bateria;
-    }
-
-    public void setBateria(Bateria bateria)
-    {
-        this.bateria = bateria;
-    }
-
-    public List<Motor> getMotores()
-    {
-        return motores;
-    }
-
-    public void setMotores(List<Motor> motores)
-    {
-        this.motores = motores;
+        equipa.remove(t);
     }
 
     public abstract boolean validarEquipa();
@@ -101,42 +65,14 @@ public abstract class Robot
         return nome;
     }
 
-    public void setNome(String nome){
-        this.nome = nome;
-    }
-
     public Zona getZona()
     {
         return zona;
     }
 
-    public void setZona(Zona zona){
-        this.zona = zona;
-    }
-
-    public double getConsumoTotal(){
-        double consumoTotal = 0;
-        for(Motor m : motores){
-            consumoTotal += m.getPotencia();
-        }
-        return consumoTotal;
-    }
-
-    public String calcularAutonomia(){
-        double consumo = getConsumoTotal();
-
-        if(consumo == 0){
-            return "Infinito (sem consumo)";
-        }
-
-        double autonomia = bateria.getCapacidade() / consumo;
-
-        return String.format("%.2f horas", autonomia);
-    }
-
     @Override
     public String toString()
     {
-        return "ID: " + id + " | " + nome + " | " + zona + " | Autonomia: " + calcularAutonomia();
+        return "ID: " + id + " | " + nome + " | Zona: " + zona;
     }
 }

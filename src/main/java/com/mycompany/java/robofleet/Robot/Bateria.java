@@ -11,28 +11,6 @@ public class Bateria
         this.autonomia = autonomia;
     }
 
-    public int getCapacidade()
-    {
-        return capacidade;
-    }
-
-    public void setCapacidade(int capacidade)
-    {
-        this.capacidade = capacidade;
-    }
-
-    public int getAutonomia()
-    {
-        return autonomia;
-    }
-
-    public void setAutonomia(int autonomia)
-    {
-        this.autonomia = autonomia;
-    }
-    
     @Override
-    public String toString() {
-        return "Bateria: " + capacidade + "Ah, " + autonomia + "h";
-    }
+    public String toString() { return capacidade + "Ah (" + autonomia + "h)"; }
 }
