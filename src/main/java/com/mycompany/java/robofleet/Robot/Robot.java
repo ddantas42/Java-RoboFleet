@@ -95,10 +95,35 @@ public abstract class Robot
         return modelo;
     }
 
+    public List<Motor> getMotores() {
+        return motores;
+    }
+    
+    public double getConsumoTotal() {
+        double consumoTotal = 0;
+        for (Motor m : motores) {
+            consumoTotal += m.getPotencia();
+        }
+        return consumoTotal;
+    }
+
+    public String calcularAutonomia() {
+        double consumo = getConsumoTotal();
+        
+        if (consumo == 0) {
+            return "Infinito (Sem consumo)";
+        }
+        
+        
+        double autonomia = bateria.getCapacidade() / consumo; 
+        
+        // Formata para 2 casas decimais
+        return String.format("%.2f horas", autonomia);
+    }
 
     @Override
     public String toString()
     {
-        return "ID: " + id + " | " + nome + " | Zona: " + zona;
+        return "ID: " + id + " | " + nome + " | Zona: " + zona + " | Autonomia: " + calcularAutonomia();
     }
 }

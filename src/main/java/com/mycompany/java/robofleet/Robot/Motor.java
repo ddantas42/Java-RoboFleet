@@ -13,6 +13,7 @@ public class Motor
     { 
         return potencia; 
     }
+    
 
     @Override
     public String toString() { return "Motor: " + potencia + "W"; }

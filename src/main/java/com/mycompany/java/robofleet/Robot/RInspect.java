@@ -22,10 +22,10 @@ public class RInspect extends Robot
         }
         super.adicionarMotor(m);
     }
-
+/* 
     @Override
     public boolean validarEquipa()
     {
         return equipa.size() >= 1 && equipa.size() <= 2;
-    }
+    }*/
 }

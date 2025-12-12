@@ -12,7 +12,7 @@ public class RClean extends Robot
         this.sistemaSuccao = succao;
         this.luzInspecao = luz;
     }
-
+/* 
     @Override
     public boolean validarEquipa()
     {
@@ -21,5 +21,5 @@ public class RClean extends Robot
             return false;
         }
         return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
-    }
+    }*/
 }

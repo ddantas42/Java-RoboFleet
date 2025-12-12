@@ -11,6 +11,10 @@ public class Bateria
         this.autonomia = autonomia;
     }
 
+    public int getCapacidade(){
+        return capacidade;
+    }
+
     @Override
     public String toString() { return capacidade + "Ah (" + autonomia + "h)"; }
 }

@@ -15,7 +15,7 @@ public class RFactory extends Robot
         this.numBracos = bracos;
         this.orientacaoLaser = true;
     }
-
+/* 
     @Override
     public boolean validarEquipa()
     {
@@ -24,5 +24,5 @@ public class RFactory extends Robot
             return false;
         }
         return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.ROBOTICA));
-    }
+    }*/
 }

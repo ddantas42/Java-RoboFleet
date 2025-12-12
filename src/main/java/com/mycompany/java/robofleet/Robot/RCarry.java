@@ -18,11 +18,12 @@ public class RCarry extends Robot
     {
         if (motores.size() >= 4)
         {
-            throw new IllegalStateException("R-Carry máx 4 motores");
+            throw new IllegalStateException("R-Carry max 4 motores");
         }
         super.adicionarMotor(m);
     }
 
+    /* 
     @Override
     public boolean validarEquipa()
     {
@@ -32,4 +33,5 @@ public class RCarry extends Robot
         }
         return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
     }
+        */
 }
