@@ -1,13 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.java.robofleet.Robot;
 
-/**
- *
- * @author migue
- */
-public class RClean {
-    
+public class RClean extends Robot
+{
+
+    private boolean sistemaSuccao;
+    private boolean luzInspecao;
+
+    public RClean(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat, boolean succao, boolean luz)
+    {
+        super(nome, marca, modelo, ano, zona, bat);
+        this.sistemaSuccao = succao;
+        this.luzInspecao = luz;
+    }
+/* 
+    @Override
+    public boolean validarEquipa()
+    {
+        if (equipa.size() < 1 || equipa.size() > 2)
+        {
+            return false;
+        }
+        return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
+    }*/
 }

@@ -1,21 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.java.robofleet.Centro;
 import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.*;
 import com.mycompany.java.robofleet.Centro.Tecnico;
 
-/**
- *
- * @author migue
- */
+import java.util.ArrayList;
+import java.util.List;
+import com.mycompany.java.robofleet.Robot.*;
+
 public class CentroDeComando {
+	
 	private ArrayList<Tecnico> Tecnicos;
 	private ArrayList<Robot> Robots;
+	private static int id = 1;
+	private int Ordens;
 
 	public CentroDeComando() {
+		this.Ordens = 0;
+		this.id = id++;
 		this.Tecnicos = new ArrayList<Tecnico>();
 		this.Robots = new ArrayList<Robot>();
 	}
@@ -26,8 +27,14 @@ public class CentroDeComando {
 		this.Tecnicos.add(tecnico);
 	}
 
-	public void remover(Tecnico tecnico) {
-		this.Tecnicos.remove(tecnico);
+	public void remover(String nomeTecnico) {
+		// Todo procurar tecnico pelo nome
+		// this.Tecnicos.remove(tecnico);
+	}
+
+		public void remover(int idTecnico) {
+		// Todo procurar tecnico pelo id
+		// this.Tecnicos.remove(tecnico);
 	}
 
 	public void listTecnicos() {
@@ -41,8 +48,12 @@ public class CentroDeComando {
 		this.Robots.add(robot);
 	}
 
-	public void remover(Robot robot) {
-		this.Robots.remove(robot);
+	public boolean remover(int idRobot) {
+		Robot r = this.buscarRobot(idRobot);
+		if (r != null) {
+			return this.Robots.remove(r);
+		}
+		return true
 	}
 
 	public void listRobots() {
@@ -51,13 +62,30 @@ public class CentroDeComando {
 		}
 	}
 
+	public Robot buscarRobot(int idRobot){
+		for (Robot r : frota){
+			if(r.getId() == idRobot){
+				return r;
+			}
+		}
+		return null;
+	}
+
 	public void activateAllRobots() {
 		for (Robot robot : this.Robots) {
 			// TODO robot.activate(); Eventually!
 		}
 	}
 
-	public ArrayList<Tecnico> getTecnicos() { return Tecnicos.copy(); }
-	public ArrayList<Robot> getRobots() { return Robots.copy(); }
+	private void incrementarOrdens() {
+		this.Ordens++;
+	}
+
+//! -------------------------------- Getters ------------------------------
+
+	public ArrayList<Tecnico> getTecnicos() { return this.Tecnicos; }
+	public ArrayList<Robot> getRobots() { return this.Robots; }
+	public int getOrdens() { return this.Ordens; }
+	public int getId() { return this.id; }
 	 
 }
