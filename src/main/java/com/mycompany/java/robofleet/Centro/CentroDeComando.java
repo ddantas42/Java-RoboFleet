@@ -22,11 +22,11 @@ public class CentroDeComando {
 
 //! ------------------------------- Tecnicos ------------------------------
 
-	public void register(Tecnico tecnico) {
+	public void registar(Tecnico tecnico) {
 		this.Tecnicos.add(tecnico);
 	}
 
-	public void remove(Tecnico tecnico) {
+	public void remover(Tecnico tecnico) {
 		this.Tecnicos.remove(tecnico);
 	}
 
@@ -37,11 +37,11 @@ public class CentroDeComando {
 	}
 
 //! -------------------------------- Robots -------------------------------
-	public void register(Robot robot) {
+	public void registar(Robot robot) {
 		this.Robots.add(robot);
 	}
 
-	public void remove(Robot robot) {
+	public void remover(Robot robot) {
 		this.Robots.remove(robot);
 	}
 
@@ -57,7 +57,7 @@ public class CentroDeComando {
 		}
 	}
 
-	public ArrayList<Tecnico> getTecnicos() { return Tecnicos; }
-	public ArrayList<Robot> getRobots() { return Robots; }
+	public ArrayList<Tecnico> getTecnicos() { return Tecnicos.copy(); }
+	public ArrayList<Robot> getRobots() { return Robots.copy(); }
 	 
 }

@@ -18,14 +18,6 @@ public class JavaRoboFleet {
 
     public static void main(String[] args) {
 
-		int ola = 4;
-        
-		CentroDeComando centro = new CentroDeComando();
-		Robot robot = new Robot();
-		Menu menu = new Menu(ola);
-
-
-
 		System.out.println("Bem-vindo ao RoboFleet!");
 
     }
