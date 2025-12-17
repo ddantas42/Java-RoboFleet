@@ -27,6 +27,8 @@ public class CentroDeComando {
         this.frota.add(robot);
      }
 
+     
+
      public boolean removerRobot(int idRobot){
         Robot r = buscarRobot(idRobot);
 

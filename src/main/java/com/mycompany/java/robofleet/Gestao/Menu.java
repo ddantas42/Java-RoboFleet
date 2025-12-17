@@ -119,16 +119,34 @@ public class Menu {
             sc.nextLine();
 
             switch(opcao){
-                case 1: ; break;
-                case 2: ; break;
-                case 3: ; break;
-                case 4: ; break;
-                case 5: ; break;
+                case 1: /* centro de comando */; break;
+                case 2: localizacaoRobots(); break;
+                case 3: /* mostrar a bateria e autonomia de cada robo */; break; 
+                case 4: /* ativarRobot() */; break;
+                case 5: /* gerir zonas */; break;
                 case 0: System.out.println("A regressar ao menu principal"); break;
                 default: System.out.println("Opcao invalida!");
             }
         }while(opcao != 0);
 
+    }
+
+    private void localizacaoRobots(){
+        List<Robot> lista = centro.getFrota();
+
+        if(lista.isEmpty()){
+            System.out.println("Nenhum robot registado.");
+            return;
+        }
+
+        System.out.println("\nLocalizacao da frota: ");
+
+        for(Robot r : lista){
+            System.out.println("\nID: " + r.getId());
+            System.out.println("Nome: " + r.getNome());
+            System.out.println("Zona: " + r.getZona());
+
+        } 
     }
 
     // Submenu Radar
@@ -464,6 +482,10 @@ public class Menu {
             System.out.println("(" + (i + 1) + ") " + r.toString());
 
         } 
+    }
+
+    public CentroDeComando getCentro() {
+        return this.centro;
     }
 
 }
