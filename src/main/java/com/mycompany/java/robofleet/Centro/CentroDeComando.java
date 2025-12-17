@@ -8,7 +8,7 @@ import java.util.List;
 import com.mycompany.java.robofleet.Robot.*;
 
 public class CentroDeComando {
-	
+
 	private ArrayList<Tecnico> Tecnicos;
 	private ArrayList<Robot> Robots;
 	private static int id = 1;
@@ -23,16 +23,16 @@ public class CentroDeComando {
 
 //! ------------------------------- Tecnicos ------------------------------
 
-	public void registar(Tecnico tecnico) {
+	public void registarTecnico(Tecnico tecnico) {
 		this.Tecnicos.add(tecnico);
 	}
 
-	public void remover(String nomeTecnico) {
+	public void removerTecnicoPorNome(String nomeTecnico) {
 		// Todo procurar tecnico pelo nome
 		// this.Tecnicos.remove(tecnico);
 	}
 
-		public void remover(int idTecnico) {
+	public void removerTecnicoPorId(int idTecnico) {
 		// Todo procurar tecnico pelo id
 		// this.Tecnicos.remove(tecnico);
 	}
@@ -44,16 +44,16 @@ public class CentroDeComando {
 	}
 
 //! -------------------------------- Robots -------------------------------
-	public void registar(Robot robot) {
+	public void registarRobot(Robot robot) {
 		this.Robots.add(robot);
 	}
 
-	public boolean remover(int idRobot) {
+	public boolean removerRobotPorId(int idRobot) {
 		Robot r = this.buscarRobot(idRobot);
 		if (r != null) {
 			return this.Robots.remove(r);
 		}
-		return true
+		return true;
 	}
 
 	public void listRobots() {
@@ -63,7 +63,7 @@ public class CentroDeComando {
 	}
 
 	public Robot buscarRobot(int idRobot){
-		for (Robot r : frota){
+		for (Robot r : this.Robots){
 			if(r.getId() == idRobot){
 				return r;
 			}

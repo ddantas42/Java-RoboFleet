@@ -310,7 +310,7 @@ public class Menu {
                 }
 
                 try {
-                    centro.adicionarRobot(novoRobot);
+                    centro.registarRobot(novoRobot);
                     System.out.println("Robot criado.");
                 } catch (IllegalArgumentException e){
                     System.out.println("Erro: " + e.getMessage());
@@ -328,7 +328,7 @@ public class Menu {
     private void editarRobot() { 
         listarRobots();
 
-        if(centro.getFrota().isEmpty()) return;
+        if(centro.getRobots().isEmpty()) return;
 
         System.out.println("ID do robot a editar: ");
         int id;
@@ -370,11 +370,6 @@ public class Menu {
                         System.out.println("Novo nome (Atual: " + r.getNome() + "): ");
                         String novoNome = sc.nextLine();
                         
-                        // nome deve ser unico
-                        if(!r.getNome().equalsIgnoreCase(novoNome) && !centro.isNomeUnico(novoNome)){
-                            throw new IllegalArgumentException("Nome " + novoNome + " ja esta a ser utilizado.");
-                        }
-
                         r.setNome(novoNome);
                         System.out.println("Nome alterado com sucesso.");
                         break;
@@ -441,7 +436,7 @@ public class Menu {
         int id = sc.nextInt();
         sc.nextLine();
         
-        if (centro.removerRobot(id)){
+        if (centro.removerRobotPorId(id)){
             System.out.println("Robot removido com sucesso.");
         } else {
             System.out.println("Erro: Robot nao encontrado.");
@@ -450,7 +445,7 @@ public class Menu {
 
     // mostra a lista de robots
     private void listarRobots() { 
-        List<Robot> lista = centro.getFrota();
+        List<Robot> lista = centro.getRobots();
 
         if(lista.isEmpty()){
             System.out.println("Nenhum robot registado.");
