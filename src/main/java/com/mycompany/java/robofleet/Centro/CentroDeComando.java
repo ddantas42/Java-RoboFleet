@@ -1,18 +1,15 @@
 package com.mycompany.java.robofleet.Centro;
+
 import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.*;
 import com.mycompany.java.robofleet.Centro.Tecnico;
 
-import java.util.ArrayList;
-import java.util.List;
-import com.mycompany.java.robofleet.Robot.*;
-
 public class CentroDeComando {
 
-	private ArrayList<Tecnico> Tecnicos;
-	private ArrayList<Robot> Robots;
-	private static int id = 1;
-	private int Ordens;
+	private ArrayList<Tecnico>	Tecnicos;
+	private ArrayList<Robot>	Robots;
+	private static int			id = 1;
+	private int 				Ordens;
 
 	public CentroDeComando() {
 		this.Ordens = 0;
