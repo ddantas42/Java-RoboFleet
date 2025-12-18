@@ -21,7 +21,23 @@ public class CentroDeComando {
 //! ------------------------------- Tecnicos ------------------------------
 
 	public void registarTecnico(Tecnico tecnico) {
+
+		// Ver se tecnico tem mais de 30 anos
+		if (tecnico.getIdade() < 30) {
+			throw new IllegalArgumentException("Tecnico deve ter pelo menos 30 anos.");
+		}
+
+		// Garantir que o seu ID, nome ou NIF nao existe ja
+		for (Tecnico t : this.Tecnicos) {
+			if (t.mesmoTecnico(tecnico) == true) {
+				throw new IllegalArgumentException("Tecnico ja existente.");
+			}
+		}
+
+		// Po-lo por ordem alfabetica do nome da lista
 		this.Tecnicos.add(tecnico);
+		this.Tecnicos.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+
 	}
 
 	public void removerTecnicoPorNome(String nomeTecnico) {
@@ -34,11 +50,14 @@ public class CentroDeComando {
 		// this.Tecnicos.remove(tecnico);
 	}
 
-	public void listTecnicos() {
+	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados
+	public void listarTecnicos() {
 		for (Tecnico tecnico : this.Tecnicos) {
 			System.out.println(tecnico.getName());
 		}
 	}
+
+	
 
 //! -------------------------------- Robots -------------------------------
 	public void registarRobot(Robot robot) {

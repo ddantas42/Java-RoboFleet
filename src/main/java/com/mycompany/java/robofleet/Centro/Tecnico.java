@@ -45,4 +45,8 @@ public class Tecnico {
 		return dataNascimento;
 	}
 
+	public boolean mesmoTecnico(Tecnico t) {
+		return (this.id == t.id || this.nif == t.nif || this.name.equals(t.name));
+	}
+
 }
