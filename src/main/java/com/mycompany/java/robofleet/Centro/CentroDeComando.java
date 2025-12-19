@@ -42,12 +42,26 @@ public class CentroDeComando {
 
 	public void removerTecnicoPorNome(String nomeTecnico) {
 		// Todo procurar tecnico pelo nome
-		// this.Tecnicos.remove(tecnico);
+		for (Tecnico t : this.Tecnicos) {
+			if (t.getName().equalsIgnoreCase(nomeTecnico)) {
+				this.Tecnicos.remove(t);
+				return;
+			}
+		}
+		throw new IllegalArgumentException("Tecnico nao encontrado.");
 	}
 
 	public void removerTecnicoPorId(int idTecnico) {
 		// Todo procurar tecnico pelo id
-		// this.Tecnicos.remove(tecnico);
+
+		for (Tecnico t : this.Tecnicos) {
+			if (t.getId() == idTecnico) {
+				this.Tecnicos.remove(t);
+				return;
+			}
+		}
+		throw new IllegalArgumentException("Tecnico nao encontrado.");
+
 	}
 
 	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados

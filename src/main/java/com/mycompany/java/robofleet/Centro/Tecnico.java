@@ -1,7 +1,6 @@
 package com.mycompany.java.robofleet.Centro;
 
 import com.mycompany.java.robofleet.Centro.EspecialidadeTecnico;
-
 import java.time.LocalDate;
 
 public class Tecnico {
