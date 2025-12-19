@@ -143,8 +143,22 @@ public class Menu {
 
     // Métodos de ações - Tecnicos
     private void criarTecnico() {
-        System.out.println("Criar tecnico..."); 
+        System.out.println("Introduza o nome do tecnico: ");
+        String nomeTecnico = sc.nextLine();
+        System.out.println("Introduza a idade do tecnico: ");
+        int idade = sc.nextInt();
+
+        Tecnico novoTecnico = new Tecnico(nomeTecnico);
+
+        try{
+            centro.registarTecnico(novoTecnico);
+            System.out.println("Tecnico '" + nomeTecnico + "' registado com sucesso.");
+        } catch (Exception e){
+            System.out.println("Erro ao regitar tecnico: " + e.getMessage());
+        }
+        centro.registarTecnico(novoTecnico);
     }
+
     private void editarTecnico() { 
         System.out.println("Editar tecnico..."); 
     }
@@ -152,7 +166,17 @@ public class Menu {
         System.out.println("Remover tecnico..."); 
     }
     private void listarTecnicos() { 
-        System.out.println("Listar tecnicos..."); 
+        ArrayList<Tecnico> lista = centro.getTecnicos();
+
+        if(lista.isEmpty()){
+            System.out.println("A lista de tecnicos esta vazia.");
+
+        } else {
+            System.out.println("\nLista de tecnicos:");
+            for(Tecnico t : lista){
+                System.out.println("- " + t.getName()); // quando implementado, adicionar id e idade
+            }
+        }
     }
     private void associarTecnicoRobot() { 
         System.out.println("Associar/desassociar tecnico a robot..."); 
