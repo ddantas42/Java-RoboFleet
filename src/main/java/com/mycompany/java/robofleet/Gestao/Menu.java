@@ -2,12 +2,20 @@ package com.mycompany.java.robofleet.Gestao;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.Period;
 
 import com.mycompany.java.robofleet.Centro.*;
 import com.mycompany.java.robofleet.Robot.*;
 
 public class Menu {
     private Scanner sc;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    LocalDate dataNascimento;
+
     private CentroDeComando centro;
 
     // construtor
@@ -99,6 +107,78 @@ public class Menu {
         }while(opcao != 0);
     }
 
+    // Métodos de ações - Tecnicos
+    private void criarTecnico() {
+        System.out.println("Introduza o nome do tecnico: ");
+        String nomeTecnico = sc.nextLine();
+        
+        dataNascimento = null; // reset variavel
+
+        while(dataNascimento == null){
+            System.out.println("Introduza a sua data de nascimento (dd/mm/yyyy): ");
+            String data = sc.nextLine();
+
+            try {
+                dataNascimento = LocalDate.parse(data, formatter);
+
+            } catch (DateTimeParseException e){
+                System.out.println("Data invalida.");
+            }
+        }
+
+        LocalDate hoje = LocalDate.now();
+        
+        int idade = Period.between(dataNascimento, hoje).getYears();
+
+        System.out.println("\nSelecione a especialidade:");
+        System.out.println("(1) Engenheiro de robotica");
+        System.out.println("(2) Manutencao");
+        System.out.println("(3) Sistemas");
+        System.out.println("Opcao: ");
+        int esp_opcao = sc.nextInt();
+        sc.nextLine();
+
+        if(esp_opcao == 1 && idade < 30){
+            System.out.println("Criacao cancelada. Engenheiros de robotica devem ter pelo menos 30 anos.");
+            return;
+        }
+
+        // se passar, criar o tecnico
+
+        Tecnico novoTecnico = new Tecnico(nomeTecnico);
+
+        try{
+            centro.registarTecnico(novoTecnico);
+            System.out.println("Tecnico '" + nomeTecnico + "' registado com sucesso.");
+        } catch (Exception e){
+            System.out.println("Erro ao regitar tecnico: " + e.getMessage());
+        }
+        centro.registarTecnico(novoTecnico);
+    }
+
+    private void editarTecnico() { 
+        System.out.println("Editar tecnico..."); 
+    }
+    private void removerTecnico() { 
+        System.out.println("Remover tecnico..."); 
+    }
+    private void listarTecnicos() { 
+        ArrayList<Tecnico> lista = centro.getTecnicos();
+
+        if(lista.isEmpty()){
+            System.out.println("A lista de tecnicos esta vazia.");
+
+        } else {
+            System.out.println("\nLista de tecnicos:");
+            for(Tecnico t : lista){
+                System.out.println("- " + t.getName()); // quando implementado, adicionar id e idade
+            }
+        }
+    }
+    private void associarTecnicoRobot() { 
+        System.out.println("Associar/desassociar tecnico a robot..."); 
+    }
+
 
 
     // Submenu Complexo
@@ -141,46 +221,6 @@ public class Menu {
         System.out.println("\nPor implementar\n");
     }
 
-    // Métodos de ações - Tecnicos
-    private void criarTecnico() {
-        System.out.println("Introduza o nome do tecnico: ");
-        String nomeTecnico = sc.nextLine();
-        System.out.println("Introduza a idade do tecnico: ");
-        int idade = sc.nextInt();
-
-        Tecnico novoTecnico = new Tecnico(nomeTecnico);
-
-        try{
-            centro.registarTecnico(novoTecnico);
-            System.out.println("Tecnico '" + nomeTecnico + "' registado com sucesso.");
-        } catch (Exception e){
-            System.out.println("Erro ao regitar tecnico: " + e.getMessage());
-        }
-        centro.registarTecnico(novoTecnico);
-    }
-
-    private void editarTecnico() { 
-        System.out.println("Editar tecnico..."); 
-    }
-    private void removerTecnico() { 
-        System.out.println("Remover tecnico..."); 
-    }
-    private void listarTecnicos() { 
-        ArrayList<Tecnico> lista = centro.getTecnicos();
-
-        if(lista.isEmpty()){
-            System.out.println("A lista de tecnicos esta vazia.");
-
-        } else {
-            System.out.println("\nLista de tecnicos:");
-            for(Tecnico t : lista){
-                System.out.println("- " + t.getName()); // quando implementado, adicionar id e idade
-            }
-        }
-    }
-    private void associarTecnicoRobot() { 
-        System.out.println("Associar/desassociar tecnico a robot..."); 
-    }
 
     // Métodos de ações - Robots
     private void criarRobot() { 
