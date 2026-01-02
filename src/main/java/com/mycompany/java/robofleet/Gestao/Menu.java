@@ -99,7 +99,7 @@ public class Menu {
                 case 1: criarTecnico(); break;
                 case 2: editarTecnico(); break;
                 case 3: removerTecnico(); break;
-                case 4: listarTecnicos(); break;
+                case 4: centro.listarTecnicos(); break;
                 case 5: associarTecnicoRobot(); break;
                 case 0: System.out.println("A regressar ao menu principal..."); break;
                 default: System.out.println("Opcao invalida!");
@@ -179,25 +179,27 @@ public class Menu {
         
     }
 
+    private void removerTecnico() {
+    System.out.print("ID do tecnico a remover: ");
+    int id;
+
+    try {
+        id = sc.nextInt();
+        sc.nextLine();
+        centro.removerTecnicoPorId(id);
+        System.out.println("Tecnico removido com sucesso.");
+    } catch (java.util.InputMismatchException e) {
+        System.out.println("Entrada invalida.");
+        sc.nextLine();
+    } catch (IllegalArgumentException e) {
+        System.out.println("Erro: " + e.getMessage());
+    }
+}
+
     private void editarTecnico() { 
         System.out.println("Editar tecnico..."); 
     }
-    private void removerTecnico() { 
-        System.out.println("Remover tecnico..."); 
-    }
-    private void listarTecnicos() { 
-        ArrayList<Tecnico> lista = centro.getTecnicos();
-
-        if(lista.isEmpty()){
-            System.out.println("A lista de tecnicos esta vazia.");
-
-        } else {
-            System.out.println("\nLista de tecnicos:");
-            for(Tecnico t : lista){
-                System.out.println("- " + t.getName()); // quando implementado, adicionar id e idade
-            }
-        }
-    }
+    
     private void associarTecnicoRobot() { 
         System.out.println("Associar/desassociar tecnico a robot..."); 
     }
