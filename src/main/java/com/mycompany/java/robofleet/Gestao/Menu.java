@@ -1,29 +1,182 @@
 package com.mycompany.java.robofleet.Gestao;
+
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.Period;
 
 import com.mycompany.java.robofleet.Centro.*;
 import com.mycompany.java.robofleet.Robot.*;
 
 public class Menu {
+
     private Scanner sc;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    LocalDate dataNascimento;
-
     private CentroDeComando centro;
 
-    // construtor
     public Menu(Scanner sc){
         this.sc = sc;
         this.centro = new CentroDeComando();
     }
-    
+
+    // ================= MENU PRINCIPAL =================
+    public void menuInicialString(){
+        int opcao;
+
+        do {
+            System.out.println("\nMenu Gestao\n");
+            System.out.println("(1) Gerir tecnicos");
+            System.out.println("(2) Gerir Robots");
+            System.out.println("(3) Gerir complexo");
+            System.out.println("(4) Utilizar radar");
+            System.out.println("(5) Exportar dados");
+            System.out.println("(0) Sair");
+            System.out.print("Opcao: ");
+            
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch(opcao) {
+                case 1:
+                    menuTecnicos();
+                    break;
+                case 2:
+                    menuRobots();
+                    break;
+                case 3:
+                    //menuComplexo();
+                    break;
+                case 4:
+                    //menuRadar();
+                    break;
+                case 5:
+                    //exportarDados();
+                    break;
+                case 0:
+                    System.out.println("A sair...");
+                    break;
+                default:
+                    System.out.println("Opcao invalida!");
+            }
+
+        } while(opcao != 0);
+    }
+
+    // ================= TECNICOS =================
+    private void menuTecnicos() {
+        int opcao;
+
+        do {
+            System.out.println("\nGestao de Tecnicos\n");
+            System.out.println("(1) Criar tecnico");
+            System.out.println("(2) Remover tecnico");
+            System.out.println("(3) Listar tecnicos");
+            System.out.println("(4) Editar tecnico");
+            System.out.println("(5) Associar/desassociar tecnico a robot");
+            System.out.println("(0) Voltar");
+            System.out.print("Opcao: ");
+
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch(opcao){
+                case 1:
+                    criarTecnico();
+                    break;
+                case 2:
+                    removerTecnico();
+                    break;
+                case 3:
+                    centro.listarTecnicos();
+                    break;
+                case 4:
+                    editarTecnico();
+                    break;
+                case 5:
+                    associarTecnicoRobot();
+                    break;
+                case 0:
+                    System.out.println("A voltar...");
+                    break;
+                default:
+                    System.out.println("Opcao invalida!");
+            }
+
+        } while(opcao != 0);
+    }
+
+    private void criarTecnico() {
+        try {
+            System.out.print("Nome: ");
+            String nome = sc.nextLine();
+
+            System.out.print("NIF: ");
+            int nif = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Data de nascimento (AAAA-MM-DD): ");
+            LocalDate dataNascimento = LocalDate.parse(sc.nextLine());
+
+            System.out.println("Especialidade:");
+            System.out.println("1 - Robotica");
+            System.out.println("2 - Manutencao");
+            System.out.println("3 - Sistemas");
+
+            int op = sc.nextInt();
+            sc.nextLine();
+
+            EspecialidadeTecnico esp;
+
+            switch(op){
+                case 1:
+                    esp = EspecialidadeTecnico.ROBOTICA;
+                    break;
+                case 2:
+                    esp = EspecialidadeTecnico.MANUTENCAO;
+                    break;
+                case 3:
+                    esp = EspecialidadeTecnico.SISTEMAS;
+                    break;
+                default:
+                    System.out.println("Opcao invalida.");
+                    return;
+            }
+
+            Tecnico t = new Tecnico(nome, nif, dataNascimento, esp);
+            centro.registarTecnico(t);
+
+            System.out.println("Tecnico criado com sucesso.");
+
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+            sc.nextLine();
+        }
+    }
+
+    private void removerTecnico() {
+        try {
+            System.out.print("ID do tecnico a remover: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            centro.removerTecnicoPorId(id);
+            System.out.println("Tecnico removido com sucesso.");
+
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+            sc.nextLine();
+        }
+    }
+
+    private void editarTecnico() {
+        System.out.println("Editar tecnico..."); 
+    }
+
+    private void associarTecnicoRobot() {
+        System.out.println("Associar/desassociar tecnico a robot..."); 
+    }
+
+    // ================= ROBOTS =================
     private void menuRobots() {
         int opcao;
         do {
@@ -39,215 +192,28 @@ public class Menu {
             sc.nextLine();
 
             switch(opcao){
-                case 1: criarRobot(); break;
-                case 2: editarRobot(); break;
-                case 3: removerRobot(); break;
-                case 4: listarRobots(); break;
-                case 0: System.out.println("A regressar ao menu principal."); break;
-                default: System.out.println("Opcao invalida!");
+                case 1:
+                    criarRobot();
+                    break;
+                case 2:
+                    //editarRobot();
+                    break;
+                case 3:
+                    removerRobot();
+                    break;
+                case 4:
+                    centro.listRobots();
+                    break;
+                case 0:
+                    System.out.println("A regressar ao menu principal.");
+                    break;
+                default:
+                    System.out.println("Opcao invalida!");
             }
 
         } while(opcao != 0);
     }
 
-
-    public void menuInicialString(){
-        int opcao;
-
-        do {
-            System.out.println("\nMenu Gestao\n");
-            System.out.println("(1) Gerir tecnicos"); // criar, editar, remover, listar, associar/desassociar
-            System.out.println("(2) Gerir Robots"); // criar, editar, remover, listar
-            System.out.println("(3) Gerir complexo");
-            System.out.println("(4) Utilizar radar");
-            System.out.println("(5) Exportar dados");
-            System.out.println("(0) Sair");
-            System.out.println("Opcao: ");
-            
-            opcao = sc.nextInt();
-            sc.nextLine(); // consume \n
-
-            switch(opcao) {
-                case 1: menuTecnicos(); break;
-                case 2: menuRobots(); break;
-                case 3: menuComplexo(); break;
-                case 4: menuRadar(); break;
-                case 5: exportarDados(); break;
-                case 0: System.out.println("A sair..."); break;
-                default: System.out.println("Opcao invalida!");
-            }
-
-        } while(opcao != 0);
-    }
-
-    private void menuTecnicos() {
-        int opcao;
-        do {
-            System.out.println("\nGestao de Tecnicos\n");
-            System.out.println("(1) Criar tecnico");
-            System.out.println("(2) Editar tecnico");
-            System.out.println("(3) Remover tecnico");
-            System.out.println("(4) Listar tecnicos");
-            System.out.println("(5) Associar/desassociar tecnico a robot");
-            System.out.println("(0) Voltar ao menu principal");
-            System.out.print("Opcao: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine();
-
-            switch(opcao){
-                case 1: criarTecnico(); break;
-                case 2: editarTecnico(); break;
-                case 3: removerTecnico(); break;
-                case 4: centro.listarTecnicos(); break;
-                case 5: associarTecnicoRobot(); break;
-                case 0: System.out.println("A regressar ao menu principal..."); break;
-                default: System.out.println("Opcao invalida!");
-            }
-        }while(opcao != 0);
-    }
-
-    // Métodos de ações - Tecnicos
-    private void criarTecnico() {
-        System.out.println("Introduza o nome do tecnico: ");
-        String nomeTecnico = sc.nextLine();
-        
-        dataNascimento = null; // reset variavel
-
-        while(dataNascimento == null){
-            System.out.println("Introduza a sua data de nascimento (dd/mm/yyyy): ");
-            String data = sc.nextLine();
-
-            try {
-                dataNascimento = LocalDate.parse(data, formatter);
-
-            } catch (DateTimeParseException e){
-                System.out.println("Data invalida.");
-            }
-        }
-
-        LocalDate hoje = LocalDate.now();
-        
-        int idade = Period.between(dataNascimento, hoje).getYears();
-
-        System.out.println("\nSelecione a especialidade:");
-        System.out.println("(1) Engenheiro de robotica");
-        System.out.println("(2) Manutencao");
-        System.out.println("(3) Sistemas");
-        System.out.println("Opcao: ");
-        int esp_opcao = sc.nextInt();
-        sc.nextLine();
-
-        if(esp_opcao == 1 && idade < 30){
-            System.out.println("Criacao cancelada. Engenheiros de robotica devem ter pelo menos 30 anos.");
-            return;
-        }
-
-        // se passar, criar o tecnico
-        System.out.println("Introduza o NIF do tecnico: ");
-        int nif;
-        try {
-            nif = sc.nextInt();
-            sc.nextLine();
-        } catch (java.util.InputMismatchException e) {
-            System.out.println("NIF invalido.");
-            sc.nextLine();
-            return;
-        }
-
-        EspecialidadeTecnico especialidade;
-
-        switch (esp_opcao) {
-            case 1 -> especialidade = EspecialidadeTecnico.ROBOTICA;
-            case 2 -> especialidade = EspecialidadeTecnico.MANUTENCAO;
-            case 3 -> especialidade = EspecialidadeTecnico.SISTEMAS;
-            default -> {
-                System.out.println("Especialidade inválida.");
-                return;
-            }
-}
-
-
-        Tecnico novoTecnico = new Tecnico(nomeTecnico, nif, dataNascimento, especialidade);
-
-        try{
-            centro.registarTecnico(novoTecnico);
-            System.out.println("Tecnico '" + nomeTecnico + "' registado com sucesso.");
-        } catch (Exception e){
-            System.out.println("Erro ao regitar tecnico: " + e.getMessage());
-        }
-        
-    }
-
-    private void removerTecnico() {
-    System.out.print("ID do tecnico a remover: ");
-    int id;
-
-    try {
-        id = sc.nextInt();
-        sc.nextLine();
-        centro.removerTecnicoPorId(id);
-        System.out.println("Tecnico removido com sucesso.");
-    } catch (java.util.InputMismatchException e) {
-        System.out.println("Entrada invalida.");
-        sc.nextLine();
-    } catch (IllegalArgumentException e) {
-        System.out.println("Erro: " + e.getMessage());
-    }
-}
-
-    private void editarTecnico() { 
-        System.out.println("Editar tecnico..."); 
-    }
-    
-    private void associarTecnicoRobot() { 
-        System.out.println("Associar/desassociar tecnico a robot..."); 
-    }
-
-
-
-    // Submenu Complexo
-    private void menuComplexo() {
-
-        int opcao;
-        do{
-            System.out.println("\nGestao do Complexo");
-            System.out.println("(1) Consultar estado do complexo");
-            System.out.println("(2) Localizacao robots");
-            System.out.println("(3) Estado robots");
-            System.out.println("(4) Ativar robot");
-            System.out.println("(5) Definicao de zonas");
-            System.out.println("(0) Voltar ao menu principal");
-            System.out.println("Opcao: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine();
-
-            switch(opcao){
-                case 1: ; break;
-                case 2: ; break;
-                case 3: ; break;
-                case 4: ; break;
-                case 5: ; break;
-                case 0: System.out.println("A regressar ao menu principal"); break;
-                default: System.out.println("Opcao invalida!");
-            }
-        }while(opcao != 0);
-
-    }
-
-    // Submenu Radar
-    private void menuRadar() {
-        System.out.println("\nPor implementar\n");
-    }
-
-    // Submenu Exportar Dados
-    private void exportarDados() {
-        System.out.println("\nPor implementar\n");
-    }
-
-
-    // Métodos de ações - Robots
     private void criarRobot() { 
         System.out.println("Indique o nome do Robot: ");
         String nome = sc.nextLine();
@@ -260,8 +226,8 @@ public class Menu {
 
         System.out.println("Indique o ano de fabrico: ");
         int ano;
-        try {
-            ano = sc.nextInt();
+        try { 
+            ano = sc.nextInt(); 
         } catch (java.util.InputMismatchException e){
             System.out.println("Ano de fabrico invalido. Acao cancelada");
             sc.nextLine();
@@ -271,8 +237,8 @@ public class Menu {
 
         System.out.println("Indique a capacidade da bateria: ");
         int cap;
-        try{
-            cap = sc.nextInt();
+        try{ 
+            cap = sc.nextInt(); 
         } catch (java.util.InputMismatchException e) {
             System.out.println("Capacidade para a bateria invalido. Acao cancelada");
             sc.nextLine();
@@ -280,7 +246,7 @@ public class Menu {
         }
         sc.nextLine();
 
-        System.out.println("Indique a potência do motor (W): "); // Pedir 1 motor inicial
+        System.out.println("Indique a potência do motor (W): ");
         int potenciaMotor;
         try{
             potenciaMotor = sc.nextInt();
@@ -291,7 +257,6 @@ public class Menu {
         }
         sc.nextLine();
 
-        // criamos a bateria com a capacidade definida pelo utilizador e a autonomia é depois calculada
         Bateria bateria = new Bateria(cap, 100);
 
         System.out.println("Indique a zona de operacao:");
@@ -310,7 +275,6 @@ public class Menu {
             System.out.println("Zona invalida. A usar ARMAZEM por defeito.");
         }
 
-        // menu tipo de robot
         System.out.println("\nQual o tipo de Robot?");
         System.out.println("(1) R-Carry (Transporte)");
         System.out.println("(2) R-Clean (Limpeza)");
@@ -339,7 +303,6 @@ public class Menu {
                     String modo = sc.nextLine();
                     System.out.println("Tem luz auxiliar? (s/n): ");
                     boolean luz = sc.nextLine().equalsIgnoreCase("s");
-
                     System.out.println("Tem succao (s/n): ");
                     boolean succao = sc.nextLine().equalsIgnoreCase("s");
 
@@ -349,10 +312,8 @@ public class Menu {
                     System.out.println("Numero de bracos roboticos: ");
                     int bracos = sc.nextInt();
                     sc.nextLine();
-
                     novoRobot = new RFactory(nome, marca, modelo, ano, zonaSelecionada, bateria, bracos);
                     break;
-
                 case 4:
                     novoRobot = new RInspect(nome, marca, modelo, ano, zonaSelecionada, bateria);
                     break;
@@ -361,194 +322,64 @@ public class Menu {
                     return;
             }
 
-            if (novoRobot != null){
-                int maxMotores = 1;
-                if(novoRobot instanceof RCarry){
-                    maxMotores = 4;
-                }
-                else if (novoRobot instanceof RClean || novoRobot instanceof RFactory) {
-                    maxMotores = 2;
-                }
+            // Adicionar motores
+            int maxMotores = 1;
+            if(novoRobot instanceof RCarry) maxMotores = 4;
+            else if (novoRobot instanceof RClean || novoRobot instanceof RFactory) maxMotores = 2;
 
-                int numMotores = 0;
-                do {
-                    System.out.println("Indique o numero de motores: ");
-                    try {
-                        numMotores = sc.nextInt();
-                        sc.nextLine();
-
-                    } catch (java.util.InputMismatchException e){
-                        System.out.println("Numero invalido. Tente novamente.");
-                        sc.nextLine();
-                        numMotores = 0;
-                    }
-
-                } while(numMotores < 1 || numMotores > maxMotores);
-
-                Motor motorModelo = new Motor(potenciaMotor);
-                for(int i = 0; i < numMotores; i++){
-                    if (novoRobot instanceof RCarry){
-                            ((RCarry) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-                        } else if (novoRobot instanceof RClean) {
-                            ((RClean) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-                        } else if (novoRobot instanceof RFactory) {
-                            ((RFactory) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-                        } else if (novoRobot instanceof RInspect) {
-                            ((RInspect) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-                        }
-                }
-
+            int numMotores = 0;
+            do {
+                System.out.println("Indique o numero de motores: ");
                 try {
-                    centro.registarRobot(novoRobot);
-                    System.out.println("Robot criado.");
-                } catch (IllegalArgumentException e){
-                    System.out.println("Erro: " + e.getMessage());
+                    numMotores = sc.nextInt();
+                    sc.nextLine();
+                } catch (java.util.InputMismatchException e){
+                    System.out.println("Numero invalido. Tente novamente.");
+                    sc.nextLine();
+                    numMotores = 0;
+                }
+            } while(numMotores < 1 || numMotores > maxMotores);
+
+            for(int i = 0; i < numMotores; i++){
+                if (novoRobot instanceof RCarry){
+                        ((RCarry) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                } else if (novoRobot instanceof RClean) {
+                        ((RClean) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                } else if (novoRobot instanceof RFactory) {
+                        ((RFactory) novoRobot).adicionarMotor(new Motor(potenciaMotor));
+                } else if (novoRobot instanceof RInspect) {
+                        ((RInspect) novoRobot).adicionarMotor(new Motor(potenciaMotor));
                 }
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println("\nErro ao criar robot" + e.getMessage());
 
+            centro.registarRobot(novoRobot);
+            System.out.println("Robot criado com sucesso.");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao criar robot: " + e.getMessage());
         } catch(Exception e){
-            System.out.println("\nErro inesperado: " + e.getMessage());
+            System.out.println("Erro inesperado: " + e.getMessage());
         }
     }
-        
-    // edita um robot
-    private void editarRobot() { 
-        listarRobots();
 
-        if(centro.getRobots().isEmpty()) return;
-
-        System.out.println("ID do robot a editar: ");
-        int id;
+    private void removerRobot() {
         try {
-            id = sc.nextInt();
-
-        } catch(java.util.InputMismatchException e){
-            System.out.println("Entrada invalida. Acao cancelada.");
-            return;
-        }
-        sc.nextLine();
-        
-        Robot r = centro.buscarRobot(id);
-
-        if(r == null){
-            System.out.println("Robot nao encontrado.");
-            return;
-        }
-
-        // logica edicao
-        int op;
-        do {
-            System.out.println("\n--- Editar: " + r.getNome() + " (ID: " + r.getId() + ") ---");
-            System.out.println("(1) Editar Nome");
-            System.out.println("(2) Editar Marca");
-            System.out.println("(3) Editar Modelo");
-            System.out.println("(4) Editar Zona");
-            System.out.println("(0) Concluir edicao");
-            System.out.print("Opcao: ");
-
-            op = sc.nextInt();
+            System.out.print("ID do robot a remover: ");
+            int idRobot = sc.nextInt();
             sc.nextLine();
 
-            try {
+            boolean removido = centro.removerRobotPorId(idRobot);
 
-                switch (op){
-
-                    case 1: 
-                        System.out.println("Novo nome (Atual: " + r.getNome() + "): ");
-                        String novoNome = sc.nextLine();
-                        
-                        r.setNome(novoNome);
-                        System.out.println("Nome alterado com sucesso.");
-                        break;
-
-                    case 2:
-                        System.out.println("Editar marca (Atual: " + r.getMarca() + "): ");
-                        String novaMarca = sc.nextLine();
-
-                        r.setMarca(novaMarca);
-                        System.out.println("Marca alterada!");
-                        break;
-
-                    case 3:
-                        System.out.println("Editar modelo (Atual: " + r.getModelo() + "): ");
-                        String novoModelo = sc.nextLine();
-
-                        r.setModelo(novoModelo);
-                        System.out.println("Modelo alterado!");
-                        break;
-
-                    case 4:
-                        System.out.println("Editar zona (Atual: " + r.getZona() + "): ");
-                        Zona[] zonasDisponiveis = Zona.values();
-                        for(int i = 0; i < zonasDisponiveis.length; i++){
-                            System.out.println("(" + (i + 1) + ") " + zonasDisponiveis[i]);
-                        }
-                        System.out.println("Opcao de zona: ");
-                        int indiceZona = sc.nextInt() - 1;
-                        sc.nextLine();
-
-                        Zona zonaSelecionada = Zona.ARMAZEM;
-                        if(indiceZona >= 0 && indiceZona < zonasDisponiveis.length){
-                            zonaSelecionada = zonasDisponiveis[indiceZona];
-                        } else {
-                            System.out.println("Zona invalida. A usar ARMAZEM por defeito.");
-                        }
-                        r.setZona(zonaSelecionada);
-                        System.out.println("Zona alterada com sucesso.");
-                        break;
-
-                    case 0:
-                        System.out.println();
-                        break;
-
-                    default:
-                        System.out.println("Opcao invalida.");
-                }
-
-            }catch (IllegalArgumentException e){
-                System.out.println("Erro de edicao: " + e.getMessage());
-
-            } catch (java.util.InputMismatchException e){
-                System.out.println("Erro: entrada numerica invalida. Tente novamente");
-                sc.nextLine();
+            if(removido) {
+                System.out.println("Robot removido com sucesso.");
+            } else {
+                System.out.println("Robot nao encontrado.");
             }
 
-        }while(op != 0);
-    }
-
-    // remove um robot da frota
-    private void removerRobot() { 
-        listarRobots();
-        System.out.println("ID do robot a remover: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-        
-        if (centro.removerRobotPorId(id)){
-            System.out.println("Robot removido com sucesso.");
-        } else {
-            System.out.println("Erro: Robot nao encontrado.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+            sc.nextLine();
         }
     }
-
-    // mostra a lista de robots
-    private void listarRobots() { 
-        List<Robot> lista = centro.getRobots();
-
-        if(lista.isEmpty()){
-            System.out.println("Nenhum robot registado.");
-            return;
-        }
-
-        System.out.println("\nFrota de robots: ");
-        for(int i = 0; i < lista.size(); i++){
-            Robot r = lista.get(i);
-
-            System.out.println("(" + (i + 1) + ") " + r.toString());
-
-        } 
-    }
-
 }
-
+   
