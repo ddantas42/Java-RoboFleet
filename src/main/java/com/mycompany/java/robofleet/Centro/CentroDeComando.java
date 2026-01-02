@@ -1,18 +1,15 @@
 package com.mycompany.java.robofleet.Centro;
+
 import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.*;
 import com.mycompany.java.robofleet.Centro.Tecnico;
 
-import java.util.ArrayList;
-import java.util.List;
-import com.mycompany.java.robofleet.Robot.*;
-
 public class CentroDeComando {
 
-	private ArrayList<Tecnico> Tecnicos;
-	private ArrayList<Robot> Robots;
-	private static int id = 1;
-	private int Ordens;
+	private ArrayList<Tecnico>	Tecnicos;
+	private ArrayList<Robot>	Robots;
+	private static int			id = 1;
+	private int 				Ordens;
 
 	public CentroDeComando() {
 		this.Ordens = 0;
@@ -24,24 +21,57 @@ public class CentroDeComando {
 //! ------------------------------- Tecnicos ------------------------------
 
 	public void registarTecnico(Tecnico tecnico) {
+
+		// Ver se tecnico tem mais de 30 anos
+		if (tecnico.getIdade() < 30) {
+			throw new IllegalArgumentException("Tecnico deve ter pelo menos 30 anos.");
+		}
+
+		// Garantir que o seu ID, nome ou NIF nao existe ja
+		for (Tecnico t : this.Tecnicos) {
+			if (t.mesmoTecnico(tecnico) == true) {
+				throw new IllegalArgumentException("Tecnico ja existente.");
+			}
+		}
+
+		// Po-lo por ordem alfabetica do nome da lista
 		this.Tecnicos.add(tecnico);
+		this.Tecnicos.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+
 	}
 
 	public void removerTecnicoPorNome(String nomeTecnico) {
 		// Todo procurar tecnico pelo nome
-		// this.Tecnicos.remove(tecnico);
+		for (Tecnico t : this.Tecnicos) {
+			if (t.getName().equalsIgnoreCase(nomeTecnico)) {
+				this.Tecnicos.remove(t);
+				return;
+			}
+		}
+		throw new IllegalArgumentException("Tecnico nao encontrado.");
 	}
 
 	public void removerTecnicoPorId(int idTecnico) {
 		// Todo procurar tecnico pelo id
-		// this.Tecnicos.remove(tecnico);
+
+		for (Tecnico t : this.Tecnicos) {
+			if (t.getId() == idTecnico) {
+				this.Tecnicos.remove(t);
+				return;
+			}
+		}
+		throw new IllegalArgumentException("Tecnico nao encontrado.");
+
 	}
 
-	public void listTecnicos() {
+	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados
+	public void listarTecnicos() {
 		for (Tecnico tecnico : this.Tecnicos) {
 			System.out.println(tecnico.getName());
 		}
 	}
+
+	
 
 //! -------------------------------- Robots -------------------------------
 	public void registarRobot(Robot robot) {
