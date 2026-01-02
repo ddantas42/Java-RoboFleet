@@ -39,6 +39,10 @@ public class Tecnico {
 	public EspecialidadeTecnico getEspecialidade() {
 		return especialidade;
 	}
+	
+	public int getId(){
+		return id;
+	}
 
 	public LocalDate getDataNascimento() {
 		return dataNascimento;

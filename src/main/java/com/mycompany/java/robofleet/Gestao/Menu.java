@@ -144,8 +144,31 @@ public class Menu {
         }
 
         // se passar, criar o tecnico
+        System.out.println("Introduza o NIF do tecnico: ");
+        int nif;
+        try {
+            nif = sc.nextInt();
+            sc.nextLine();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("NIF invalido.");
+            sc.nextLine();
+            return;
+        }
 
-        Tecnico novoTecnico = new Tecnico(nomeTecnico);
+        EspecialidadeTecnico especialidade;
+
+        switch (esp_opcao) {
+            case 1 -> especialidade = EspecialidadeTecnico.ROBOTICA;
+            case 2 -> especialidade = EspecialidadeTecnico.MANUTENCAO;
+            case 3 -> especialidade = EspecialidadeTecnico.SISTEMAS;
+            default -> {
+                System.out.println("Especialidade inválida.");
+                return;
+            }
+}
+
+
+        Tecnico novoTecnico = new Tecnico(nomeTecnico, nif, dataNascimento, especialidade);
 
         try{
             centro.registarTecnico(novoTecnico);
@@ -153,7 +176,7 @@ public class Menu {
         } catch (Exception e){
             System.out.println("Erro ao regitar tecnico: " + e.getMessage());
         }
-        centro.registarTecnico(novoTecnico);
+        
     }
 
     private void editarTecnico() { 
