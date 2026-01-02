@@ -41,7 +41,6 @@ public class CentroDeComando {
 	}
 
 	public void removerTecnicoPorNome(String nomeTecnico) {
-		// Todo procurar tecnico pelo nome
 		for (Tecnico t : this.Tecnicos) {
 			if (t.getName().equalsIgnoreCase(nomeTecnico)) {
 				this.Tecnicos.remove(t);
@@ -52,7 +51,6 @@ public class CentroDeComando {
 	}
 
 	public void removerTecnicoPorId(int idTecnico) {
-		// Todo procurar tecnico pelo id
 
 		for (Tecnico t : this.Tecnicos) {
 			if (t.getId() == idTecnico) {
@@ -67,7 +65,7 @@ public class CentroDeComando {
 	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados
 	public void listarTecnicos() {
 		for (Tecnico tecnico : this.Tecnicos) {
-			System.out.println(tecnico.getName());
+			System.out.println(tecnico.toString());
 		}
 	}
 
@@ -114,6 +112,14 @@ public class CentroDeComando {
 //! -------------------------------- Getters ------------------------------
 
 	public ArrayList<Tecnico> getTecnicos() { return this.Tecnicos; }
+	public Tecnico getTecnicobyId(int id) {
+		for (Tecnico t : this.Tecnicos) {
+			if (t.getId() == id) {
+				return t;
+			}
+		}
+		throw new IllegalArgumentException("Tecnico nao encontrado.");
+	}
 	public ArrayList<Robot> getRobots() { return this.Robots; }
 	public int getOrdens() { return this.Ordens; }
 	public int getId() { return this.id; }

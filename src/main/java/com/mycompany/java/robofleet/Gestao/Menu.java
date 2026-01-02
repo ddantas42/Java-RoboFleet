@@ -169,7 +169,34 @@ public class Menu {
 	}
 
 	private void editarTecnico() { 
-		System.out.println("Editar tecnico...");
+		System.out.println("Editar tecnico:");
+        try {
+
+            System.out.println("ID do tecnico a editar: ");
+            int idTecnico = sc.nextInt();
+            sc.nextLine();
+
+            // procurar tec pelo id
+            Tecnico t = centro.getTecnicobyId(idTecnico);
+			
+			System.out.println("Novo nome do Técnico: ");
+            String novo_nome = sc.nextLine();
+			if (novo_nome == null || novo_nome == "") {
+				novo_nome = t.getName();
+			}	
+			
+
+			EspecialidadeTecnico nova_especialidade = alt_esp();
+
+			t.setEspecialidade(nova_especialidade);
+			t.setName(novo_nome);
+
+		}
+
+		catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
 
 	private void associarTecnicoRobot() {
@@ -381,5 +408,40 @@ public class Menu {
 			sc.nextLine();
 		}
 	}
+    // ========== FUNÇÕES AUXILIARES ==========
+
+    public EspecialidadeTecnico alt_esp() {
+
+		System.out.println("Especialidade:");
+		System.out.println("1 - Robotica");
+		System.out.println("2 - Manutencao");
+		System.out.println("3 - Sistemas");
+
+		int op = sc.nextInt();
+		sc.nextLine();
+
+		EspecialidadeTecnico esp;
+
+		switch(op){
+			case 1:
+				esp = EspecialidadeTecnico.ROBOTICA;
+				break;
+			case 2:
+				esp = EspecialidadeTecnico.MANUTENCAO;
+				break;
+			case 3:
+				esp = EspecialidadeTecnico.SISTEMAS;
+				break;
+			default:
+				throw new IllegalArgumentException("Opcao invalida.");
+		}
+
+		return esp;
+    }
 }
-   
+
+
+
+
+
+

@@ -36,6 +36,14 @@ public class Tecnico {
 		return years;
 	}
 
+	public void setEspecialidade(EspecialidadeTecnico nova_especialidade) {
+		this.especialidade = nova_especialidade;
+	}
+
+	public void setName(String novo_nome) {
+		this.name = novo_nome;
+	}
+
 	public EspecialidadeTecnico getEspecialidade() {
 		return especialidade;
 	}
@@ -50,6 +58,11 @@ public class Tecnico {
 
 	public boolean mesmoTecnico(Tecnico t) {
 		return (this.id == t.id || this.nif == t.nif || this.name.equals(t.name));
+	}
+
+	public String toString() {
+		return "ID: " + id + ", Nome: " + name + ", NIF: " + nif + ", Data de Nascimento: " + dataNascimento
+				+ ", Especialidade: " + especialidade;
 	}
 
 }
