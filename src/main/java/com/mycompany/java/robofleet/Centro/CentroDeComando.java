@@ -1,10 +1,11 @@
 package com.mycompany.java.robofleet.Centro;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import com.mycompany.java.robofleet.Robot.*;
+import com.mycompany.java.robofleet.Robot.Robot;
 import com.mycompany.java.robofleet.Centro.Tecnico;
 
-public class CentroDeComando {
+public class CentroDeComando implements Serializable{
 
 	private ArrayList<Tecnico>	Tecnicos;
 	private ArrayList<Robot>	Robots;
@@ -69,6 +70,23 @@ public class CentroDeComando {
 		}
 	}
 
+	public void associarTecnicoRobot(int idTecnico, int idRobot) {
+
+		Robot robo = this.getRobotbyId(idRobot);
+		Tecnico tec = this.getTecnicobyId(idTecnico);
+
+		robo.adicionarTecnico(tec);
+		tec.setInTeam(true);
+	}
+
+		public void desassociarTecnicoRobot(int idTecnico, int idRobot) {
+
+		Robot robo = this.getRobotbyId(idRobot);
+		Tecnico tec = this.getTecnicobyId(idTecnico);
+
+		robo.removerTecnico(tec);
+		tec.setInTeam(false);
+	}
 	
 
 //! -------------------------------- Robots -------------------------------
@@ -86,7 +104,7 @@ public class CentroDeComando {
 
 	public void listRobots() {
 		for (Robot robot : this.Robots) {
-			System.out.println(robot.getId());
+			System.out.println(robot.toString());
 		}
 	}
 
@@ -112,6 +130,7 @@ public class CentroDeComando {
 //! -------------------------------- Getters ------------------------------
 
 	public ArrayList<Tecnico> getTecnicos() { return this.Tecnicos; }
+	
 	public Tecnico getTecnicobyId(int id) {
 		for (Tecnico t : this.Tecnicos) {
 			if (t.getId() == id) {
@@ -120,7 +139,18 @@ public class CentroDeComando {
 		}
 		throw new IllegalArgumentException("Tecnico nao encontrado.");
 	}
+
 	public ArrayList<Robot> getRobots() { return this.Robots; }
+	
+	public Robot getRobotbyId(int id) {
+		for (Robot r : this.Robots) {
+			if (r.getId() == id) {
+				return r;
+			}
+		}
+		throw new IllegalArgumentException("Robo nao encontrado.");
+	}
+	
 	public int getOrdens() { return this.Ordens; }
 	public int getId() { return this.id; }
 	 

@@ -1,9 +1,11 @@
 package com.mycompany.java.robofleet.Centro;
 
+import com.mycompany.java.robofleet.Robot.*;
+import java.io.Serializable;
 import com.mycompany.java.robofleet.Centro.EspecialidadeTecnico;
 import java.time.LocalDate;
 
-public class Tecnico {
+public class Tecnico implements Serializable {
 
 	private static int id = 1;
 
@@ -11,6 +13,7 @@ public class Tecnico {
 	private int nif;
 	private LocalDate dataNascimento;
 	private EspecialidadeTecnico especialidade;
+	private boolean inTeam;
 
 	public Tecnico(String name, int nif, LocalDate dataNascimento, EspecialidadeTecnico especialidade) {
 
@@ -19,6 +22,7 @@ public class Tecnico {
 		this.dataNascimento = dataNascimento;
 		this.especialidade = especialidade;
 		this.id = id++;
+		this.inTeam = false;
 
 	}
 
@@ -58,6 +62,11 @@ public class Tecnico {
 
 	public boolean mesmoTecnico(Tecnico t) {
 		return (this.id == t.id || this.nif == t.nif || this.name.equals(t.name));
+	}
+
+	public boolean setInTeam(boolean inTeam) {
+		this.inTeam = inTeam;
+		return this.inTeam;
 	}
 
 	public String toString() {

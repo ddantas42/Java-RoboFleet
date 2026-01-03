@@ -8,9 +8,9 @@ import java.time.LocalDate;
 
 public class JavaRoboFleet {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 		System.out.println("Bem-vindo ao RoboFleet!");
-        
+		
 		//CentroDeComando centro = new CentroDeComando();
 		//Robot robot = new Robot();
 
@@ -23,5 +23,5 @@ public class JavaRoboFleet {
 		sc.close();
 
 
-    }
+	}
 }

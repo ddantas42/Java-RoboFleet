@@ -1,31 +1,35 @@
 package com.mycompany.java.robofleet.Robot;
 
-public class RInspect extends Robot
+import com.mycompany.java.robofleet.Centro.Tecnico;
+import java.io.Serializable;
+
+public class RInspect extends Robot implements Serializable
 {
 
-    private boolean temCamara;
-    private boolean scannerTermico;
+	private boolean temCamara;
+	private boolean scannerTermico;
 
-    public RInspect(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat)
-    {
-        super(nome, marca, modelo, ano, zona, bat);
-        this.temCamara = true;
-        this.scannerTermico = true;
-    }
+	public RInspect(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat)
+	{
+		super(nome, marca, modelo, ano, zona, bat);
+		this.temCamara = true;
+		this.scannerTermico = true;
+	}
 
-    @Override
-    public void adicionarMotor(Motor m)
-    {
-        if (motores.size() >= 1)
-        {
-            throw new IllegalStateException("R-Inspect só tem 1 motor");
-        }
-        super.adicionarMotor(m);
-    }
-/* 
-    @Override
-    public boolean validarEquipa()
-    {
-        return equipa.size() >= 1 && equipa.size() <= 2;
-    }*/
+
+	@Override
+	public void adicionarTecnico(Tecnico t)
+	{
+		if (this.equipa.size() >= 2)
+		{
+			throw new IllegalStateException("R-Inspect max 2 tecnicos");
+		}
+		super.associarTecnico(t);
+	}
+
+	@Override
+	public void removerTecnico(Tecnico t)
+	{
+		super.desassociarTecnico(t);
+	}
 }

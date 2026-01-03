@@ -10,9 +10,9 @@ package com.mycompany.java.robofleet.Centro;
  */
 
 public enum EspecialidadeTecnico {
-    
-    ROBOTICA,
-    MANUTENCAO,
-    SISTEMAS
-    
+	
+	ROBOTICA,
+	MANUTENCAO,
+	SISTEMAS
+	
 }

@@ -1,6 +1,9 @@
 package com.mycompany.java.robofleet.Robot;
 
-public class Motor 
+import com.mycompany.java.robofleet.Gestao.*;
+import java.io.Serializable;
+
+public class Motor implements Serializable
 {
     private int potencia;
 

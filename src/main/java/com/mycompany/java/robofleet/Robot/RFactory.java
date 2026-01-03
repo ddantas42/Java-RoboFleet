@@ -1,6 +1,9 @@
 package com.mycompany.java.robofleet.Robot;
 
-public class RFactory extends Robot
+import com.mycompany.java.robofleet.Centro.Tecnico;
+import java.io.Serializable;
+
+public class RFactory extends Robot implements Serializable
 {
     private int numBracos;
     private boolean orientacaoLaser;
@@ -14,15 +17,22 @@ public class RFactory extends Robot
         }
         this.numBracos = bracos;
         this.orientacaoLaser = true;
-    }
-/* 
-    @Override
-    public boolean validarEquipa()
-    {
-        if (equipa.size() < 2 || equipa.size() > 3)
-        {
-            return false;
-        }
-        return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.ROBOTICA));
-    }*/
+	}
+	
+	@Override
+	public void adicionarTecnico(Tecnico t)
+	{
+		if (this.equipa.size() >= 3)
+		{
+			throw new IllegalStateException("R-Factory max 3 tecnicos");
+		}
+		super.associarTecnico(t);
+	}
+
+	@Override
+	public void removerTecnico(Tecnico t)
+	{
+		super.desassociarTecnico(t);
+	}
+    
 }

@@ -1,6 +1,8 @@
 package com.mycompany.java.robofleet.Robot;
 
-public class Bateria 
+import java.io.Serializable;
+
+public class Bateria implements Serializable
 {
     private int capacidade;
     private int autonomia;

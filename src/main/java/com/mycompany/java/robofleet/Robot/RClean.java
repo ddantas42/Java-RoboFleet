@@ -1,6 +1,9 @@
 package com.mycompany.java.robofleet.Robot;
+import com.mycompany.java.robofleet.Centro.Tecnico;
 
-public class RClean extends Robot
+import java.io.Serializable;
+
+public class RClean extends Robot implements Serializable
 {
 
     private boolean sistemaSuccao;
@@ -12,14 +15,20 @@ public class RClean extends Robot
         this.sistemaSuccao = succao;
         this.luzInspecao = luz;
     }
-/* 
-    @Override
-    public boolean validarEquipa()
-    {
-        if (equipa.size() < 1 || equipa.size() > 2)
-        {
-            return false;
-        }
-        return equipa.stream().anyMatch(t -> t.temEspecializacao(Especializacao.MANUTENCAO));
-    }*/
+
+	@Override
+	public void adicionarTecnico(Tecnico t)
+	{
+		if (this.equipa.size() >= 2)
+		{
+			throw new IllegalStateException("R-Clean max 2 tecnicos");
+		}
+		super.associarTecnico(t);
+	}
+
+	@Override
+	public void removerTecnico(Tecnico t)
+	{
+		super.desassociarTecnico(t);
+	}
 }

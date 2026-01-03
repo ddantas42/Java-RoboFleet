@@ -29,7 +29,7 @@ public class Menu {
 			System.out.println("(2) Gerir Robots");
 			System.out.println("(3) Gerir complexo");
 			System.out.println("(4) Utilizar radar");
-			System.out.println("(5) Exportar dados");
+			System.out.println("(5) Recuperar dados");
 			System.out.println("(0) Sair");
 			System.out.print("Opcao: ");
 			
@@ -50,9 +50,11 @@ public class Menu {
 					//menuRadar();
 					break;
 				case 5:
-					//exportarDados();
+					recuperarDados();
 					break;
 				case 0:
+					System.out.println("A gravar dados.");
+					GestorDeFicheiros.guardarDadosBinario(this.centro, "dados.dat");
 					System.out.println("A sair...");
 					break;
 				default:
@@ -73,6 +75,7 @@ public class Menu {
 			System.out.println("(3) Listar tecnicos");
 			System.out.println("(4) Editar tecnico");
 			System.out.println("(5) Associar/desassociar tecnico a robot");
+			System.out.println("(6) desassociar tecnico a robot");
 			System.out.println("(0) Voltar");
 			System.out.print("Opcao: ");
 
@@ -90,10 +93,13 @@ public class Menu {
 					centro.listarTecnicos();
 					break;
 				case 4:
-					editarTecnico(); // diaduiahdiawd
+					editarTecnico(); 
 					break;
 				case 5:
 					associarTecnicoRobot();
+					break;
+				case 6:
+					desassociarTecnicoRobot();
 					break;
 				case 0:
 					System.out.println("A voltar...");
@@ -200,7 +206,43 @@ public class Menu {
 	}
 
 	private void associarTecnicoRobot() {
-		System.out.println("Associar/desassociar tecnico a robot..."); 
+
+		try {
+
+			System.out.println("ID do tecnico a associar: ");
+			int idTecnico = sc.nextInt();
+			sc.nextLine();
+
+			System.out.println("ID do Robo a associar: ");
+			int idRobot = sc.nextInt();
+			sc.nextLine();
+
+			centro.associarTecnicoRobot(idTecnico, idRobot);
+
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+
+	private void desassociarTecnicoRobot() {
+		try {
+
+			System.out.println("ID do tecnico a desassociar: ");
+			int idTecnico = sc.nextInt();
+			sc.nextLine();
+
+			System.out.println("ID do Robo a desassociar: ");
+			int idRobot = sc.nextInt();
+			sc.nextLine();
+
+			centro.desassociarTecnicoRobot(idTecnico, idRobot);
+
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	// ================= ROBOTS =================
@@ -223,8 +265,7 @@ public class Menu {
 					criarRobot();
 					break;
 				case 2:
-					//editarRobot();
-					break;
+					editarRobot();
 				case 3:
 					removerRobot();
 					break;
@@ -286,22 +327,10 @@ public class Menu {
 
 		Bateria bateria = new Bateria(cap, 100);
 
-		System.out.println("Indique a zona de operacao:");
-		Zona[] zonasDisponiveis = Zona.values();
-		for(int i = 0; i < zonasDisponiveis.length; i++){
-			System.out.println("(" + (i + 1) + ") " + zonasDisponiveis[i]);
-		}
-		System.out.println("Opcao de zona: ");
-		int indiceZona = sc.nextInt() - 1;
-		sc.nextLine();
-
 		Zona zonaSelecionada = Zona.ARMAZEM;
-		if(indiceZona >= 0 && indiceZona < zonasDisponiveis.length){
-			zonaSelecionada = zonasDisponiveis[indiceZona];
-		} else {
-			System.out.println("Zona invalida. A usar ARMAZEM por defeito.");
-		}
-
+	
+		System.out.println("A usar ARMAZEM por defeito.");
+		
 		System.out.println("\nQual o tipo de Robot?");
 		System.out.println("(1) R-Carry (Transporte)");
 		System.out.println("(2) R-Clean (Limpeza)");
@@ -389,7 +418,26 @@ public class Menu {
 		}
 	}
 
-	private void removerRobot() {
+
+
+    private void editarRobot(){
+        System.out.println("Editar robot:");
+        try {
+
+            System.out.println("ID do robot a editar: ");
+            int idRobot = sc.nextInt();
+            sc.nextLine();
+
+            // procurar robot pelo id
+            Robot r = centro.getRobotbyId(idRobot);
+            
+			editarAtributosRobot(r);
+
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}   
+    private void removerRobot() {
 		try {
 			System.out.print("ID do robot a remover: ");
 			int idRobot = sc.nextInt();
@@ -438,8 +486,100 @@ public class Menu {
 
 		return esp;
     }
-}
 
+    public void editarAtributosRobot(Robot r){
+        int opcao;
+        do {
+            System.out.println("\nEditar Robot: " + r.getNome());
+            System.out.println("1 - Alterar nome");
+            System.out.println("2 - Alterar marca");
+            System.out.println("3 - Alterar modelo");
+            System.out.println("4 - Alterar zona de operação");
+            System.out.println("0 - Sair");
+            System.out.print("opcao: ");
+			opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Novo nome: ");
+                    String novoNome = sc.nextLine();
+                    if (novoNome != null && !novoNome.isEmpty()) {
+                        r.setNome(novoNome);
+                        System.out.println("Nome atualizado com sucesso.");
+                    } else {
+                        System.out.println("Nome inválido. Nome não alterado.");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Nova marca: ");
+                    String novaMarca = sc.nextLine();
+                    if (novaMarca != null && !novaMarca.isEmpty()) {
+                        r.setMarca(novaMarca);
+                        System.out.println("Marca atualizada com sucesso.");
+                    } else {
+                        System.out.println("Marca inválida. Não alterada.");
+                    }
+                    break;
+
+				case 3:
+                    System.out.print("Novo modelo: ");
+                    String novoModelo = sc.nextLine();
+                    if (novoModelo != null && !novoModelo.isEmpty()) {
+                        r.setModelo(novoModelo);
+                        System.out.println("Modelo atualizado com sucesso.");
+                    } else {
+                        System.out.println("Modelo inválido. Não alterado.");
+                    }
+                    break;
+
+                case 4:
+                    r.setZona(escolherZona(r));
+                    break;
+
+                case 0:
+                    System.out.println("A sair da edicao...");
+                	break;
+
+                default:
+                    System.out.println("Opcao invalida!");
+            }
+
+        } while (opcao != 0);
+
+    }
+
+	private Zona escolherZona(Robot r){
+		System.out.println("Nova zona de operacao: ");
+		Zona[] zonasDisponiveis = Zona.values();
+
+		for(int i = 0; i < zonasDisponiveis.length; i++){
+			System.out.println((i + 1) + " - " + zonasDisponiveis[i]);
+		}
+		System.out.println("Opcao: ");
+		int ind = sc.nextInt() - 1;
+		sc.nextLine();
+
+		if(ind >= 0 && ind < zonasDisponiveis.length){
+			System.out.println("Zona atualizada com sucesso.");
+			return zonasDisponiveis[ind];
+		} else {
+			System.out.println("Zona invalida. Nao alterada.");
+			return r.getZona();
+		}
+	}
+
+	void recuperarDados(){
+		CentroDeComando recuperado = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
+		if(recuperado != null){
+			this.centro = recuperado;
+			System.out.println("Sistema restaurado.");
+		}else{
+			System.out.println("Nao foi possivel encontrar dados guardados.");
+		}
+	}
+}
 
 
 
