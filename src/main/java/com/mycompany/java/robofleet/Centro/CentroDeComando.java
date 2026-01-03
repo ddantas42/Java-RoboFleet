@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.Robot;
 import com.mycompany.java.robofleet.Centro.Tecnico;
+import java.util.Scanner;
+
 
 public class CentroDeComando implements Serializable{
 
@@ -65,9 +67,33 @@ public class CentroDeComando implements Serializable{
 
 	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados
 	public void listarTecnicos() {
-		for (Tecnico tecnico : this.Tecnicos) {
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\nMenu Listar\n");
+		System.out.println("(1) Listar por Ordem Alfabetica");
+		System.out.println("(2) Listar por ID");
+		System.out.println("(3) Listar por idade");
+
+		int opcao = sc.nextInt();
+		sc.nextLine();
+
+		ArrayList<Tecnico> sortedList = new ArrayList<>(this.Tecnicos);
+		switch (opcao) {
+			case 1:
+				break;
+			case 2:
+				this.Tecnicos.sort((t1, t2) -> Integer.compare(t1.getId(), t2.getId()));
+				break;
+			case 3:
+				this.Tecnicos.sort((t1, t2) -> Integer.compare(t1.getIdade(), t2.getIdade()));
+				break;
+		}
+
+		for (Tecnico tecnico : sortedList) {
 			System.out.println(tecnico.toString());
 		}
+		
 	}
 
 	public void associarTecnicoRobot(int idTecnico, int idRobot) {
@@ -120,6 +146,12 @@ public class CentroDeComando implements Serializable{
 	public void activateAllRobots() {
 		for (Robot robot : this.Robots) {
 			// TODO robot.activate(); Eventually!
+		}
+	}
+
+	public void radar() {
+		for (Robot robot : this.Robots) {
+			System.out.println("Robot ID: " + robot.getId() + " - Zona: " + robot.getZona());
 		}
 	}
 

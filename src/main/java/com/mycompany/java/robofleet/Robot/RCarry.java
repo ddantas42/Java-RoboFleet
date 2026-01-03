@@ -16,9 +16,8 @@ public class RCarry extends Robot implements Serializable
 		this.temHolofote = holofote;
 	}
 
-	// fui comer qualquer coisa, se nao correr , comenta a funcao recuperar dados no final do menu
 	@Override
-	public void adicionarMotor(Motor m)
+	public void adicionarMotorChild(Motor m)
 	{
 		if (motores.size() >= 4)
 		{

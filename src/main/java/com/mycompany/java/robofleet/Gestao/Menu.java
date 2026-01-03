@@ -47,7 +47,7 @@ public class Menu {
 					//menuComplexo();
 					break;
 				case 4:
-					//menuRadar();
+					centro.radar();
 					break;
 				case 5:
 					recuperarDados();
@@ -74,7 +74,7 @@ public class Menu {
 			System.out.println("(2) Remover tecnico");
 			System.out.println("(3) Listar tecnicos");
 			System.out.println("(4) Editar tecnico");
-			System.out.println("(5) Associar/desassociar tecnico a robot");
+			System.out.println("(5) Associar tecnico a robot");
 			System.out.println("(6) desassociar tecnico a robot");
 			System.out.println("(0) Voltar");
 			System.out.print("Opcao: ");
@@ -266,6 +266,7 @@ public class Menu {
 					break;
 				case 2:
 					editarRobot();
+					break;
 				case 3:
 					removerRobot();
 					break;
@@ -357,25 +358,31 @@ public class Menu {
 				case 2:
 					System.out.println("Modo de limpeza (ex: aspirar, secar): ");
 					String modo = sc.nextLine();
+
 					System.out.println("Tem luz auxiliar? (s/n): ");
 					boolean luz = sc.nextLine().equalsIgnoreCase("s");
+
 					System.out.println("Tem succao (s/n): ");
 					boolean succao = sc.nextLine().equalsIgnoreCase("s");
 
 					novoRobot = new RClean(nome, marca, modelo, ano, zonaSelecionada, bateria, succao, luz);
 					break;
+
 				case 3:
 					System.out.println("Numero de bracos roboticos: ");
 					int bracos = sc.nextInt();
 					sc.nextLine();
 					novoRobot = new RFactory(nome, marca, modelo, ano, zonaSelecionada, bateria, bracos);
 					break;
+
 				case 4:
 					novoRobot = new RInspect(nome, marca, modelo, ano, zonaSelecionada, bateria);
 					break;
+
 				default:
 					System.out.println("Tipo de robot  inválido.");
 					return;
+
 			}
 
 			// Adicionar motores
@@ -383,38 +390,22 @@ public class Menu {
 			if(novoRobot instanceof RCarry) maxMotores = 4;
 			else if (novoRobot instanceof RClean || novoRobot instanceof RFactory) maxMotores = 2;
 
-			int numMotores = 0;
-			do {
-				System.out.println("Indique o numero de motores: ");
-				try {
-					numMotores = sc.nextInt();
-					sc.nextLine();
-				} catch (java.util.InputMismatchException e){
-					System.out.println("Numero invalido. Tente novamente.");
-					sc.nextLine();
-					numMotores = 0;
-				}
-			} while(numMotores < 1 || numMotores > maxMotores);
+			
+			System.out.printf("Indique o numero de motores (0 - %d): ", maxMotores);
+			int n = sc.nextInt();
+			if(n < 1) n = 1;
+			if(n > maxMotores) n = maxMotores;
 
-			for(int i = 0; i < numMotores; i++){
-				if (novoRobot instanceof RCarry){
-						((RCarry) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-				} else if (novoRobot instanceof RClean) {
-						((RClean) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-				} else if (novoRobot instanceof RFactory) {
-						((RFactory) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-				} else if (novoRobot instanceof RInspect) {
-						((RInspect) novoRobot).adicionarMotor(new Motor(potenciaMotor));
-				}
+			for(int i = 0; i < n; i++){
+				System.out.printf("Potencia do motor %d (W): \n", i + 1);
+				novoRobot.adicionarMotorChild(new Motor(sc.nextInt()));
 			}
-
-			centro.registarRobot(novoRobot);
+			sc.nextLine();
 			System.out.println("Robot criado com sucesso.");
 
-		} catch (IllegalArgumentException e) {
-			System.out.println("Erro ao criar robot: " + e.getMessage());
-		} catch(Exception e){
-			System.out.println("Erro inesperado: " + e.getMessage());
+		} catch (Exception e){
+			System.out.println("Erro: " + e);
+			sc.nextLine();
 		}
 	}
 
@@ -494,7 +485,7 @@ public class Menu {
             System.out.println("1 - Alterar nome");
             System.out.println("2 - Alterar marca");
             System.out.println("3 - Alterar modelo");
-            System.out.println("4 - Alterar zona de operação");
+			System.out.println("4 - Substituir motores");
             System.out.println("0 - Sair");
             System.out.print("opcao: ");
 			opcao = sc.nextInt();
@@ -504,39 +495,56 @@ public class Menu {
                 case 1:
                     System.out.print("Novo nome: ");
                     String novoNome = sc.nextLine();
-                    if (novoNome != null && !novoNome.isEmpty()) {
+
+                    if (!novoNome.isEmpty()) {
                         r.setNome(novoNome);
                         System.out.println("Nome atualizado com sucesso.");
                     } else {
-                        System.out.println("Nome inválido. Nome não alterado.");
+                        System.out.println("Nome invalido. Nome nao alterado.");
                     }
                     break;
 
                 case 2:
                     System.out.print("Nova marca: ");
                     String novaMarca = sc.nextLine();
-                    if (novaMarca != null && !novaMarca.isEmpty()) {
+                    if (
+						!novaMarca.isEmpty()) {
                         r.setMarca(novaMarca);
                         System.out.println("Marca atualizada com sucesso.");
                     } else {
-                        System.out.println("Marca inválida. Não alterada.");
+                        System.out.println("Marca invalida. Nao alterada.");
                     }
                     break;
 
 				case 3:
                     System.out.print("Novo modelo: ");
                     String novoModelo = sc.nextLine();
-                    if (novoModelo != null && !novoModelo.isEmpty()) {
+                    if (!novoModelo.isEmpty()) {
                         r.setModelo(novoModelo);
                         System.out.println("Modelo atualizado com sucesso.");
                     } else {
-                        System.out.println("Modelo inválido. Não alterado.");
+                        System.out.println("Modelo invalido. Nao alterado.");
                     }
                     break;
 
                 case 4:
-                    r.setZona(escolherZona(r));
-                    break;
+                    r.limparMotores();
+
+					int max = 1;
+					if(r instanceof RCarry) max = 4;
+					else if(r instanceof RClean || r instanceof RFactory) max = 2;
+
+					System.out.printf("Substituir por quantos motores (1-%d)?\n", max);
+					int n = sc.nextInt();
+					if(n < 1) n = 1;
+					if(n > max) n = max;
+					for(int i = 0; i < max; i++){
+						System.out.printf("Nova potencia motor %d: \n", i + 1);
+						r.adicionarMotorChild(new Motor(sc.nextInt()));
+					}
+					sc.nextLine();
+					System.out.println("Motores substituidos.");
+					break;
 
                 case 0:
                     System.out.println("A sair da edicao...");
@@ -550,26 +558,6 @@ public class Menu {
 
     }
 
-	private Zona escolherZona(Robot r){
-		System.out.println("Nova zona de operacao: ");
-		Zona[] zonasDisponiveis = Zona.values();
-
-		for(int i = 0; i < zonasDisponiveis.length; i++){
-			System.out.println((i + 1) + " - " + zonasDisponiveis[i]);
-		}
-		System.out.println("Opcao: ");
-		int ind = sc.nextInt() - 1;
-		sc.nextLine();
-
-		if(ind >= 0 && ind < zonasDisponiveis.length){
-			System.out.println("Zona atualizada com sucesso.");
-			return zonasDisponiveis[ind];
-		} else {
-			System.out.println("Zona invalida. Nao alterada.");
-			return r.getZona();
-		}
-	}
-
 	void recuperarDados(){
 		CentroDeComando recuperado = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
 		if(recuperado != null){
@@ -580,8 +568,3 @@ public class Menu {
 		}
 	}
 }
-
-
-
-
-

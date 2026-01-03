@@ -18,6 +18,16 @@ public class RInspect extends Robot implements Serializable
 
 
 	@Override
+	public void adicionarMotorChild(Motor m)
+	{
+		if (motores.size() >= 1)
+		{
+			throw new IllegalStateException("R-Carry max 1 motores");
+		}
+		super.adicionarMotor(m);
+	}
+
+	@Override
 	public void adicionarTecnico(Tecnico t)
 	{
 		if (this.equipa.size() >= 2)

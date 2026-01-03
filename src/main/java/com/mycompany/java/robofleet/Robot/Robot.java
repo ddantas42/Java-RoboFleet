@@ -38,6 +38,8 @@ public abstract class Robot implements Serializable
 		this.equipa = new ArrayList<Tecnico>();
 	}
 
+	public abstract void adicionarMotorChild(Motor m);
+
 	public void adicionarMotor(Motor m)
 	{
 		this.motores.add(m);
@@ -52,6 +54,10 @@ public abstract class Robot implements Serializable
 			}
 		}
 		equipa.add(t);
+	}
+
+	public void limparMotores(){
+		this.motores.clear();
 	}
 
 	public void desassociarTecnico(Tecnico t)
@@ -139,6 +145,7 @@ public abstract class Robot implements Serializable
 		sb.append("\tZona: ").append(zona).append("\n");
 		sb.append("\tBateria: ").append(bateria).append("\n");
 		sb.append("\tMotores: ").append(motores).append("\n");
+		sb.append("\tAutonomia: ").append(calcularAutonomia()).append("\n");
 		sb.append("\tEquipa:\n");
 		for (Tecnico t : equipa) {
 			sb.append("\t\t").append(t.getName()).append("\n");

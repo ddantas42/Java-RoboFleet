@@ -20,6 +20,16 @@ public class RFactory extends Robot implements Serializable
 	}
 	
 	@Override
+	public void adicionarMotorChild(Motor m)
+	{
+		if (motores.size() >= 2)
+		{
+			throw new IllegalStateException("R-Carry max 2 motores");
+		}
+		super.adicionarMotor(m);
+	}
+
+	@Override
 	public void adicionarTecnico(Tecnico t)
 	{
 		if (this.equipa.size() >= 3)
