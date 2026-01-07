@@ -10,7 +10,11 @@ public class Tecnico implements Serializable {
     private int nif;
     private LocalDate dataNascimento;
     private EspecialidadeTecnico especialidade;
-
+    
+    public void setName(String name) { this.name = name; }
+    public void setEspecialidade(EspecialidadeTecnico especialidade) { 
+        this.especialidade = especialidade; 
+    }
     public Tecnico(String name, int nif, LocalDate dataNascimento, EspecialidadeTecnico especialidade) {
         this.name = name;
         this.nif = nif;

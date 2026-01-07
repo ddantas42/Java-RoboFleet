@@ -24,10 +24,10 @@ public class Menu {
             System.out.println("\n=== ROBOFLEET: Menu Principal ===");
             System.out.println("(1) Gerir Técnicos");
             System.out.println("(2) Gerir Robots");
-            System.out.println("(3) Ativar Robot (Enviar Ordem)"); // Requisito 3.3 e 3.5 [cite: 66, 81]
-            System.out.println("(4) Utilizar Radar");            // Requisito 2.3 e 3.3 [cite: 27, 68]
-            System.out.println("(5) Exportar Dados (TXT)");      // Requisito 3.4 [cite: 73]
-            System.out.println("(6) Recuperar Dados (RECOVER)");  // Requisito 3.5 [cite: 86]
+            System.out.println("(3) Ativar Robot (Enviar Ordem)"); 
+            System.out.println("(4) Utilizar Radar");           
+            System.out.println("(5) Exportar Dados (TXT)");     
+            System.out.println("(6) Recuperar Dados (RECOVER)");  
             System.out.println("(0) Sair e Gravar");
             System.out.print("Opção: ");
 
@@ -42,7 +42,7 @@ public class Menu {
                 case 6 -> recuperarDados();
                 case 0 -> {
                     System.out.println("A gravar dados...");
-                    GestorDeFicheiros.guardarDadosBinario(this.centro, "dados.dat"); // Requisito 3.4 [cite: 72]
+                    GestorDeFicheiros.guardarDadosBinario(this.centro, "dados.dat"); 
                     System.out.println("A sair...");
                 }
                 default -> System.out.println("Opção inválida!");
@@ -64,7 +64,7 @@ public class Menu {
             switch (opcao) {
                 case 1 -> criarTecnico();
                 case 2 -> removerTecnico();
-                case 3 -> centro.listarTecnicos(); // Requisito 3.1 [cite: 35, 36]
+                case 3 -> centro.listarTecnicos(); 
                 case 4 -> editarTecnico();
                 case 5 -> associarTecnicoRobot();
                 case 6 -> desassociarTecnicoRobot();
@@ -83,7 +83,7 @@ public class Menu {
             EspecialidadeTecnico esp = escolherEspecialidade();
 
             Tecnico t = new Tecnico(nome, nif, data, esp);
-            centro.registarTecnico(t); // Valida restrição de idade (30 anos para Robótica) [cite: 34]
+            centro.registarTecnico(t); 
             System.out.println("Técnico criado com sucesso.");
         } catch (DateTimeParseException e) {
             System.out.println("Erro: Formato de data inválido.");
@@ -106,7 +106,7 @@ public class Menu {
                 case 1 -> criarRobot();
                 case 2 -> editarRobot();
                 case 3 -> removerRobot();
-                case 4 -> centro.listRobots(); // Requisito 3.2 [cite: 41]
+                case 4 -> centro.listRobots(); 
                 case 0 -> System.out.println("A voltar...");
                 default -> System.out.println("Opção inválida!");
             }
@@ -142,7 +142,7 @@ public class Menu {
             };
 
             configurarMotores(novoRobot);
-            centro.registarRobot(novoRobot); // Atribui ID e valida unicidade de nome [cite: 39, 40]
+            centro.registarRobot(novoRobot); 
             System.out.println("Robot criado na Estação de Carga.");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -154,7 +154,7 @@ public class Menu {
         System.out.print("ID do Robot para ativação: ");
         int id = lerInteiro();
         try {
-            centro.ativarRobot(id); // Valida requisitos de equipa [cite: 42]
+            centro.ativarRobot(id); 
         } catch (Exception e) {
             System.out.println("Falha na ativação: " + e.getMessage());
         }
@@ -164,7 +164,7 @@ public class Menu {
         CentroDeComando recuperado = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
         if (recuperado != null) {
             this.centro = recuperado;
-            System.out.println("Função RECOVER concluída com sucesso."); [cite: 86]
+            System.out.println("Função RECOVER concluída com sucesso.");
         }
     }
 
@@ -190,7 +190,7 @@ public class Menu {
     }
 
     private void configurarMotores(Robot r) {
-        int max = (r instanceof RCarry) ? 4 : (r instanceof RInspect ? 1 : 2); // Regras 3.2.1-3.2.4 [cite: 45, 50, 55, 62]
+        int max = (r instanceof RCarry) ? 4 : (r instanceof RInspect ? 1 : 2); 
         System.out.printf("Indique o número de motores (Máx %d): ", max);
         int n = lerInteiro();
         if (n > max) n = max;

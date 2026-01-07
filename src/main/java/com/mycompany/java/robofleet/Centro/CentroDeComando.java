@@ -7,18 +7,14 @@ import java.util.Scanner;
 import com.mycompany.java.robofleet.Robot.Robot;
 import com.mycompany.java.robofleet.Robot.Zona;
 
-/**
- * Classe que gere o Complexo Industrial-Logístico[cite: 11].
- * Controla o registo de técnicos, robots e a emissão de ordens[cite: 14].
- */
 public class CentroDeComando implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ArrayList<Tecnico> tecnicos;
     private ArrayList<Robot> robots;
-    private int proximoIdTecnico = 1; [cite: 32]
-    private int proximoIdRobot = 1;   [cite: 39]
-    private int ordensEnviadas = 0;   [cite: 26]
+    private int proximoIdTecnico = 1; 
+    private int proximoIdRobot = 1;  
+    private int ordensEnviadas = 0;   
 
     public CentroDeComando() {
         this.tecnicos = new ArrayList<>();
@@ -27,16 +23,11 @@ public class CentroDeComando implements Serializable {
 
     // =========================== GESTÃO DE TÉCNICOS ===========================
 
-    /**
-     * Regista um novo técnico garantindo as restrições de idade e unicidade[cite: 33, 34].
-     */
     public void registarTecnico(Tecnico tecnico) {
-        // Regra: Engenheiros de Robótica devem ter pelo menos 30 anos [cite: 34]
         if (tecnico.getEspecialidade() == EspecialidadeTecnico.ROBOTICA && tecnico.getIdade() < 30) {
             throw new IllegalArgumentException("Engenheiros de Robótica devem ter pelo menos 30 anos.");
         }
 
-        // Garantir que não existem duplicados (ID ou Nome/NIF) [cite: 33, 70]
         for (Tecnico t : this.tecnicos) {
             if (t.mesmoTecnico(tecnico)) {
                 throw new IllegalArgumentException("Técnico já existente no sistema (NIF ou Nome duplicado).");
@@ -48,12 +39,9 @@ public class CentroDeComando implements Serializable {
     }
 
     public boolean removerTecnicoPorId(int id) {
-        return tecnicos.removeIf(t -> t.getId() == id); [cite: 77]
+        return tecnicos.removeIf(t -> t.getId() == id); 
     }
 
-    /**
-     * Lista os técnicos conforme critérios do enunciado[cite: 35, 36].
-     */
     public void listarTecnicos() {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n--- Listagem de Técnicos ---");
@@ -66,9 +54,9 @@ public class CentroDeComando implements Serializable {
         ArrayList<Tecnico> lista = new ArrayList<>(this.tecnicos);
 
         switch (opcao) {
-            case 1 -> lista.sort(Comparator.comparing(Tecnico::getName, String.CASE_INSENSITIVE_ORDER)); [cite: 35]
-            case 2 -> lista.sort(Comparator.comparingInt(Tecnico::getId)); [cite: 36]
-            case 3 -> lista.sort(Comparator.comparing(Tecnico::getDataNascimento).reversed()); [cite: 36]
+            case 1 -> lista.sort(Comparator.comparing(Tecnico::getName, String.CASE_INSENSITIVE_ORDER));
+            case 2 -> lista.sort(Comparator.comparingInt(Tecnico::getId)); 
+            case 3 -> lista.sort(Comparator.comparing(Tecnico::getDataNascimento).reversed()); 
         }
 
         System.out.println("\nID | Nome | Especialidade | Idade");
@@ -79,21 +67,21 @@ public class CentroDeComando implements Serializable {
 
     public void registarRobot(Robot robot) {
         if (robot.getNome() == null || robot.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do robô é obrigatório."); [cite: 40]
+            throw new IllegalArgumentException("O nome do robô é obrigatório.");
         }
 
         for (Robot r : this.robots) {
             if (r.getNome().equalsIgnoreCase(robot.getNome())) {
-                throw new IllegalArgumentException("Nome de robô já existe."); [cite: 40, 70]
+                throw new IllegalArgumentException("Nome de robô já existe."); 
             }
         }
 
-        robot.setId(proximoIdRobot++); [cite: 39]
+        robot.setId(proximoIdRobot++);
         this.robots.add(robot);
     }
 
     public boolean removerRobotPorId(int id) {
-        return robots.removeIf(r -> r.getId() == id); [cite: 78]
+        return robots.removeIf(r -> r.getId() == id); 
     }
 
     /**
@@ -111,9 +99,9 @@ public class CentroDeComando implements Serializable {
 
         if (opcao == 2) {
             lista.sort(Comparator.comparing(Robot::getMarca, String.CASE_INSENSITIVE_ORDER)
-                                .thenComparing(Comparator.comparingInt(Robot::getAnoFabrico).reversed())); [cite: 41]
+                                .thenComparing(Comparator.comparingInt(Robot::getAnoFabrico).reversed()));
         } else {
-            lista.sort(Comparator.comparingInt(Robot::getId)); [cite: 41]
+            lista.sort(Comparator.comparingInt(Robot::getId));
         }
 
         lista.forEach(System.out::println);
@@ -124,31 +112,33 @@ public class CentroDeComando implements Serializable {
     public void associarTecnicoRobot(int idTecnico, int idRobot) {
         Tecnico t = getTecnicobyId(idTecnico);
         Robot r = getRobotbyId(idRobot);
-        r.adicionarTecnico(t); [cite: 79]
+        r.adicionarTecnico(t);
     }
 
     public void desassociarTecnicoRobot(int idTecnico, int idRobot) {
         Tecnico t = getTecnicobyId(idTecnico);
         Robot r = getRobotbyId(idRobot);
-        r.removerTecnico(t); [cite: 79]
+        r.removerTecnico(t); 
     }
 
     public void ativarRobot(int idRobot) {
         Robot r = getRobotbyId(idRobot);
-        r.ativar(); [cite: 42, 81]
-        this.ordensEnviadas++; [cite: 26]
+        r.ativar(); 
+        this.ordensEnviadas++; 
         System.out.println("Ordem nº " + ordensEnviadas + " processada para " + r.getNome());
     }
 
     public void radar() {
-        System.out.println("\n--- Radar Ativo (Zonas de Carga/Produção) ---"); [cite: 27, 28]
+        System.out.println("\n--- Radar Ativo (Zonas de Carga/Produção) ---");
         for (Robot r : this.robots) {
             if (r.getZona() == Zona.ESTACAO_CARGA || r.getZona() == Zona.LINHA_PROD_1 || r.getZona() == Zona.LINHA_PROD_2) {
-                System.out.println("[DETETADO] ID: " + r.getId() + " | Zona: " + r.getZona() + " | " + r.getNome()); [cite: 68]
+                System.out.println("[DETETADO] ID: " + r.getId() + " | Zona: " + r.getZona() + " | " + r.getNome()); 
             }
         }
     }
-
+    public void exportarRobotsParaTxt(String nomeFicheiro) {
+        com.mycompany.java.robofleet.Gestao.GestorDeFicheiros.exportarRobotsTxt(this.robots, nomeFicheiro); 
+    }
     // =========================== AUXILIARES ===========================
 
     public Tecnico getTecnicobyId(int id) {

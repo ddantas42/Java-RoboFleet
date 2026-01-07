@@ -22,7 +22,7 @@ public abstract class Robot implements Serializable {
 
     public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do robô é obrigatório e único."); [cite: 40]
+            throw new IllegalArgumentException("Nome do robô é obrigatório e único."); 
         }
         this.nome = nome;
         this.marca = marca;
@@ -32,7 +32,23 @@ public abstract class Robot implements Serializable {
         this.bateria = bateria;
         this.motores = new ArrayList<>();
         this.equipa = new ArrayList<>();
-        this.ativo = false; // Por defeito, robôs iniciam estacionados [cite: 67]
+        this.ativo = false; 
+    }
+
+    public String getMarca() { return marca; }
+    public int getAnoFabrico() { return anoFabrico; }
+
+    public void setNome(String nome) { this.nome = nome; }
+    public void setMarca(String marca) { this.marca = marca; }
+
+    protected void associarTecnico(Tecnico t) {
+        if (!equipa.contains(t)) {
+            this.equipa.add(t);
+        }
+    }
+
+    protected void desassociarTecnico(Tecnico t) {
+        this.equipa.remove(t);
     }
 
     // Métodos Abstratos Obrigatórios
@@ -46,13 +62,13 @@ public abstract class Robot implements Serializable {
         if (validarEquipa()) {
             this.ativo = true;
         } else {
-            throw new IllegalStateException("Falha na ativação: Requisitos mínimos de equipa não cumpridos."); [cite: 74]
+            throw new IllegalStateException("Falha na ativação: Requisitos mínimos de equipa não cumpridos.");
         }
     }
 
     public void desativar() {
         this.ativo = false;
-        this.zona = Zona.ESTACAO_CARGA; // Regressam ao centro ao concluir [cite: 47, 52]
+        this.zona = Zona.ESTACAO_CARGA; 
     }
 
     // Cálculo de Idade conforme enunciado 
