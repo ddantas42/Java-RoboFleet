@@ -77,6 +77,9 @@ public abstract class Robot implements Serializable
 	public abstract void adicionarTecnico(Tecnico t);
 	public abstract void removerTecnico(Tecnico t);
 
+	public abstract void activate();
+	public abstract void deactivate();
+
 	public int getId()
 	{
 		return id;
