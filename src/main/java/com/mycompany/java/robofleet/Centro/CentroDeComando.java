@@ -312,6 +312,4 @@ public class CentroDeComando implements Serializable{
 	
 	public int getOrdens() { return this.Ordens; }
 	public int getId() { return this.id; }
-	 
-	
 }
