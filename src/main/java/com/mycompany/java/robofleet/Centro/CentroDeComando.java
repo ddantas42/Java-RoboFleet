@@ -146,6 +146,7 @@ public class CentroDeComando implements Serializable{
 	public void activateAllRobots() {
 		for (Robot robot : this.Robots) {
 			// TODO robot.activate(); Eventually!
+			this.incrementarOrdens();
 		}
 	}
 

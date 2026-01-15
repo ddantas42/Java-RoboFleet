@@ -80,6 +80,11 @@ public abstract class Robot implements Serializable
 	public abstract void activate();
 	public abstract void deactivate();
 
+	
+
+	public void radarDetect() {
+	}
+
 	public int getId()
 	{
 		return id;
