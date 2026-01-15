@@ -30,6 +30,7 @@ public class Menu {
 			System.out.println("(3) Gerir complexo");
 			System.out.println("(4) Utilizar radar");
 			System.out.println("(5) Exportar dados");
+			System.out.println("(6) Recuperar dados");
 			System.out.println("(0) Sair");
 			System.out.print("Opcao: ");
 			
@@ -52,6 +53,8 @@ public class Menu {
 				case 5:
 					exportarDados();
 					break;
+				case 6:
+					recuperarDados();
 				case 0:
 					System.out.println("A gravar dados.");
 					GestorDeFicheiros.guardarDadosBinario(this.centro, "dados.dat");
@@ -256,8 +259,7 @@ public class Menu {
 			System.out.println("(0) Voltar ao menu principal");
 			System.out.print("Opcao: ");
 
-			opcao = sc.nextInt();
-			sc.nextLine();
+			opcao = lerInteiro();
 
 			switch(opcao){
 				case 1:
@@ -274,7 +276,7 @@ public class Menu {
 						System.out.println("Nenhum robot registado.");
 						break;
 					}
-					centro.listRobots();
+					centro.listarRobots();
 					break;
 				case 0:
 					System.out.println("A regressar ao menu principal.");
@@ -314,7 +316,7 @@ public class Menu {
 		}
 		sc.nextLine();
 
-		Bateria bateria = new Bateria(cap, 100);
+		Bateria bateria = new Bateria(cap);
 
 		Zona zonaSelecionada = Zona.ARMAZEM;
 	

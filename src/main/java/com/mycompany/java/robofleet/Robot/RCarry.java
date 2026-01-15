@@ -69,20 +69,21 @@ public class RCarry extends Robot {
 
     /**
      * Valida se o robô cumpre os requisitos mínimos para entrar em operação.
-     * Requisitos para R-Carry: Pelo menos 1 motor instalado e pelo menos 1 técnico 
-     * com a especialização em MANUTENCAO na equipa.
      * * @return true se o robô estiver apto para ativação, false caso contrário.
      */
     @Override
     public boolean podeSerAtivado() {
-        if (motores.isEmpty()) return false;
+        boolean motoresOk = motores.size() >= 2 && motores.size() <= 4;
+        boolean equipaOk = equipa.size() >= 1 && equipa.size() <= 3;
         
+        boolean temManutencao = false;
         for (Tecnico t : equipa) {
             if (t.getEspecialidades().contains(Especializacao.MANUTENCAO)) {
-                return true;
+                temManutencao = true;
+                break;
             }
         }
-        return false;
+        return motoresOk && equipaOk && temManutencao;
     }
 
     /** @return A capacidade de carga atual do robô. */

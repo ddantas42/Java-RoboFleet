@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.Robot;
 import com.mycompany.java.robofleet.Centro.Tecnico;
 import com.mycompany.java.robofleet.Robot.Zona;
+import com.mycompany.java.robofleet.Robot.Especializacao;
 import java.util.Scanner;
 
 
@@ -25,24 +26,19 @@ public class CentroDeComando implements Serializable{
 //! ------------------------------- Tecnicos ------------------------------
 
 	public void registarTecnico(Tecnico tecnico) {
+    if (tecnico.getEspecialidades().contains(Especializacao.ROBOTICA) && tecnico.getIdade() < 30) {
+        throw new IllegalArgumentException("Erro: Engenheiros de Robótica devem ter pelo menos 30 anos.");
+    }
 
-		// Ver se tecnico tem mais de 30 anos
-		if (tecnico.getIdade() < 30) {
-			throw new IllegalArgumentException("Tecnico deve ter pelo menos 30 anos.");
-		}
+    for (Tecnico t : this.Tecnicos) {
+        if (t.mesmoTecnico(tecnico)) {
+            throw new IllegalArgumentException("Tecnico ja existente.");
+        }
+    }
 
-		// Garantir que o seu ID, nome ou NIF nao existe ja
-		for (Tecnico t : this.Tecnicos) {
-			if (t.mesmoTecnico(tecnico) == true) {
-				throw new IllegalArgumentException("Tecnico ja existente.");
-			}
-		}
-
-		// Po-lo por ordem alfabetica do nome da lista
-		this.Tecnicos.add(tecnico);
-		this.Tecnicos.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
-
-	}
+    this.Tecnicos.add(tecnico);
+    this.Tecnicos.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+}
 
 	public void removerTecnicoPorNome(String nomeTecnico) {
 		for (Tecnico t : this.Tecnicos) {
@@ -71,7 +67,7 @@ public class CentroDeComando implements Serializable{
 		Scanner sc = new Scanner(System.in);
 		ArrayList<Tecnico> sortedList = new ArrayList<>(this.Tecnicos);
 
-		System.out.println("\n(1) Nome | (2) ID | (3) Idade");
+		System.out.println("\n(1) Nome  \n(2) ID \n(3) Idade\n");
 		int opcao = sc.nextInt();
 
 		switch (opcao) {
@@ -89,6 +85,7 @@ public class CentroDeComando implements Serializable{
 		for (Tecnico t : sortedList) {
 			System.out.println(t);
 		}
+		sc.close();
 	}
 
 	
@@ -132,10 +129,10 @@ public class CentroDeComando implements Serializable{
 	public void listarRobots() {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("\n--- Menu Listar Robots ---\n");
+		System.out.println("\nMenu Listar Robots\n");
 		System.out.println("(1) Listar por ID dentro de uma Zona");
 		System.out.println("(2) Listar por Ordem de Marca (Alfabetica)");
-		System.out.println("(3) Listar por Antiguidade (Anos e Meses)");
+		System.out.println("(3) Listar por Ano de fabricacao (Anos e Meses)");
 		System.out.print("Opção: ");
 
 		int opcao = sc.nextInt();
@@ -166,11 +163,11 @@ public class CentroDeComando implements Serializable{
 				
 			default:
 				System.out.println("Opção inválida.");
-				return;
+				break;
 		}
 		
 		// Impressão dos resultados
-		System.out.println("\n=== Resultados da Listagem ===");
+		System.out.println("\nResultados da Listagem");
 		java.time.LocalDate hoje = java.time.LocalDate.now();
 
 		for (Robot robot : sortedList) {
@@ -185,6 +182,7 @@ public class CentroDeComando implements Serializable{
 				System.out.println(robot.toString());
 			}
 		}
+		sc.close();
 	}
 
 	public boolean removerRobotPorId(int idRobot) {
@@ -201,12 +199,6 @@ public class CentroDeComando implements Serializable{
 		
 		System.out.println("Erro: Robot com ID " + idRobot + " não encontrado.");
 		return false;
-	}
-
-	public void listRobots() {
-		for (Robot robot : this.Robots) {
-			System.out.println(robot.toString());
-		}
 	}
 
 	public Robot buscarRobot(int idRobot){
@@ -263,8 +255,15 @@ public class CentroDeComando implements Serializable{
 	}
 
 	public void radar() {
-		for (Robot robot : this.Robots) {
-			System.out.println("Robot ID: " + robot.getId() + " - Zona: " + robot.getZona());
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Deseja ver o radar de que zona? (Digite 'TODAS' para visão geral)");
+		String escolha = sc.nextLine().toUpperCase();
+
+		System.out.println("\n--- [ RADAR ROBOFLEET ] ---");
+		for (Robot r : this.Robots) {
+			if (escolha.equals("TODAS") || r.getZona().toString().equals(escolha)) {
+				System.out.println("ZONA: " + r.getZona() + " | " + r.getNome() + " [" + r.getId() + "] - Bateria: " + r.calcularAutonomia());
+			}
 		}
 	}
 

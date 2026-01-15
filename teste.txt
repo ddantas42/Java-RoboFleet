@@ -1,0 +1,14 @@
+Frota Robots:
+Data de exportacao: 2026-01-15
+[OFF] ID: 1
+	Nome: Robo1
+	Marca: dadwa
+	Modelo: dawdaw
+	Ano Fabrico: 1245
+	Zona: ARMAZEM
+	Bateria: 654 Wh
+	Autonomia: 218,00 horas
+	Equipa: Vazia
+	[Carga: 30.0kg | Holofote: true]
+
+

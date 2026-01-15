@@ -265,8 +265,17 @@ public abstract class Robot implements Serializable {
      */
     public double getConsumoTotal() {
         double consumoTotal = 0;
+        
+        // Proteção: Se a lista for nula ou estiver vazia, o consumo é 0
+        if (motores == null || motores.isEmpty()) {
+            return 0;
+        }
+
         for (Motor m : motores) {
-            consumoTotal += m.getPotencia();
+            // Outra proteção: verificar se o objeto motor existe mesmo
+            if (m != null) {
+                consumoTotal += m.getPotencia();
+            }
         }
         return consumoTotal;
     }
@@ -276,14 +285,13 @@ public abstract class Robot implements Serializable {
      * @return Uma string formatada com as horas de autonomia ou mensagem de consumo zero.
      */
     public String calcularAutonomia() {
-        double consumo = getConsumoTotal();
+        double consumo = this.getConsumoTotal(); 
         
-        if (consumo == 0) {
-            return "Infinito (Sem consumo)";
-        }
-        
-        double autonomia = (double) bateria.getCapacidade() / consumo;
-        return String.format("%.2f horas", autonomia);
+        if (consumo == 0) return "Infinito (Sem motores)";
+
+        double horas = (double) this.bateria.getCapacidade() / consumo;
+
+        return String.format("%.2f horas", horas);
     }
     
     /**

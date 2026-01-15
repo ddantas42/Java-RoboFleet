@@ -72,13 +72,6 @@ public class RClean extends Robot {
 
     /**
      * Valida os requisitos técnicos e humanos para a ativação do robô.
-     * * <p>Critérios de Ativação:</p>
-     * <ul>
-     * <li>Motores: Deve ter entre 1 e 2 motores instalados.</li>
-     * <li>Equipa: Deve ter entre 1 e 2 técnicos associados.</li>
-     * <li>Especialização: Pelo menos um técnico deve ter a especialização em MANUTENCAO.</li>
-     * </ul>
-     *
      * @return true se o robô cumprir todos os requisitos para operação industrial.
      */
     @Override
