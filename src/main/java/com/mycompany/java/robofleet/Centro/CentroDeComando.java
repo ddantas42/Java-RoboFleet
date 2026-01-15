@@ -101,6 +101,10 @@ public class CentroDeComando implements Serializable{
 		Robot robo = this.getRobotbyId(idRobot);
 		Tecnico tec = this.getTecnicobyId(idTecnico);
 
+		if (tec.isInTeam()) {
+			throw new IllegalArgumentException("Tecnico ja associado a um robot.");
+		}
+
 		robo.adicionarTecnico(tec);
 		tec.setInTeam(true);
 	}
