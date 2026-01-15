@@ -17,11 +17,17 @@ public class JavaRoboFleet {
 		//testes menu
 		Scanner sc = new Scanner(System.in);
 
-		Menu menu = new Menu(sc);
-		menu.menuInicialString();
-
-		sc.close();
-
+		try{
+			Menu menu = new Menu(sc);
+			menu.menuInicialString();
+		}catch(Exception e){
+			System.out.println(e);
+		}finally{
+			if(sc != null){
+				sc.close();
+			}
+			System.out.println("TESTE: A terminar main.");
+		}
 
 	}
 }

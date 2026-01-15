@@ -38,6 +38,15 @@ public abstract class Robot implements Serializable
 		this.equipa = new ArrayList<Tecnico>();
 	}
 
+	public static void setContadorIds(int novoValor) {
+		contadorIds = novoValor;
+	}
+
+	public static int getContadorIds() {
+		return contadorIds;
+	}
+
+
 	public abstract void adicionarMotorChild(Motor m);
 
 	public void adicionarMotor(Motor m)

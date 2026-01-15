@@ -44,7 +44,7 @@ public class Menu {
 					menuRobots();
 					break;
 				case 3:
-					//menuComplexo();
+					menuComplexo();
 					break;
 				case 4:
 					centro.radar();
@@ -271,6 +271,10 @@ public class Menu {
 					removerRobot();
 					break;
 				case 4:
+					if(centro.getRobots().isEmpty()){
+						System.out.println("Nenhum robot registado.");
+						break;
+					}
 					centro.listRobots();
 					break;
 				case 0:
@@ -401,6 +405,7 @@ public class Menu {
 				novoRobot.adicionarMotorChild(new Motor(sc.nextInt()));
 			}
 			sc.nextLine();
+			centro.registarRobot(novoRobot);
 			System.out.println("Robot criado com sucesso.");
 
 		} catch (Exception e){
@@ -447,6 +452,31 @@ public class Menu {
 			sc.nextLine();
 		}
 	}
+
+	// ================= COMPLEXO =================
+	private void menuComplexo() {
+		int opcao;
+		do {
+			System.out.println("\nGestao de Complexo\n");
+			System.out.println("(1) Ver Estatisticas (Ordens)");
+			System.out.println("(0) Voltar");
+			System.out.print("Opcao: ");
+
+			opcao = sc.nextInt();
+			sc.nextLine();
+
+			switch(opcao){
+				case 1:
+					System.out.println("Total de Ordens executadas: " + centro.getOrdens());
+					break;
+				case 0:
+					break;
+				default:
+					System.out.println("Opcao invalida!");
+			}
+		} while(opcao != 0);
+	}
+
     // ========== FUNÇÕES AUXILIARES ==========
 
     public EspecialidadeTecnico alt_esp() {
@@ -559,11 +589,26 @@ public class Menu {
     }
 
 	void recuperarDados(){
+
 		CentroDeComando recuperado = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
-		if(recuperado != null){
+		if(recuperado != null){	
 			this.centro = recuperado;
+
+			// sincronizar com o id atual
+			int maxId = 0;
+			if(centro.getRobots() != null){
+				for(Robot r : centro.getRobots()){
+					if(r.getId() > maxId){
+						maxId = r.getId();
+					}
+				}
+			}
+			// define o contador como o maior id encontrado
+			Robot.setContadorIds(maxId + 1);
 			System.out.println("Sistema restaurado.");
-		}else{
+
+		}
+		else{
 			System.out.println("Nao foi possivel encontrar dados guardados.");
 		}
 	}
