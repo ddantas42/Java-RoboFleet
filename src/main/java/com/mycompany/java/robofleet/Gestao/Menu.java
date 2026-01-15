@@ -131,17 +131,17 @@ public class Menu {
 			int op = sc.nextInt();
 			sc.nextLine();
 
-			EspecialidadeTecnico esp;
+			Especializacao esp;
 
 			switch(op){
 				case 1:
-					esp = EspecialidadeTecnico.ROBOTICA;
+					esp = Especializacao.ROBOTICA;
 					break;
 				case 2:
-					esp = EspecialidadeTecnico.MANUTENCAO;
+					esp = Especializacao.MANUTENCAO;
 					break;
 				case 3:
-					esp = EspecialidadeTecnico.SISTEMAS;
+					esp = Especializacao.SISTEMAS;
 					break;
 				default:
 					System.out.println("Opcao invalida.");
@@ -184,17 +184,21 @@ public class Menu {
 
             // procurar tec pelo id
             Tecnico t = centro.getTecnicobyId(idTecnico);
+			if(t == null){
+				System.out.println("Tecnico nao encontrado.");
+				return;
+			}
 			
-			System.out.println("Novo nome do Técnico: ");
+			System.out.println("Novo nome do Tecnico: ");
             String novo_nome = sc.nextLine();
 			if (novo_nome == null || novo_nome == "") {
 				novo_nome = t.getName();
 			}	
 			
 
-			EspecialidadeTecnico nova_especialidade = alt_esp();
+			Especializacao nova_especialidade = alt_esp();
 
-			t.setEspecialidade(nova_especialidade);
+			t.adicionarEspecialidade(nova_especialidade);
 			t.setName(novo_nome);
 
 		}
@@ -206,22 +210,17 @@ public class Menu {
 	}
 
 	private void associarTecnicoRobot() {
-
 		try {
-
 			System.out.println("ID do tecnico a associar: ");
-			int idTecnico = sc.nextInt();
-			sc.nextLine();
+			int idTecnico = lerInteiro();
 
 			System.out.println("ID do Robo a associar: ");
-			int idRobot = sc.nextInt();
-			sc.nextLine();
+			int idRobot = lerInteiro();
 
 			centro.associarTecnicoRobot(idTecnico, idRobot);
-
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Erro na associacao: " + e.getMessage());
 		}
 		
 	}
@@ -288,25 +287,10 @@ public class Menu {
 	}
 
 	private void criarRobot() { 
-		System.out.println("Indique o nome do Robot: ");
-		String nome = sc.nextLine();
-
-		System.out.println("Indique a marca: ");
-		String marca = sc.nextLine();
-
-		System.out.println("Indique o modelo: ");
-		String modelo = sc.nextLine();
-
-		System.out.println("Indique o ano de fabrico: ");
-		int ano;
-		try { 
-			ano = sc.nextInt(); 
-		} catch (java.util.InputMismatchException e){
-			System.out.println("Ano de fabrico invalido. Acao cancelada");
-			sc.nextLine();
-			return;
-		}
-		sc.nextLine();
+		System.out.println("Indique o nome do Robot: "); String nome = sc.nextLine();
+		System.out.println("Indique a marca: "); String marca = sc.nextLine();
+		System.out.println("Indique o modelo: "); String modelo = sc.nextLine();
+		System.out.println("Indique o ano de fabrico: "); int ano = lerInteiro();
 
 		System.out.println("Indique a capacidade da bateria: ");
 		int cap;
@@ -319,7 +303,7 @@ public class Menu {
 		}
 		sc.nextLine();
 
-		System.out.println("Indique a potência do motor (W): ");
+		System.out.println("Indique a potencia do motor (W): ");
 		int potenciaMotor;
 		try{
 			potenciaMotor = sc.nextInt();
@@ -405,7 +389,7 @@ public class Menu {
 				novoRobot.adicionarMotorChild(new Motor(sc.nextInt()));
 			}
 			sc.nextLine();
-			centro.registarRobot(novoRobot);
+			centro.adicionarRobot(novoRobot);
 			System.out.println("Robot criado com sucesso.");
 
 		} catch (Exception e){
@@ -421,18 +405,45 @@ public class Menu {
         try {
 
             System.out.println("ID do robot a editar: ");
-            int idRobot = sc.nextInt();
-            sc.nextLine();
-
+            int idRobot = lerInteiro();
             // procurar robot pelo id
             Robot r = centro.getRobotbyId(idRobot);
-            
-			editarAtributosRobot(r);
+
+			int opcao;
+			do {
+				System.out.println("\n--- Edicao de Robot: " + r.getNome());
+				System.out.println("(1) Editar Atributos Basicos (Nome, Marca, Modelo)");
+				System.out.println("(2) Gerir Equipa Tecnica");
+				System.out.println("(3) Gerir Motores");
+				System.out.println("(0) Voltar");
+				System.out.print("Opcao: ");
+				
+				opcao = lerInteiro();
+
+				switch(opcao){
+					case 1:
+						editarAtributosRobot(r);
+						break;
+					case 2:
+						gerirEquipa(r);
+						break;
+					case 3:
+						substituirMotores(r);
+						break;
+					case 0:
+						System.out.println("A voltar.");
+						break;
+					default:
+						System.out.println("Opcao invalida.");
+				}
+			} while(opcao != 0);
 
 		} catch(Exception e) {
-			System.out.println(e);
+			System.out.println("Erro: " + e.getMessage());
 		}
 	}   
+
+
     private void removerRobot() {
 		try {
 			System.out.print("ID do robot a remover: ");
@@ -453,9 +464,76 @@ public class Menu {
 		}
 	}
 
+	private void gerirEquipa(Robot r){
+		int op;
+		
+		do {
+			System.out.println("Gestao de equipa do robot: " + r.getNome());
+			System.out.println("(1) Adicionar Tecnico");
+			System.out.println("(2) Remover Tecnico");
+			System.out.println(("(0) Sair"));
+
+			op = lerInteiro();
+
+			switch (op) {
+				case 1:
+					System.out.println("Lista de Tecnicos Disponiveis (sem quipa):");
+					boolean encontrouDisponivel = false;
+					for (Tecnico t : centro.getTecnicos()) {
+						if (!t.isInTeam()) {
+							System.out.println(t.getId() + " - " + t.getName());
+							encontrouDisponivel = true;
+						}
+					}
+
+					if(!encontrouDisponivel){
+						System.out.println("Nenhum tecnico disponivel");
+					} else {
+						System.out.println("ID do tecnico a associar: ");
+						int idT = lerInteiro();
+						try{
+							centro.associarTecnicoRobot(idT, r.getId());
+							System.out.println("Tecnico associado.");
+						} 
+						catch (Exception e){
+							System.out.println(e);
+						}	
+					}	
+					break;
+				case 2:
+					// Lógica para remover (percorrer r.getEquipa() e libertar o técnico)
+					List<Tecnico> equipaAtual = r.getEquipa();
+					if(equipaAtual.isEmpty()){
+						System.out.println("O robot nao tem tecnicos associados.");
+						break;
+					} else {
+						System.out.println("Lista de tecnicos na equipa: ");
+						for(Tecnico t : equipaAtual){
+							System.out.println("ID: " + t.getId() + " | Nome: " + t.getName());
+						}
+						System.out.println("ID do tecnico a remover: ");
+						int idRemover = lerInteiro();
+						try{
+							centro.desassociarTecnicoRobot(idRemover, r.getId());
+							System.out.println("Tecnico removido da equipa.");
+						} catch(Exception e){
+							System.out.println("Erro : " + e.getMessage());
+						}
+					}
+					break;
+				case 0: 
+					System.out.println("A sair da gestao de equipa.");
+					break;
+				default:
+					System.out.println("Opcao invalida.");
+			}
+		}while (op != 0);
+    }
+
+
 	// ========= DADOS ============
 	private void exportarDados() {
-		System.out.println("Nome do ficheiro para exportar: ");
+		System.out.println("Nome do ficheiro para exportar (ex: ficheiro.txt):");
 		String nomeFicheiro = sc.nextLine();
 
 		if(nomeFicheiro.trim().isEmpty()){
@@ -470,7 +548,9 @@ public class Menu {
 		int opcao;
 		do {
 			System.out.println("\nGestao de Complexo\n");
-			System.out.println("(1) Ver Estatisticas (Ordens)");
+			System.out.println("(1) Consultar estado complexo");
+			System.out.println("(2) Alterar zona de Robot");
+			System.out.println("(3) Ativar Robot");
 			System.out.println("(0) Voltar");
 			System.out.print("Opcao: ");
 
@@ -479,19 +559,69 @@ public class Menu {
 
 			switch(opcao){
 				case 1:
-					System.out.println("Total de Ordens executadas: " + centro.getOrdens());
+					centro.consultarEstadoComplexo();
+					break;
+					
+				case 2:
+					System.out.println("ID do Robot: ");
+					int idZona = sc.nextInt();
+					sc.nextLine();
+
+					System.out.println("Zonas disponives: 1-ARMAZEM, 2-TRIAGEM, 3-LINHA_PROD_1, 4-LINHA_PROD_2, 5-ESTACAO_CARGA");
+					System.out.println("Escolha a zona: ");
+					int Z = sc.nextInt();
+					sc.nextLine();
+
+					Zona novaZonaZ;
+					
+					switch(Z){
+						case 1: 
+							novaZonaZ = Zona.ARMAZEM;
+							break;
+						case 2:
+							novaZonaZ = Zona.TRIAGEM;
+							break;
+						case 3:
+							novaZonaZ = Zona.LINHA_PROD_1;
+							break;
+						case 4:
+							novaZonaZ = Zona.LINHA_PROD_2;
+							break;
+						default:
+							novaZonaZ = Zona.ESTACAO_CARGA;
+							break;
+					};
+					try{
+						centro.definirZona(idZona, novaZonaZ);
+						System.out.println("Zona atualizada.");
+					} catch(Exception e){
+						System.out.println(e);
+					}
+					break;
+				case 3:
+					System.out.println("ID do robot a ativar: ");
+					int idRobot = sc.nextInt();
+					sc.nextLine();
+					if(centro.ativarRobot(idRobot)){
+						System.out.println("Robot ativado com sucesso.");
+					}
+					else{
+						System.out.println("Requisitos minimos nao atingidos ou IDRobot nao encontrado.");
+					}
 					break;
 				case 0:
+					System.out.println("A voltar ao menu principal.");
 					break;
 				default:
 					System.out.println("Opcao invalida!");
 			}
+
 		} while(opcao != 0);
 	}
 
     // ========== FUNÇÕES AUXILIARES ==========
 
-    public EspecialidadeTecnico alt_esp() {
+    public Especializacao alt_esp() {
 
 		System.out.println("Especialidade:");
 		System.out.println("1 - Robotica");
@@ -501,17 +631,17 @@ public class Menu {
 		int op = sc.nextInt();
 		sc.nextLine();
 
-		EspecialidadeTecnico esp;
+		Especializacao esp;
 
 		switch(op){
 			case 1:
-				esp = EspecialidadeTecnico.ROBOTICA;
+				esp = Especializacao.ROBOTICA;
 				break;
 			case 2:
-				esp = EspecialidadeTecnico.MANUTENCAO;
+				esp = Especializacao.MANUTENCAO;
 				break;
 			case 3:
-				esp = EspecialidadeTecnico.SISTEMAS;
+				esp = Especializacao.SISTEMAS;
 				break;
 			default:
 				throw new IllegalArgumentException("Opcao invalida.");
@@ -580,7 +710,7 @@ public class Menu {
 					int n = sc.nextInt();
 					if(n < 1) n = 1;
 					if(n > max) n = max;
-					for(int i = 0; i < max; i++){
+					for(int i = 0; i < n; i++){
 						System.out.printf("Nova potencia motor %d: \n", i + 1);
 						r.adicionarMotorChild(new Motor(sc.nextInt()));
 					}
@@ -597,8 +727,106 @@ public class Menu {
             }
 
         } while (opcao != 0);
-
     }
+
+	private void substituirMotores(Robot r){
+		r.limparMotores();
+		int max = 1;
+		if(r instanceof RCarry) max = 4;
+		else if(r instanceof RClean || r instanceof RFactory) max = 2;
+
+		System.out.printf("Substituir por quantos motores (1-%d)?\n", max);
+		int n = lerInteiro();
+
+		if(n < 1) n = 1;
+		if(n > max) n = max;
+
+		for(int i = 0; i < n; i++){
+			System.out.printf("Nova potencia motor %d (W): \n", i + 1);
+			int pot = lerInteiro();
+			r.adicionarMotorChild(new Motor(pot));
+		}
+		System.out.println("Motores substituidos.");
+	}
+
+	private void associarTecnicoARobot(){
+		System.out.println("ID do robot: ");
+		int idR = lerInteiro();
+		System.out.println("ID do tecnico: ");
+		int idT = lerInteiro();
+
+		try{
+			centro.associarTecnicoRobot(idT, idR);
+			System.out.println("Tecnico associado.");
+		} catch(Exception e){
+			System.out.println("Erro: " + e.getMessage());
+		}
+	}
+
+	private void adicionarMotorRobot(){
+		System.out.println("ID do robot: ");
+		int idR = lerInteiro();
+		System.out.println("Potencia do motor (w): ");
+		int pot = lerInteiro();
+
+		try{
+			Robot r = centro.buscarRobot(idR);
+			r.adicionarMotorChild(new Motor(pot));
+			System.out.println("Motor instalado.");
+		} catch(Exception e){
+			System.out.println("Erro: " + e.getMessage());
+		}
+	}
+
+	private int lerInteiro(){
+		while(!sc.hasNextInt()){
+			System.out.println("Insira um numero valido.");
+			sc.nextLine();
+		}
+		int val = sc.nextInt();
+		sc.nextLine();
+		return val;
+	}
+
+	private Especializacao escolherEspecialidade(int op){
+		Especializacao esp;
+
+		switch (op) {
+			case 1:
+				esp = Especializacao.ROBOTICA;
+				break;
+			case 2:
+				esp = Especializacao.MANUTENCAO;
+				break;
+			default:
+				esp = Especializacao.SISTEMAS;
+				break;
+		};
+		return esp;
+	}
+
+	private Zona escolherZona(int op){
+		Zona zona;
+		switch(op){
+			case 1:
+				zona = Zona.ARMAZEM;
+				break;
+			case 2:
+				zona = Zona.TRIAGEM;
+				break;
+			case 3:
+				zona = Zona.LINHA_PROD_1;
+				break;
+			case 4:
+				zona = Zona.LINHA_PROD_2;
+				break;
+			default:
+				zona = Zona.ESTACAO_CARGA;
+				break;
+		};
+
+		return zona;
+	}
 
 	public void recuperarDados(){
 		this.centro = GestorDeFicheiros.recuperarDadosBinario("dados.dat");

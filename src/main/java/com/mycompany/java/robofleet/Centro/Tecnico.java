@@ -1,77 +1,97 @@
 package com.mycompany.java.robofleet.Centro;
 
-import com.mycompany.java.robofleet.Robot.*;
+import com.mycompany.java.robofleet.Robot.Especializacao;
 import java.io.Serializable;
-import com.mycompany.java.robofleet.Centro.EspecialidadeTecnico;
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tecnico implements Serializable {
 
-	private static int id = 1;
+    private static int contadorIds = 1;
 
-	private String name;
-	private int nif;
-	private LocalDate dataNascimento;
-	private EspecialidadeTecnico especialidade;
-	private boolean inTeam;
+    private int id;
+    private String name;
+    private int nif;
+    private LocalDate dataNascimento;
+    private List<Especializacao> especialidades;
+    private boolean inTeam;
 
-	public Tecnico(String name, int nif, LocalDate dataNascimento, EspecialidadeTecnico especialidade) {
+    public Tecnico(String name, int nif, LocalDate dataNascimento, Especializacao especialidadeInicial) {
+        this.id = contadorIds++;
+        this.name = name;
+        this.nif = nif;
+        this.dataNascimento = dataNascimento;
+        this.especialidades = new ArrayList<>();
+        if (especialidadeInicial != null) {
+            this.especialidades.add(especialidadeInicial);
+        }
+        this.inTeam = false;
+    }
 
-		this.name = name;
-		this.nif = nif;
-		this.dataNascimento = dataNascimento;
-		this.especialidade = especialidade;
-		this.id = id++;
-		this.inTeam = false;
+    public Tecnico(String name, int nif, LocalDate dataNascimento) {
+        this(name, nif, dataNascimento, null);
+    }
 
-	}
+    public String getName() {
+        return name;
+    }
 
-	// Requesitos Funcionais
-	// 3.1 Técnicos Obter nome, e idade
-	public String getName() {
-		return name;
-	}
-	public int getIdade() {
-		int years = LocalDate.now().getYear() - dataNascimento.getYear();
+    public void setName(String novo_nome) {
+        this.name = novo_nome;
+    }
 
-		if (LocalDate.now().getDayOfYear() >= dataNascimento.getDayOfYear()) {
-			years--;
-		}
-		return years;
-	}
+    public int getIdade() {
+        if (dataNascimento == null) return 0;
+        return Period.between(dataNascimento, LocalDate.now()).getYears();
+    }
 
-	public void setEspecialidade(EspecialidadeTecnico nova_especialidade) {
-		this.especialidade = nova_especialidade;
-	}
+    public List<Especializacao> getEspecialidades() {
+        return new ArrayList<>(especialidades);
+    }
 
-	public void setName(String novo_nome) {
-		this.name = novo_nome;
-	}
+    public void adicionarEspecialidade(Especializacao e) {
+        if (e != null && !this.especialidades.contains(e)) {
+            this.especialidades.add(e);
+        }
+    }
 
-	public EspecialidadeTecnico getEspecialidade() {
-		return especialidade;
-	}
-	
-	public int getId(){
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
+    public static void setContadorIds(int valor) {
+        contadorIds = valor;
+    }
 
-	public boolean mesmoTecnico(Tecnico t) {
-		return (this.id == t.id || this.nif == t.nif || this.name.equals(t.name));
-	}
+    public int getNif() {
+        return nif;
+    }
 
-	public boolean setInTeam(boolean inTeam) {
-		this.inTeam = inTeam;
-		return this.inTeam;
-	}
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
 
-	public String toString() {
-		return "ID: " + id + ", Nome: " + name + ", NIF: " + nif + ", Data de Nascimento: " + dataNascimento
-				+ ", Especialidade: " + especialidade;
-	}
+    public boolean isInTeam() {
+        return inTeam;
+    }
 
+    public void setInTeam(boolean inTeam) {
+        this.inTeam = inTeam;
+    }
+
+    public boolean mesmoTecnico(Tecnico t) {
+        if (t == null) return false;
+        return (this.nif == t.nif);
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + 
+               ", Nome: " + name + 
+               ", NIF: " + nif + 
+               ", Idade: " + getIdade() + 
+               ", Especialidades: " + especialidades;
+    }
 }

@@ -33,6 +33,7 @@ public class GestorDeFicheiros {
 			CentroDeComando centroRecuperado = (CentroDeComando) leitor.readObject();
 
 			if(centroRecuperado != null){
+				sincronizarIds(centroRecuperado);
 				System.out.println("Sistema recuperado com sucesso.");
 				return centroRecuperado;
 			}
@@ -63,7 +64,7 @@ public class GestorDeFicheiros {
 				maxIdTec = t.getId();
 			}
 		}
-		//Tecnico.setContadorIds(maxIdTec + 1);
+		Tecnico.setContadorIds(maxIdTec + 1);
 	}
 
 	public static void exportarRobotsParaTexto(ArrayList<Robot> robots, String nomeFicheiro){

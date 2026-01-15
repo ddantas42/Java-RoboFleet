@@ -1,29 +1,31 @@
 package com.mycompany.java.robofleet.Robot;
 
 import com.mycompany.java.robofleet.Centro.Tecnico;
-import com.mycompany.java.robofleet.Centro.EspecialidadeTecnico;
 
 /**
  * Representa um robô de limpeza industrial do tipo R-Clean.
- * Responsável pela higienização e recolha de resíduos, operando com sistemas de sucção.
- * Requer supervisão de técnicos de manutenção para garantir o funcionamento do sistema de aspiração.
+ * Este modelo é responsável pela higienização e recolha de resíduos, 
+ * operando especificamente com sistemas de sucção e iluminação de inspeção.
  */
 public class RClean extends Robot {
 
+    /** Indica se o sistema de sucção de resíduos está ativo/operacional. */
     private boolean sistemaSuccao;
+    
+    /** Indica se o robô possui luz auxiliar para inspeção de resíduos no piso. */
     private boolean luzInspecao;
 
     /**
      * Construtor para o robô R-Clean.
      *
-     * @param nome Nome do robô.
-     * @param marca Marca do fabricante.
+     * @param nome   Nome identificativo do robô.
+     * @param marca  Marca do fabricante.
      * @param modelo Modelo do robô.
-     * @param ano Ano de fabrico.
-     * @param zona Zona de operação.
-     * @param bat Bateria associada.
-     * @param succao Define se o sistema de sucção está ativo.
-     * @param luz Define se possui luz de inspeção de piso.
+     * @param ano    Ano de fabrico.
+     * @param zona   Zona de operação atribuída.
+     * @param bat    Bateria associada para fornecimento de energia.
+     * @param succao Define se o sistema de sucção está instalado de origem.
+     * @param luz    Define se possui luz de inspeção de piso ativa.
      */
     public RClean(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat, boolean succao, boolean luz) {
         super(nome, marca, modelo, ano, zona, bat);
@@ -32,43 +34,52 @@ public class RClean extends Robot {
     }
 
     /**
-     * Adiciona motores ao robô de limpeza conforme os limites do modelo.
+     * Adiciona motores ao robô de limpeza, respeitando o limite físico do modelo.
      *
      * @param m O motor a instalar.
-     * @throws IllegalStateException Se ultrapassar o limite de 2 motores.
+     * @throws IllegalStateException Se o robô já possuir o limite de 2 motores.
      */
     @Override
     public void adicionarMotorChild(Motor m) {
         if (motores.size() >= 2) {
-            throw new IllegalStateException("O R-Clean permite no máximo 2 motores.");
+            throw new IllegalStateException("Limite atingido: O R-Clean permite no máximo 2 motores.");
         }
         super.adicionarMotor(m);
     }
 
     /**
-     * Gere a associação de técnicos à equipa de limpeza.
+     * Associa técnicos à equipa de limpeza, validando a lotação máxima.
      *
-     * @param t Técnico a associar.
-     * @throws IllegalStateException Se ultrapassar o limite de 2 técnicos na equipa.
+     * @param t Técnico a associar à equipa operacional.
+     * @throws IllegalStateException Se o robô já possuir o limite de 2 técnicos.
      */
     @Override
     public void adicionarTecnico(Tecnico t) {
         if (this.equipa.size() >= 2) {
-            throw new IllegalStateException("O R-Clean permite no máximo 2 técnicos.");
+            throw new IllegalStateException("Limite atingido: O R-Clean permite no máximo 2 técnicos.");
         }
         super.associarTecnico(t);
     }
 
+    /**
+     * Remove um técnico da equipa do robô de limpeza.
+     * * @param t Técnico a remover da equipa.
+     */
     @Override
     public void removerTecnico(Tecnico t) {
         super.desassociarTecnico(t);
     }
 
     /**
-     * Valida a ativação do robô de limpeza.
-     * Requisitos: 1 a 2 motores e 1 a 2 técnicos, sendo um de Manutenção obrigatório.
+     * Valida os requisitos técnicos e humanos para a ativação do robô.
+     * * <p>Critérios de Ativação:</p>
+     * <ul>
+     * <li>Motores: Deve ter entre 1 e 2 motores instalados.</li>
+     * <li>Equipa: Deve ter entre 1 e 2 técnicos associados.</li>
+     * <li>Especialização: Pelo menos um técnico deve ter a especialização em MANUTENCAO.</li>
+     * </ul>
      *
-     * @return true se estiver apto para operação industrial.
+     * @return true se o robô cumprir todos os requisitos para operação industrial.
      */
     @Override
     public boolean podeSerAtivado() {
@@ -77,7 +88,7 @@ public class RClean extends Robot {
         
         boolean temManutencao = false;
         for (Tecnico t : equipa) {
-            if (t.getEspecialidade() == EspecialidadeTecnico.MANUTENCAO) {
+            if (t.getEspecialidades().contains(Especializacao.MANUTENCAO)) {
                 temManutencao = true;
                 break;
             }
@@ -85,6 +96,11 @@ public class RClean extends Robot {
         return motoresOk && equipaOk && temManutencao;
     }
 
+    /**
+     * Devolve uma representação textual dos dados do robô de limpeza.
+     * Inclui as informações base herdadas e o estado dos sistemas de sucção e luz.
+     * * @return String com os detalhes técnicos formatados.
+     */
     @Override
     public String toString() {
         return super.toString() + "\n\t[Específico R-Clean: Sucção " + sistemaSuccao + " | Luz de Piso: " + luzInspecao + "]";

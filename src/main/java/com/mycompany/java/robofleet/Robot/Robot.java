@@ -9,7 +9,6 @@ import java.util.List;
  * Classe abstrata que serve de base para todos os robôs do sistema ROBOFLEET.
  * Esta classe define os atributos comuns a todos os modelos, gere a atribuição
  * de identificadores únicos sequenciais e mantém a contagem total da frota.
- * Implementa {@link Serializable} para permitir a persistência de dados.
  */
 public abstract class Robot implements Serializable {
 
@@ -45,6 +44,9 @@ public abstract class Robot implements Serializable {
 
     /** Equipa de técnicos atualmente associada à operação ou manutenção do robô. */
     protected List<Tecnico> equipa;
+
+    /** Estado de funcionamento do robô. */
+    protected boolean ativo = false;
 
     /**
      * Construtor da classe Robot.
@@ -97,6 +99,30 @@ public abstract class Robot implements Serializable {
     }
 
     /**
+     * Devolve o ano em que o robô foi fabricado.
+     * * @return O ano de fabrico (ex: 2024).
+     */
+    public int getAnoFabrico() {
+        return anoFabrico;
+    }
+
+    /**
+     * Atualiza o ano de fabrico do robô.
+     * * @param anoFabrico O novo ano de fabrico a registar.
+     */
+    public void setAnoFabrico(int anoFabrico) {
+        this.anoFabrico = anoFabrico;
+    }
+
+    public boolean isAtivo() { 
+        return ativo; 
+    }
+
+    public void setAtivo(boolean ativo) { 
+        this.ativo = ativo; 
+    }
+
+    /**
      * Devolve o número total de robôs existentes no sistema.
      *
      * @return O total acumulado de instâncias de robôs.
@@ -140,7 +166,7 @@ public abstract class Robot implements Serializable {
      *
      * @param m O motor a adicionar.
      */
-    public void adicionarMotor(Motor m) {
+    protected void adicionarMotor(Motor m) {
         this.motores.add(m);
     }
 
@@ -150,7 +176,7 @@ public abstract class Robot implements Serializable {
      * @param t O técnico a associar.
      * @throws IllegalArgumentException Se o técnico já estiver presente na lista de equipa.
      */
-    public void associarTecnico(Tecnico t) {
+    protected void associarTecnico(Tecnico t) {
         for (Tecnico tecnico : equipa) {
             if (tecnico.getId() == t.getId()) {
                 throw new IllegalArgumentException("Técnico já associado ao robô.");
@@ -199,28 +225,37 @@ public abstract class Robot implements Serializable {
         return Integer.hashCode(id);
     }
     
-    // Getters e Setters documentados implicitamente pelo Javadoc padrão
-    
+    /** @return O identificador único do robô. */
     public int getId() { return id; }
 
+    /** @return O nome do robô. */
     public String getNome() { return nome; }
 
+    /** @return A zona operacional atual. */
     public Zona getZona() { return zona; }
 
+    /** @param zona Define a nova zona operacional. */
     public void setZona(Zona zona) { this.zona = zona; }
 
+    /** @param nome Define o novo nome do robô. */
     public void setNome(String nome) { this.nome = nome; }
 
+    /** @param marca Define a marca do fabricante. */
     public void setMarca(String marca) { this.marca = marca; }
 
+    /** @param modelo Define o modelo do robô. */
     public void setModelo(String modelo) { this.modelo = modelo; }
 
+    /** @return A marca do fabricante. */
     public String getMarca() { return marca; }
 
+    /** @return O modelo do robô. */
     public String getModelo() { return modelo; }
 
+    /** @return A lista de motores instalados. */
     public List<Motor> getMotores() { return motores; }
 
+    /** @return A equipa de técnicos associada. */
     public List<Tecnico> getEquipa() { return equipa; }
 
     /**
@@ -238,9 +273,6 @@ public abstract class Robot implements Serializable {
 
     /**
      * Calcula a estimativa de autonomia operacional em horas.
-     * Utiliza a fórmula matemática:
-     * $$ Autonomia = \frac{Capacidade\ (Ah)}{Consumo\ Total\ (W)} $$
-     *
      * @return Uma string formatada com as horas de autonomia ou mensagem de consumo zero.
      */
     public String calcularAutonomia() {
@@ -262,7 +294,10 @@ public abstract class Robot implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append("\n");
+
+        String status = ativo ? "[ON]" : "[OFF]";
+
+        sb.append(status).append(" ID: ").append(id).append("\n");
         sb.append("\tNome: ").append(nome).append("\n");
         sb.append("\tMarca: ").append(marca).append("\n");
         sb.append("\tModelo: ").append(modelo).append("\n");

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import com.mycompany.java.robofleet.Robot.Robot;
 import com.mycompany.java.robofleet.Centro.Tecnico;
+import com.mycompany.java.robofleet.Robot.Zona;
 import java.util.Scanner;
 
 
@@ -67,65 +68,139 @@ public class CentroDeComando implements Serializable{
 
 	// Lista os Tecnicos por ordem alfabetica porque ja estao ordenados
 	public void listarTecnicos() {
-
 		Scanner sc = new Scanner(System.in);
-
-		System.out.println("\nMenu Listar\n");
-		System.out.println("(1) Listar por Ordem Alfabetica");
-		System.out.println("(2) Listar por ID");
-		System.out.println("(3) Listar por idade");
-
-		int opcao = sc.nextInt();
-		sc.nextLine();
-
 		ArrayList<Tecnico> sortedList = new ArrayList<>(this.Tecnicos);
+
+		System.out.println("\n(1) Nome | (2) ID | (3) Idade");
+		int opcao = sc.nextInt();
+
 		switch (opcao) {
 			case 1:
+				sortedList.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
 				break;
 			case 2:
-				this.Tecnicos.sort((t1, t2) -> Integer.compare(t1.getId(), t2.getId()));
+				sortedList.sort((t1, t2) -> Integer.compare(t1.getId(), t2.getId()));
 				break;
 			case 3:
-				this.Tecnicos.sort((t1, t2) -> Integer.compare(t1.getIdade(), t2.getIdade()));
+				sortedList.sort((t1, t2) -> Integer.compare(t1.getIdade(), t2.getIdade()));
 				break;
 		}
 
-		for (Tecnico tecnico : sortedList) {
-			System.out.println(tecnico.toString());
+		for (Tecnico t : sortedList) {
+			System.out.println(t);
 		}
-		
 	}
 
+	
+	
 	public void associarTecnicoRobot(int idTecnico, int idRobot) {
 
-		Robot robo = this.getRobotbyId(idRobot);
-		Tecnico tec = this.getTecnicobyId(idTecnico);
+        Robot robo = this.getRobotbyId(idRobot);
+        Tecnico tec = this.getTecnicobyId(idTecnico);
 
-		robo.adicionarTecnico(tec);
-		tec.setInTeam(true);
-	}
+        if (tec.isInTeam()) {
+            throw new IllegalArgumentException("Erro: O técnico " + tec.getName() + " já faz parte de uma equipa.");
+        }
 
-		public void desassociarTecnicoRobot(int idTecnico, int idRobot) {
+        robo.adicionarTecnico(tec);
+        
+        tec.setInTeam(true);
+        
+        System.out.println("Técnico " + tec.getName() + " associado com sucesso ao Robot " + robo.getNome());
+    }
 
-		Robot robo = this.getRobotbyId(idRobot);
-		Tecnico tec = this.getTecnicobyId(idTecnico);
+	public void desassociarTecnicoRobot(int idTecnico, int idRobot) {
 
-		robo.removerTecnico(tec);
-		tec.setInTeam(false);
+	Robot robo = this.getRobotbyId(idRobot);
+	Tecnico tec = this.getTecnicobyId(idTecnico);
+
+	robo.removerTecnico(tec);
+	tec.setInTeam(false);
 	}
 	
 
 //! -------------------------------- Robots -------------------------------
-	public void registarRobot(Robot robot) {
-		this.Robots.add(robot);
+	public void adicionarRobot(Robot novo) {
+        for (Robot r : Robots) {
+            if (r.getNome().equalsIgnoreCase(novo.getNome())) {
+                throw new IllegalArgumentException("Erro: Já existe um robot com o nome " + novo.getNome());
+            }
+        }
+        this.Robots.add(novo);
+    }
+	
+	public void listarRobots() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n--- Menu Listar Robots ---\n");
+		System.out.println("(1) Listar por ID dentro de uma Zona");
+		System.out.println("(2) Listar por Ordem de Marca (Alfabetica)");
+		System.out.println("(3) Listar por Antiguidade (Anos e Meses)");
+		System.out.print("Opção: ");
+
+		int opcao = sc.nextInt();
+		sc.nextLine();
+
+		ArrayList<Robot> sortedList = new ArrayList<>(this.Robots);
+
+		switch (opcao) {
+			case 1:
+				// Primeiro perguntamos a zona
+				System.out.println("Escolha a Zona (ARMAZEM, TRIAGEM, LINHA_PROD_1, LINHA_PROD_2, ESTACAO_CARGA):");
+				String zonaInput = sc.nextLine().toUpperCase();
+				
+				// Filtramos apenas os daquela zona e depois ordenamos por ID
+				sortedList.removeIf(r -> !r.getZona().toString().equals(zonaInput));
+				sortedList.sort((r1, r2) -> Integer.compare(r1.getId(), r2.getId()));
+				break;
+
+			case 2:
+				// Ordenação por Marca (A-Z)
+				sortedList.sort((r1, r2) -> r1.getMarca().compareToIgnoreCase(r2.getMarca()));
+				break;
+
+			case 3:
+				// Ordenação por Ano de Fabrico (Decrescente - do mais novo para o mais velho)
+				sortedList.sort((r1, r2) -> Integer.compare(r2.getAnoFabrico(), r1.getAnoFabrico()));
+				break;
+				
+			default:
+				System.out.println("Opção inválida.");
+				return;
+		}
+		
+		// Impressão dos resultados
+		System.out.println("\n=== Resultados da Listagem ===");
+		java.time.LocalDate hoje = java.time.LocalDate.now();
+
+		for (Robot robot : sortedList) {
+			if (opcao == 3) {
+				// No caso da antiguidade, calculamos anos e meses antes de imprimir
+				int anos = hoje.getYear() - robot.getAnoFabrico();
+				int meses = hoje.getMonthValue(); // Meses desde o início do ano atual
+				
+				System.out.println(robot.toString());
+				System.out.println("\tTempo desde o fabrico: " + anos + " anos e " + meses + " meses.");
+			} else {
+				System.out.println(robot.toString());
+			}
+		}
 	}
 
 	public boolean removerRobotPorId(int idRobot) {
 		Robot r = this.buscarRobot(idRobot);
+		
 		if (r != null) {
+			for (Tecnico t : r.getEquipa()) {
+				t.setInTeam(false); 
+			}
+			
+			System.out.println("Robot " + r.getNome() + " removido e equipa libertada.");
 			return this.Robots.remove(r);
 		}
-		return true;
+		
+		System.out.println("Erro: Robot com ID " + idRobot + " não encontrado.");
+		return false;
 	}
 
 	public void listRobots() {
@@ -143,11 +218,48 @@ public class CentroDeComando implements Serializable{
 		return null;
 	}
 
-	public void activateAllRobots() {
-		for (Robot robot : this.Robots) {
-			// TODO robot.activate(); Eventually!
+	/**
+	 * ativa um robot especifico e incrementa a contagem de ordens
+	 * @param idRobot
+	 * @return
+	 */
+	public boolean ativarRobot(int idRobot){
+		Robot r = this.buscarRobot(idRobot);
+		
+		if(r != null && r.podeSerAtivado()){
 			this.incrementarOrdens();
+			System.out.println("Ordem enviada. Robot " + r.getNome() + " ativado.");
+			return true;
 		}
+		return false;
+	}
+
+	public void definirZona(int idRobot, Zona novaZona) {
+		Robot r = this.buscarRobot(idRobot);
+		
+		if (r == null) {
+			throw new IllegalArgumentException("Erro: Robot com ID " + idRobot + " não encontrado.");
+		}
+		try {
+			r.setZona(novaZona); 
+			System.out.println("Sucesso: Robot " + r.getNome() + " movido para " + novaZona);
+			
+		} catch (IllegalArgumentException e) {
+			System.out.println("Operacao Negada: " + e.getMessage());
+		}
+	}
+
+	public void activateAllRobots() {
+		int ativadosAgora = 0;
+		for (Robot robot : this.Robots) {
+			// Verifica se cumpre os requisitos (motores/equipa) e se já não está ativo
+			if (robot.podeSerAtivado() && !robot.isAtivo()) {
+				robot.setAtivo(true);
+				this.incrementarOrdens();
+				ativadosAgora++;
+			}
+		}
+		System.out.println("Processo concluído. " + ativadosAgora + " novos robots ativados.");
 	}
 
 	public void radar() {
@@ -158,6 +270,21 @@ public class CentroDeComando implements Serializable{
 
 	private void incrementarOrdens() {
 		this.Ordens++;
+	}
+
+//! -------------------------------- Complexo -----------------------------
+
+	public void consultarEstadoComplexo(){
+		System.out.println("Estado complexo: ");
+		System.out.println("Total de ordens: " + this.Ordens);
+		System.out.println("Frota atual: ");
+		if(this.Robots.isEmpty()){
+			System.out.println("Nenhum robot registado.");
+		} else {
+			for(Robot r : this.Robots){
+				System.out.println("Nome: " + r.getNome() + " | ID: " + r.getId() + " | Localizacao: " + r.getZona());
+			}
+		}
 	}
 
 //! -------------------------------- Getters ------------------------------
@@ -187,4 +314,5 @@ public class CentroDeComando implements Serializable{
 	public int getOrdens() { return this.Ordens; }
 	public int getId() { return this.id; }
 	 
+	
 }
