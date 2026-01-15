@@ -1,172 +1,285 @@
 package com.mycompany.java.robofleet.Robot;
 
-
 import com.mycompany.java.robofleet.Centro.Tecnico;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Robot implements Serializable
-{
-	private static int contadorIds = 1;
+/**
+ * Classe abstrata que serve de base para todos os robôs do sistema ROBOFLEET.
+ * Esta classe define os atributos comuns a todos os modelos, gere a atribuição
+ * de identificadores únicos sequenciais e mantém a contagem total da frota.
+ * Implementa {@link Serializable} para permitir a persistência de dados.
+ */
+public abstract class Robot implements Serializable {
 
-	protected int id;
-	protected String nome;
-	protected String marca;
-	protected String modelo;
-	protected int anoFabrico;
-	protected Zona zona;
-	protected Bateria bateria;
-	protected List<Motor> motores;
-	protected List<Tecnico> equipa;
+    /** Contador estático para geração de IDs únicos e sequenciais. */
+    private static int contadorIds = 1;
 
-	public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria)
-	{
-		if (nome == null || nome.isEmpty())
-		{
-			throw new IllegalArgumentException("Nome inválido");
-		}
+    /** Contador do número total de robôs instanciados no complexo industrial. */
+    private static int totalRobotsExistentes = 0;
 
-		this.id = contadorIds++;
-		this.nome = nome;
-		this.marca = marca;
-		this.modelo = modelo;
-		this.anoFabrico = anoFabrico;
-		this.zona = zona;
-		this.bateria = bateria;
-		this.motores = new ArrayList<Motor>();
-		this.equipa = new ArrayList<Tecnico>();
-	}
+    /** Identificador único do robô. */
+    protected int id;
 
-	public static void setContadorIds(int novoValor) {
-		contadorIds = novoValor;
-	}
+    /** Nome identificador do robô. */
+    protected String nome;
 
-	public static int getContadorIds() {
-		return contadorIds;
-	}
+    /** Marca do fabricante do robô. */
+    protected String marca;
 
+    /** Modelo específico do robô. */
+    protected String modelo;
 
-	public abstract void adicionarMotorChild(Motor m);
+    /** Ano em que o robô foi fabricado. */
+    protected int anoFabrico;
 
-	public void adicionarMotor(Motor m)
-	{
-		this.motores.add(m);
-	}
+    /** Zona operacional onde o robô está atualmente alocado. */
+    protected Zona zona;
 
-	
-	public void associarTecnico(Tecnico t)
-	{
-		for (Tecnico tecnico : equipa) {
-			if (tecnico.getId() == t.getId()) {
-				throw new IllegalArgumentException("Técnico já associado ao robô");
-			}
-		}
-		equipa.add(t);
-	}
+    /** Sistema de bateria instalado no robô. */
+    protected Bateria bateria;
 
-	public void limparMotores(){
-		this.motores.clear();
-	}
+    /** Lista de motores que compõem o sistema de propulsão ou operação. */
+    protected List<Motor> motores;
 
-	public void desassociarTecnico(Tecnico t)
-	{
-		equipa.remove(t);
-	}
+    /** Equipa de técnicos atualmente associada à operação ou manutenção do robô. */
+    protected List<Tecnico> equipa;
 
-	public abstract void adicionarTecnico(Tecnico t);
-	public abstract void removerTecnico(Tecnico t);
+    /**
+     * Construtor da classe Robot.
+     * Inicializa os dados base, atribui um ID automático e incrementa o total da frota.
+     *
+     * @param nome       O nome do robô (obrigatório).
+     * @param marca      A marca do fabricante.
+     * @param modelo     O modelo do robô.
+     * @param anoFabrico O ano de fabrico.
+     * @param zona       A zona operacional inicial.
+     * @param bateria    O objeto Bateria associado ao robô.
+     * @throws IllegalArgumentException Se o nome for nulo ou estiver vazio.
+     */
+    public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria) {
+        
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do robot é obrigatório.");
+        }
 
-	public abstract void activate();
-	public abstract void deactivate();
+        this.id = contadorIds++;
+        this.nome = nome;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.anoFabrico = anoFabrico;
+        this.zona = zona;
+        this.bateria = bateria;
+        this.motores = new ArrayList<>();
+        this.equipa = new ArrayList<>();
+        
+        totalRobotsExistentes++;
+    }
 
-	
+    /**
+     * Define o ponto de partida para novos IDs. 
+     * Essencial para garantir a continuidade da numeração após o restauro de dados.
+     *
+     * @param novoValor O valor para o próximo ID a ser atribuído.
+     */
+    public static void setContadorIds(int novoValor) {
+        contadorIds = novoValor;
+    }
 
-	public void radarDetect() {
-	}
+    /**
+     * Devolve o valor atual do contador de IDs.
+     *
+     * @return O valor inteiro do contador global de IDs.
+     */
+    public static int getContadorIds() {
+        return contadorIds;
+    }
 
-	public int getId()
-	{
-		return id;
-	} 
+    /**
+     * Devolve o número total de robôs existentes no sistema.
+     *
+     * @return O total acumulado de instâncias de robôs.
+     */
+    public static int getTotalRobots() {
+        return totalRobotsExistentes;
+    }
 
-	public String getNome()
-	{
-		return nome;
-	}
+    /**
+     * Método abstrato para adicionar motores, devendo respeitar os limites 
+     * específicos definidos em cada subclasse.
+     *
+     * @param m O motor a ser adicionado.
+     */
+    public abstract void adicionarMotorChild(Motor m);
 
-	public Zona getZona()
-	{
-		return zona;
-	}
+    /**
+     * Método abstrato para associar técnicos à equipa, respeitando as regras 
+     * e limites de cada modelo de robô.
+     *
+     * @param t O técnico a associar.
+     */
+    public abstract void adicionarTecnico(Tecnico t);
 
-	public void setZona(Zona zona){
-		this.zona = zona;
-	}
+    /**
+     * Método abstrato para remover um técnico da equipa associada ao robô.
+     *
+     * @param t O técnico a remover.
+     */
+    public abstract void removerTecnico(Tecnico t);
 
-	public void setNome(String nome){
-		this.nome = nome;
-	}
+    /**
+     * Valida se o robô cumpre todos os requisitos (motores e equipa) para entrar em funcionamento.
+     *
+     * @return {@code true} se o robô puder ser ativado, {@code false} caso contrário.
+     */
+    public abstract boolean podeSerAtivado();
 
-	public void setMarca(String marca){
-		this.marca = marca;
-	}
+    /**
+     * Adiciona um motor à lista interna de componentes do robô.
+     *
+     * @param m O motor a adicionar.
+     */
+    public void adicionarMotor(Motor m) {
+        this.motores.add(m);
+    }
 
-	public void setModelo(String modelo){
-		this.modelo = modelo;
-	}
+    /**
+     * Associa um técnico à equipa do robô. Verifica se o técnico já não faz parte da equipa.
+     *
+     * @param t O técnico a associar.
+     * @throws IllegalArgumentException Se o técnico já estiver presente na lista de equipa.
+     */
+    public void associarTecnico(Tecnico t) {
+        for (Tecnico tecnico : equipa) {
+            if (tecnico.getId() == t.getId()) {
+                throw new IllegalArgumentException("Técnico já associado ao robô.");
+            }
+        }
+        equipa.add(t);
+    }
 
-	public String getMarca(){
-		return marca;
-	}
+    /**
+     * Realiza a remoção física de um técnico da lista de equipa.
+     *
+     * @param t O técnico a desassociar.
+     */
+    protected void desassociarTecnico(Tecnico t) {
+        equipa.remove(t);
+    }
 
-	public String getModelo(){
-		return modelo;
-	}
+    /**
+     * Remove todos os motores instalados no robô, limpando a lista interna.
+     */
+    public void limparMotores() {
+        this.motores.clear();
+    }
 
-	public List<Motor> getMotores() {
-		return motores;
-	}
-	
-	public double getConsumoTotal() {
-		double consumoTotal = 0;
-		for (Motor m : motores) {
-			consumoTotal += m.getPotencia();
-		}
-		return consumoTotal;
-	}
+    /**
+     * Compara este robô com outro objeto para verificar igualdade baseada no ID único.
+     *
+     * @param obj O objeto a comparar.
+     * @return {@code true} se os objetos forem o mesmo ou possuírem o mesmo ID.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Robot other = (Robot) obj;
+        return this.id == other.id;
+    }
 
-	public String calcularAutonomia() {
-		double consumo = getConsumoTotal();
-		
-		if (consumo == 0) {
-			return "Infinito (Sem consumo)";
-		}
-		
-		
-		double autonomia = bateria.getCapacidade() / consumo; 
-		
-		// Formata para 2 casas decimais
-		return String.format("%.2f horas", autonomia);
-	}
+    /**
+     * Gera o código hash para o robô baseado no seu ID único.
+     *
+     * @return O valor de hash code.
+     */
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+    
+    // Getters e Setters documentados implicitamente pelo Javadoc padrão
+    
+    public int getId() { return id; }
 
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("ID: ").append(id).append("\n");
-		sb.append("\tNome: ").append(nome).append("\n");
-		sb.append("\tMarca: ").append(marca).append("\n");
-		sb.append("\tModelo: ").append(modelo).append("\n");
-		sb.append("\tAno Fabrico: ").append(anoFabrico).append("\n");
-		sb.append("\tZona: ").append(zona).append("\n");
-		sb.append("\tBateria: ").append(bateria).append("\n");
-		sb.append("\tMotores: ").append(motores).append("\n");
-		sb.append("\tAutonomia: ").append(calcularAutonomia()).append("\n");
-		sb.append("\tEquipa:\n");
-		for (Tecnico t : equipa) {
-			sb.append("\t\t").append(t.getName()).append("\n");
-		}
-		return sb.toString();
-	}
+    public String getNome() { return nome; }
+
+    public Zona getZona() { return zona; }
+
+    public void setZona(Zona zona) { this.zona = zona; }
+
+    public void setNome(String nome) { this.nome = nome; }
+
+    public void setMarca(String marca) { this.marca = marca; }
+
+    public void setModelo(String modelo) { this.modelo = modelo; }
+
+    public String getMarca() { return marca; }
+
+    public String getModelo() { return modelo; }
+
+    public List<Motor> getMotores() { return motores; }
+
+    public List<Tecnico> getEquipa() { return equipa; }
+
+    /**
+     * Calcula o consumo total de energia do robô somando a potência de todos os motores.
+     *
+     * @return O consumo total em Watts (W).
+     */
+    public double getConsumoTotal() {
+        double consumoTotal = 0;
+        for (Motor m : motores) {
+            consumoTotal += m.getPotencia();
+        }
+        return consumoTotal;
+    }
+
+    /**
+     * Calcula a estimativa de autonomia operacional em horas.
+     * Utiliza a fórmula matemática:
+     * $$ Autonomia = \frac{Capacidade\ (Ah)}{Consumo\ Total\ (W)} $$
+     *
+     * @return Uma string formatada com as horas de autonomia ou mensagem de consumo zero.
+     */
+    public String calcularAutonomia() {
+        double consumo = getConsumoTotal();
+        
+        if (consumo == 0) {
+            return "Infinito (Sem consumo)";
+        }
+        
+        double autonomia = (double) bateria.getCapacidade() / consumo;
+        return String.format("%.2f horas", autonomia);
+    }
+    
+    /**
+     * Gera uma representação textual detalhada do robô, incluindo dados da bateria e equipa.
+     *
+     * @return String com as informações formatadas do robô.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("\tNome: ").append(nome).append("\n");
+        sb.append("\tMarca: ").append(marca).append("\n");
+        sb.append("\tModelo: ").append(modelo).append("\n");
+        sb.append("\tAno Fabrico: ").append(anoFabrico).append("\n");
+        sb.append("\tZona: ").append(zona).append("\n");
+        sb.append("\tBateria: ").append(bateria).append("\n");
+        sb.append("\tAutonomia: ").append(calcularAutonomia()).append("\n");
+        sb.append("\tEquipa: ");
+        
+        if (equipa.isEmpty()) {
+            sb.append("Vazia");
+        } else {
+            for (Tecnico t : equipa) {
+                sb.append(t.getName()).append("; ");
+            }
+        }
+        
+        return sb.toString();
+    }
 }

@@ -29,7 +29,7 @@ public class Menu {
 			System.out.println("(2) Gerir Robots");
 			System.out.println("(3) Gerir complexo");
 			System.out.println("(4) Utilizar radar");
-			System.out.println("(5) Recuperar dados");
+			System.out.println("(5) Exportar dados");
 			System.out.println("(0) Sair");
 			System.out.print("Opcao: ");
 			
@@ -50,7 +50,7 @@ public class Menu {
 					centro.radar();
 					break;
 				case 5:
-					recuperarDados();
+					exportarDados();
 					break;
 				case 0:
 					System.out.println("A gravar dados.");
@@ -453,6 +453,18 @@ public class Menu {
 		}
 	}
 
+	// ========= DADOS ============
+	private void exportarDados() {
+		System.out.println("Nome do ficheiro para exportar: ");
+		String nomeFicheiro = sc.nextLine();
+
+		if(nomeFicheiro.trim().isEmpty()){
+			nomeFicheiro = "robotsLista.txt";
+		}
+		GestorDeFicheiros.exportarRobotsParaTexto(centro.getRobots(), nomeFicheiro);
+	}
+
+
 	// ================= COMPLEXO =================
 	private void menuComplexo() {
 		int opcao;
@@ -588,28 +600,7 @@ public class Menu {
 
     }
 
-	void recuperarDados(){
-
-		CentroDeComando recuperado = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
-		if(recuperado != null){	
-			this.centro = recuperado;
-
-			// sincronizar com o id atual
-			int maxId = 0;
-			if(centro.getRobots() != null){
-				for(Robot r : centro.getRobots()){
-					if(r.getId() > maxId){
-						maxId = r.getId();
-					}
-				}
-			}
-			// define o contador como o maior id encontrado
-			Robot.setContadorIds(maxId + 1);
-			System.out.println("Sistema restaurado.");
-
-		}
-		else{
-			System.out.println("Nao foi possivel encontrar dados guardados.");
-		}
+	public void recuperarDados(){
+		this.centro = GestorDeFicheiros.recuperarDadosBinario("dados.dat");
 	}
 }
