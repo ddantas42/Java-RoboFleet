@@ -3,12 +3,7 @@ package com.mycompany.java.robofleet;
 import com.mycompany.java.robofleet.Gestao.Menu;
 import java.util.Scanner;
 import java.io.File;
-
-/**
- * Classe principal responsável pelo arranque do sistema RoboFleet.
- * Coordena a inicialização da interface, a recuperação automática de dados
- * persistidos e o encerramento seguro dos recursos.
- */
+/* the main */
 public class JavaRoboFleet {
 
     /**

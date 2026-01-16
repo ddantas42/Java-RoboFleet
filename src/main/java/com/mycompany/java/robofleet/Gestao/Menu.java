@@ -30,7 +30,6 @@ public class Menu {
 			System.out.println("(3) Gerir complexo");
 			System.out.println("(4) Utilizar radar");
 			System.out.println("(5) Exportar dados");
-			System.out.println("(6) Recuperar dados");
 			System.out.println("(0) Sair");
 			System.out.print("Opcao: ");
 			
@@ -53,8 +52,6 @@ public class Menu {
 				case 5:
 					exportarDados();
 					break;
-				case 6:
-					recuperarDados();
 				case 0:
 					System.out.println("A gravar dados.");
 					GestorDeFicheiros.guardarDadosBinario(this.centro, "dados.dat");
@@ -259,7 +256,8 @@ public class Menu {
 			System.out.println("(0) Voltar ao menu principal");
 			System.out.print("Opcao: ");
 
-			opcao = lerInteiro();
+			opcao = sc.nextInt();
+			sc.nextLine();
 
 			switch(opcao){
 				case 1:
@@ -316,7 +314,7 @@ public class Menu {
 		}
 		sc.nextLine();
 
-		Bateria bateria = new Bateria(cap);
+		Bateria bateria = new Bateria(cap, 100);
 
 		Zona zonaSelecionada = Zona.ARMAZEM;
 	
@@ -370,7 +368,7 @@ public class Menu {
 					break;
 
 				default:
-					System.out.println("Tipo de robot  inválido.");
+					System.out.println("Tipo de robot  invalido.");
 					return;
 
 			}
@@ -381,7 +379,7 @@ public class Menu {
 			else if (novoRobot instanceof RClean || novoRobot instanceof RFactory) maxMotores = 2;
 
 			
-			System.out.printf("Indique o numero de motores (0 - %d): ", maxMotores);
+			System.out.printf("Indique o numero de motores (2 - %d): ", maxMotores);
 			int n = sc.nextInt();
 			if(n < 1) n = 1;
 			if(n > maxMotores) n = maxMotores;
@@ -503,7 +501,7 @@ public class Menu {
 					}	
 					break;
 				case 2:
-					// Lógica para remover (percorrer r.getEquipa() e libertar o técnico)
+					// Logica para remover (percorrer r.getEquipa() e libertar o tecnico)
 					List<Tecnico> equipaAtual = r.getEquipa();
 					if(equipaAtual.isEmpty()){
 						System.out.println("O robot nao tem tecnicos associados.");

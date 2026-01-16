@@ -4,27 +4,18 @@ import com.mycompany.java.robofleet.Centro.Tecnico;
 
 /**
  * Representa um robô de transporte do tipo R-Carry.
- * Este modelo é especializado na movimentação de cargas pesadas e possui limites 
- * específicos de hardware e pessoal (máximo de 4 motores e 3 técnicos).
+ * Este modelo e especializado na movimentação de cargas pesadas e possui limites 
  */
 public class RCarry extends Robot {
 
-    /** Capacidade máxima de carga que o robô consegue transportar em kg. */
+    /** Capacidade maxima de carga que o robô consegue transportar em kg. */
     private double capacidadeCarga;
     
-    /** Indica se o robô está equipado com um sistema de iluminação frontal (holofote). */
+    /** Indica se o robô esta equipado com um sistema de iluminação frontal (holofote). */
     private boolean temHolofote;
 
     /**
      * Construtor completo para o robô R-Carry.
-     * * @param nome     Nome identificativo do robô.
-     * @param marca    Fabricante do robô.
-     * @param modelo   Modelo específico da série R-Carry.
-     * @param ano      Ano de fabrico.
-     * @param zona     Zona do complexo onde o robô irá operar.
-     * @param bat      Objeto bateria associado ao robô.
-     * @param carga    Capacidade de carga em quilogramas.
-     * @param holofote Estado inicial do sistema de iluminação.
      */
     public RCarry(String nome, String marca, String modelo, int ano, Zona zona, Bateria bat, double carga, boolean holofote) {
         super(nome, marca, modelo, ano, zona, bat);
@@ -33,9 +24,7 @@ public class RCarry extends Robot {
     }
 
     /**
-     * Adiciona um motor ao robô, validando o limite físico de 4 motores para este modelo.
-     * * @param m O motor a ser instalado.
-     * @throws IllegalStateException Se o robô já possuir o limite máximo de 4 motores.
+     * Adiciona um motor ao robô, validando o limite fisico de 4 motores para este modelo.
      */
     @Override
     public void adicionarMotorChild(Motor m) {
@@ -46,21 +35,18 @@ public class RCarry extends Robot {
     }
 
     /**
-     * Associa um técnico à equipa do robô, validando o limite de lotação.
-     * * @param t O técnico a associar à equipa.
-     * @throws IllegalStateException Se a equipa já possuir o limite máximo de 3 técnicos.
+     * Associa um tecnico à equipa do robô, validando o limite de lotação.
      */
     @Override
     public void adicionarTecnico(Tecnico t) {
         if (this.equipa.size() >= 3) {
-            throw new IllegalStateException("Limite de 3 técnicos atingido para o modelo R-Carry.");
+            throw new IllegalStateException("Limite de 3 tecnicos atingido para o modelo R-Carry.");
         }
         super.associarTecnico(t);
     }
 
     /**
-     * Remove um técnico da equipa operacional deste robô.
-     * * @param t O técnico a ser desassociado.
+     * Remove um tecnico da equipa operacional deste robô.
      */
     @Override
     public void removerTecnico(Tecnico t) {
@@ -68,8 +54,8 @@ public class RCarry extends Robot {
     }
 
     /**
-     * Valida se o robô cumpre os requisitos mínimos para entrar em operação.
-     * * @return true se o robô estiver apto para ativação, false caso contrário.
+     * Valida se o robô cumpre os requisitos minimos para entrar em operação.
+     * Valida os requisitos de ativação para o R-Carry.
      */
     @Override
     public boolean podeSerAtivado() {
@@ -86,16 +72,13 @@ public class RCarry extends Robot {
         return motoresOk && equipaOk && temManutencao;
     }
 
-    /** @return A capacidade de carga atual do robô. */
     public double getCapacidadeCarga() { return capacidadeCarga; }
 
-    /** @return true se o holofote estiver presente/ativo. */
     public boolean isTemHolofote() { return temHolofote; }
 
     /**
      * Devolve uma representação textual detalhada do robô R-Carry, 
-     * incluindo os dados base e os atributos específicos de transporte.
-     * * @return String formatada com as informações do robô.
+     * incluindo os dados base e os atributos especificos de transporte.
      */
     @Override
     public String toString() {

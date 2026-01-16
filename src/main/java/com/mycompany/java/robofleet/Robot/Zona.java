@@ -1,15 +1,15 @@
 package com.mycompany.java.robofleet.Robot;
 
 /**
- * Enumeração que define as zonas operacionais do Complexo Industrial-Logístico.
+ * Enumeração que define as zonas operacionais do Complexo Industrial-Logistico.
  * Cada robô do sistema deve estar obrigatoriamente associado a uma destas localizações.
  */
 public enum Zona {
 
-    /** Zona destinada ao armazenamento, receção e logística de matérias-primas e produtos acabados. */
+    /** Zona destinada ao armazenamento, receção e logistica de materias-primas e produtos acabados. */
     ARMAZEM,
 
-    /** Laboratório de análise e controlo onde é realizada a triagem técnica de componentes. */
+    /** Laboratorio de analise e controlo onde e realizada a triagem tecnica de componentes. */
     TRIAGEM,
 
     /** Primeira unidade da linha de produção fabril, destinada à montagem primária. */

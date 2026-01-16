@@ -8,17 +8,17 @@ import java.util.List;
 /**
  * Classe abstrata que serve de base para todos os robôs do sistema ROBOFLEET.
  * Esta classe define os atributos comuns a todos os modelos, gere a atribuição
- * de identificadores únicos sequenciais e mantém a contagem total da frota.
+ * de identificadores unicos sequenciais e mantem a contagem total da frota.
  */
 public abstract class Robot implements Serializable {
 
-    /** Contador estático para geração de IDs únicos e sequenciais. */
+    /** Contador estatico para geração de IDs unicos e sequenciais. */
     private static int contadorIds = 1;
 
-    /** Contador do número total de robôs instanciados no complexo industrial. */
+    /** Contador do numero total de robôs instanciados no complexo industrial. */
     private static int totalRobotsExistentes = 0;
 
-    /** Identificador único do robô. */
+    /** Identificador unico do robô. */
     protected int id;
 
     /** Nome identificador do robô. */
@@ -27,13 +27,13 @@ public abstract class Robot implements Serializable {
     /** Marca do fabricante do robô. */
     protected String marca;
 
-    /** Modelo específico do robô. */
+    /** Modelo especifico do robô. */
     protected String modelo;
 
     /** Ano em que o robô foi fabricado. */
     protected int anoFabrico;
 
-    /** Zona operacional onde o robô está atualmente alocado. */
+    /** Zona operacional onde o robô esta atualmente alocado. */
     protected Zona zona;
 
     /** Sistema de bateria instalado no robô. */
@@ -42,7 +42,7 @@ public abstract class Robot implements Serializable {
     /** Lista de motores que compõem o sistema de propulsão ou operação. */
     protected List<Motor> motores;
 
-    /** Equipa de técnicos atualmente associada à operação ou manutenção do robô. */
+    /** Equipa de tecnicos atualmente associada à operação ou manutenção do robô. */
     protected List<Tecnico> equipa;
 
     /** Estado de funcionamento do robô. */
@@ -50,20 +50,12 @@ public abstract class Robot implements Serializable {
 
     /**
      * Construtor da classe Robot.
-     * Inicializa os dados base, atribui um ID automático e incrementa o total da frota.
-     *
-     * @param nome       O nome do robô (obrigatório).
-     * @param marca      A marca do fabricante.
-     * @param modelo     O modelo do robô.
-     * @param anoFabrico O ano de fabrico.
-     * @param zona       A zona operacional inicial.
-     * @param bateria    O objeto Bateria associado ao robô.
-     * @throws IllegalArgumentException Se o nome for nulo ou estiver vazio.
+     * Inicializa os dados base, atribui um ID automatico e incrementa o total da frota.
      */
     public Robot(String nome, String marca, String modelo, int anoFabrico, Zona zona, Bateria bateria) {
         
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do robot é obrigatório.");
+            throw new IllegalArgumentException("O nome do robot e obrigatorio.");
         }
 
         this.id = contadorIds++;
@@ -81,9 +73,7 @@ public abstract class Robot implements Serializable {
 
     /**
      * Define o ponto de partida para novos IDs. 
-     * Essencial para garantir a continuidade da numeração após o restauro de dados.
-     *
-     * @param novoValor O valor para o próximo ID a ser atribuído.
+     * Essencial para garantir a continuidade da numeração apos o restauro de dados.
      */
     public static void setContadorIds(int novoValor) {
         contadorIds = novoValor;
@@ -91,8 +81,6 @@ public abstract class Robot implements Serializable {
 
     /**
      * Devolve o valor atual do contador de IDs.
-     *
-     * @return O valor inteiro do contador global de IDs.
      */
     public static int getContadorIds() {
         return contadorIds;
@@ -100,7 +88,6 @@ public abstract class Robot implements Serializable {
 
     /**
      * Devolve o ano em que o robô foi fabricado.
-     * * @return O ano de fabrico (ex: 2024).
      */
     public int getAnoFabrico() {
         return anoFabrico;
@@ -108,7 +95,6 @@ public abstract class Robot implements Serializable {
 
     /**
      * Atualiza o ano de fabrico do robô.
-     * * @param anoFabrico O novo ano de fabrico a registar.
      */
     public void setAnoFabrico(int anoFabrico) {
         this.anoFabrico = anoFabrico;
@@ -123,72 +109,55 @@ public abstract class Robot implements Serializable {
     }
 
     /**
-     * Devolve o número total de robôs existentes no sistema.
-     *
-     * @return O total acumulado de instâncias de robôs.
+     * Devolve o numero total de robôs existentes no sistema.
      */
     public static int getTotalRobots() {
         return totalRobotsExistentes;
     }
 
     /**
-     * Método abstrato para adicionar motores, devendo respeitar os limites 
-     * específicos definidos em cada subclasse.
-     *
-     * @param m O motor a ser adicionado.
+     * Metodo abstrato para adicionar motores, devendo respeitar os limites 
+     * especificos definidos em cada subclasse.
      */
     public abstract void adicionarMotorChild(Motor m);
 
     /**
-     * Método abstrato para associar técnicos à equipa, respeitando as regras 
+     * Metodo abstrato para associar tecnicos à equipa, respeitando as regras 
      * e limites de cada modelo de robô.
-     *
-     * @param t O técnico a associar.
      */
     public abstract void adicionarTecnico(Tecnico t);
 
     /**
-     * Método abstrato para remover um técnico da equipa associada ao robô.
-     *
-     * @param t O técnico a remover.
+     * Metodo abstrato para remover um tecnico da equipa associada ao robô.
      */
     public abstract void removerTecnico(Tecnico t);
 
     /**
      * Valida se o robô cumpre todos os requisitos (motores e equipa) para entrar em funcionamento.
-     *
-     * @return {@code true} se o robô puder ser ativado, {@code false} caso contrário.
      */
     public abstract boolean podeSerAtivado();
 
     /**
      * Adiciona um motor à lista interna de componentes do robô.
-     *
-     * @param m O motor a adicionar.
      */
     protected void adicionarMotor(Motor m) {
         this.motores.add(m);
     }
 
     /**
-     * Associa um técnico à equipa do robô. Verifica se o técnico já não faz parte da equipa.
-     *
-     * @param t O técnico a associar.
-     * @throws IllegalArgumentException Se o técnico já estiver presente na lista de equipa.
+     * Associa um tecnico à equipa do robô. Verifica se o tecnico ja não faz parte da equipa.
      */
     protected void associarTecnico(Tecnico t) {
         for (Tecnico tecnico : equipa) {
             if (tecnico.getId() == t.getId()) {
-                throw new IllegalArgumentException("Técnico já associado ao robô.");
+                throw new IllegalArgumentException("Tecnico ja associado ao robô.");
             }
         }
         equipa.add(t);
     }
 
     /**
-     * Realiza a remoção física de um técnico da lista de equipa.
-     *
-     * @param t O técnico a desassociar.
+     * Realiza a remoção fisica de um tecnico da lista de equipa.
      */
     protected void desassociarTecnico(Tecnico t) {
         equipa.remove(t);
@@ -202,10 +171,7 @@ public abstract class Robot implements Serializable {
     }
 
     /**
-     * Compara este robô com outro objeto para verificar igualdade baseada no ID único.
-     *
-     * @param obj O objeto a comparar.
-     * @return {@code true} se os objetos forem o mesmo ou possuírem o mesmo ID.
+     * Compara este robô com outro objeto para verificar igualdade baseada no ID unico.
      */
     @Override
     public boolean equals(Object obj) {
@@ -216,89 +182,47 @@ public abstract class Robot implements Serializable {
     }
 
     /**
-     * Gera o código hash para o robô baseado no seu ID único.
-     *
-     * @return O valor de hash code.
+     * Gera o codigo hash para o robô baseado no seu ID unico.
      */
     @Override
     public int hashCode() {
         return Integer.hashCode(id);
     }
     
-    /** @return O identificador único do robô. */
     public int getId() { return id; }
-
-    /** @return O nome do robô. */
     public String getNome() { return nome; }
-
-    /** @return A zona operacional atual. */
     public Zona getZona() { return zona; }
-
-    /** @param zona Define a nova zona operacional. */
     public void setZona(Zona zona) { this.zona = zona; }
-
-    /** @param nome Define o novo nome do robô. */
     public void setNome(String nome) { this.nome = nome; }
-
-    /** @param marca Define a marca do fabricante. */
     public void setMarca(String marca) { this.marca = marca; }
-
-    /** @param modelo Define o modelo do robô. */
     public void setModelo(String modelo) { this.modelo = modelo; }
-
-    /** @return A marca do fabricante. */
     public String getMarca() { return marca; }
-
-    /** @return O modelo do robô. */
     public String getModelo() { return modelo; }
-
-    /** @return A lista de motores instalados. */
     public List<Motor> getMotores() { return motores; }
-
-    /** @return A equipa de técnicos associada. */
     public List<Tecnico> getEquipa() { return equipa; }
 
-    /**
-     * Calcula o consumo total de energia do robô somando a potência de todos os motores.
-     *
-     * @return O consumo total em Watts (W).
-     */
+    
     public double getConsumoTotal() {
         double consumoTotal = 0;
-        
-        // Proteção: Se a lista for nula ou estiver vazia, o consumo é 0
-        if (motores == null || motores.isEmpty()) {
-            return 0;
-        }
-
         for (Motor m : motores) {
-            // Outra proteção: verificar se o objeto motor existe mesmo
-            if (m != null) {
-                consumoTotal += m.getPotencia();
-            }
+            consumoTotal += m.getPotencia();
         }
         return consumoTotal;
     }
 
-    /**
-     * Calcula a estimativa de autonomia operacional em horas.
-     * @return Uma string formatada com as horas de autonomia ou mensagem de consumo zero.
-     */
+
     public String calcularAutonomia() {
-        double consumo = this.getConsumoTotal(); 
+        double consumo = getConsumoTotal();
         
-        if (consumo == 0) return "Infinito (Sem motores)";
-
-        double horas = (double) this.bateria.getCapacidade() / consumo;
-
-        return String.format("%.2f horas", horas);
+        if (consumo == 0) {
+            return "Infinito (Sem consumo)";
+        }
+        
+        double autonomia = (double) bateria.getCapacidade() / consumo;
+        return String.format("%.2f horas", autonomia);
     }
     
-    /**
-     * Gera uma representação textual detalhada do robô, incluindo dados da bateria e equipa.
-     *
-     * @return String com as informações formatadas do robô.
-     */
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -311,6 +235,7 @@ public abstract class Robot implements Serializable {
         sb.append("\tModelo: ").append(modelo).append("\n");
         sb.append("\tAno Fabrico: ").append(anoFabrico).append("\n");
         sb.append("\tZona: ").append(zona).append("\n");
+        sb.append("\tTipo de robot: ").append(this.getClass().getSimpleName()).append("\n");
         sb.append("\tBateria: ").append(bateria).append("\n");
         sb.append("\tAutonomia: ").append(calcularAutonomia()).append("\n");
         sb.append("\tEquipa: ");
